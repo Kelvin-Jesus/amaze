@@ -1,0 +1,1868 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Fly an astronaut - or Rocky - past twenty-three real astronomical objects, from low Earth orbit to the oldest light in the universe, laid out on a true logarithmic distance scale.">
+<meta name="theme-color" content="#04060e">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Amaze">
+<meta property="og:description" content="Fly an astronaut - or Rocky - past twenty-three real astronomical objects, from low Earth orbit to the oldest light in the universe, laid out on a true logarithmic distance scale.">
+<meta property="og:image" content="docs/hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%AA%90%3C/text%3E%3C/svg%3E">
+<style>
+  html{color-scheme:dark}
+  body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>AMAZE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --void:#04060e; --deep:#080b16; --panel:#0b0f1d;
+  --line:#182034; --line2:#28314d;
+  --dim:#6b7391; --mid:#99a2be; --text:#ccd3e6; --bright:#f2f5fd;
+  --gold:#ffb62e; --teal:#3ad6c0; --plasma:#ff4d6d;
+  --gut:clamp(16px,4vw,40px);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --bit:"Silkscreen","IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--void); color:var(--text);
+  font-family:var(--mono); font-size:14px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.frame{max-width:1160px; margin-inline:auto; padding-inline:var(--gut); padding-block:clamp(22px,4vw,46px) clamp(40px,6vw,72px);}
+
+/* ---- masthead ---- */
+.eyebrow{font-family:var(--bit); font-size:10px; letter-spacing:.2em; color:var(--teal); text-transform:uppercase;}
+.kicker{font-family:var(--mono); font-size:12.5px; font-style:italic; color:var(--gold); margin:11px 0 0;}
+.wordmark{
+  font-family:var(--bit); font-weight:700; margin:10px 0 0;
+  font-size:clamp(30px,7.4vw,64px); line-height:1.02; color:var(--bright);
+  letter-spacing:.01em; text-wrap:balance;
+}
+.standfirst{max-width:60ch; color:var(--mid); margin:14px 0 0; font-size:clamp(13px,1.6vw,15px); line-height:1.7;}
+.standfirst b{color:var(--text); font-weight:500;}
+
+/* ---- stage ---- */
+.stage{
+  position:relative; margin-top:clamp(20px,3.2vw,30px);
+  height:clamp(268px,52vh,520px); width:100%;
+  border:1px solid var(--line2); background:#010207; overflow:hidden;
+  touch-action:none; cursor:crosshair; user-select:none;
+}
+.stage.dragging{cursor:grabbing}
+.scrim{position:absolute; left:0; right:0; height:78px; pointer-events:none;}
+.scrim.top{top:0; background:linear-gradient(rgba(4,6,14,.82),rgba(4,6,14,0));}
+.scrim.bot{bottom:0; background:linear-gradient(to top,rgba(4,6,14,.82),rgba(4,6,14,0));}
+.ctl{display:flex; align-items:center; gap:11px; pointer-events:auto; flex-wrap:wrap;}
+.snd{font-family:var(--bit); font-size:9px; letter-spacing:.13em; padding:6px 8px; background:rgba(4,6,14,.78); border:1px solid var(--line2); color:var(--mid); cursor:pointer; line-height:1;}
+.snd:hover{color:var(--teal); border-color:var(--teal)}
+.snd[aria-pressed="true"]{color:#08130f; background:var(--teal); border-color:var(--teal);}
+.snd.crew{color:#c9a274; border-color:#4a3b2c}
+.snd.crew:hover{color:var(--gold); border-color:var(--gold)}
+.snd.crew.on{background:#c08a4a; border-color:#c08a4a; color:#17100a}
+.zoom{display:flex; gap:4px; align-items:center;}
+.znb{font-family:var(--bit); font-size:10px; width:20px; height:20px; padding:0; background:rgba(4,6,14,.78); border:1px solid var(--line2); color:var(--mid); cursor:pointer; line-height:1;}
+.znb:hover{color:var(--gold); border-color:var(--gold)}
+.zval{font-family:var(--mono); font-size:10px; font-weight:600; color:var(--mid); min-width:30px; text-align:center; font-variant-numeric:tabular-nums;}
+.beat{display:flex; gap:3px; align-items:center;}
+.beat i{width:5px; height:5px; background:#232b43; display:block;}
+.beat i.on{background:var(--gold);}
+.v.sm{font-size:12px; font-weight:500;}
+.pip{position:absolute; width:9px; height:9px; border:1px solid var(--teal); transform:translate(-50%,-50%); pointer-events:none; opacity:.85;}
+.pip::after{content:""; position:absolute; left:3px; top:3px; width:3px; height:3px; background:var(--teal);}
+.pip.up b{top:auto; bottom:13px;}
+.pip b{position:absolute; left:50%; top:13px; transform:translateX(-50%); font-family:var(--bit); font-size:8px; letter-spacing:.1em; color:var(--teal); white-space:nowrap;}
+#scene{display:block; width:100%; height:100%; image-rendering:pixelated; image-rendering:crisp-edges;}
+.hud{position:absolute; inset:0; pointer-events:none; padding:17px 19px; display:flex; flex-direction:column; justify-content:space-between;}
+.hud-row{display:flex; justify-content:space-between; gap:12px; align-items:flex-start;}
+.read{display:flex; flex-direction:column; gap:3px;}
+.read.r{align-items:flex-end; text-align:right;}
+.k{font-family:var(--bit); font-size:9px; letter-spacing:.16em; color:var(--dim);}
+.v{font-size:clamp(13px,2vw,17px); font-weight:600; color:var(--gold); font-variant-numeric:tabular-nums; letter-spacing:.01em; line-height:1.15;}
+.v.t{color:var(--teal)}
+.hint{font-family:var(--bit); font-size:9px; letter-spacing:.14em; color:#4b5372;}
+.fic-flag{font-family:var(--bit); font-size:9px; letter-spacing:.14em; color:var(--plasma); border:1px dashed var(--plasma); padding:3px 6px;}
+.fic-flag[hidden]{display:none!important}
+
+/* corner brackets */
+.br{position:absolute; width:13px; height:13px; border:1px solid var(--line2);}
+.br.tl{top:6px;left:6px;border-right:0;border-bottom:0}
+.br.tr{top:6px;right:6px;border-left:0;border-bottom:0}
+.br.bl{bottom:6px;left:6px;border-right:0;border-top:0}
+.br.brr{bottom:6px;right:6px;border-left:0;border-top:0}
+
+.nav-btn{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:30px; height:44px; pointer-events:auto;
+  background:rgba(4,6,14,.72); border:1px solid var(--line2); color:var(--mid);
+  font-family:var(--bit); font-size:14px; cursor:pointer; padding:0;
+}
+.nav-btn:hover{color:var(--gold); border-color:var(--gold)}
+.nav-btn.prev{left:10px} .nav-btn.next{right:10px}
+.nav-btn:disabled{opacity:.25; cursor:default}
+
+/* ---- log distance axis ---- */
+.axis{position:relative; height:46px; margin-top:12px; border-top:1px solid var(--line);}
+.axis-cap{position:absolute; top:-1px; left:0; right:0; height:1px;}
+.tick{position:absolute; top:0; width:1px; height:8px; background:var(--line2);}
+.tick-lab.v1{display:none}
+@media (min-width:620px){ .tick-lab.v1{display:block} }
+.tick-lab{position:absolute; top:12px; font-family:var(--bit); font-size:8.5px; letter-spacing:.08em; color:var(--dim); transform:translateX(-50%); white-space:nowrap;}
+.node{position:absolute; top:-3px; width:3px; height:7px; background:#3d4869; transform:translateX(-1px);}
+.node.fic{background:transparent; border:1px solid var(--plasma); width:5px; height:9px; top:-4px;}
+.cursor{position:absolute; top:-6px; width:1px; height:13px; background:var(--gold); box-shadow:0 0 0 1px rgba(255,182,46,.18);}
+.cursor::after{content:""; position:absolute; top:-4px; left:-2px; width:5px; height:5px; background:var(--gold);}
+.axis-note{position:absolute; bottom:0; right:0; font-family:var(--bit); font-size:8.5px; letter-spacing:.1em; color:#454d6b;}
+.axis-note.l{right:auto; left:0;}
+
+/* ---- station chips ---- */
+.stations{display:flex; flex-wrap:wrap; gap:5px; margin-top:6px;}
+.st{
+  font-family:var(--bit); font-size:9.5px; letter-spacing:.07em;
+  padding:7px 8px; border:1px solid var(--line); background:transparent;
+  color:var(--dim); cursor:pointer; line-height:1;
+}
+.st:hover{color:var(--text); border-color:var(--line2)}
+.st.seen{color:var(--mid); border-color:#334063}
+.navhead{display:flex; justify-content:space-between; gap:12px; margin-top:12px; font-family:var(--bit); font-size:9px; letter-spacing:.13em; color:var(--dim);}
+.navhead b{color:var(--teal); font-weight:400}
+.st.fic{border-style:dashed}
+.st[aria-current="true"]{background:var(--gold); border-color:var(--gold); color:#0a0b12;}
+.st[aria-current="true"].fic{background:var(--plasma); border-color:var(--plasma); color:#120409;}
+:where(button,a):focus-visible{outline:2px solid var(--teal); outline-offset:2px}
+
+/* ---- plaque ---- */
+.plaque{
+  display:grid; grid-template-columns:minmax(0,1.22fr) minmax(0,1fr);
+  gap:clamp(20px,3.4vw,46px); margin-top:clamp(24px,3.6vw,38px);
+  padding-top:22px; border-top:1px solid var(--line);
+  transition:opacity .16s linear;
+}
+.plaque.swap{opacity:.25}
+.pname{font-family:var(--bit); font-weight:700; font-size:clamp(19px,3.3vw,31px); line-height:1.12; color:var(--bright); margin:9px 0 0; text-wrap:balance;}
+.pclass{font-family:var(--bit); font-size:9.5px; letter-spacing:.15em; color:var(--teal);}
+.pclass.fic{color:var(--plasma)}
+.pnote{max-width:58ch; margin:14px 0 0; color:var(--text); font-size:14px; line-height:1.72;}
+.pscale{margin:16px 0 0; padding-left:13px; border-left:2px solid var(--gold); color:#e7dcc2; font-size:13.5px; line-height:1.6; max-width:52ch;}
+.specs{display:grid; grid-template-columns:auto minmax(0,1fr); margin:0; align-content:start;}
+.specs dt{font-family:var(--bit); font-size:9px; letter-spacing:.12em; color:var(--dim); padding:10px 16px 10px 0; border-top:1px solid var(--line); line-height:1.45;}
+.specs dd{margin:0; padding:10px 0; border-top:1px solid var(--line); text-align:right; color:var(--bright); font-size:12.5px; font-variant-numeric:tabular-nums; line-height:1.45;}
+@media (max-width:760px){ .plaque{grid-template-columns:1fr; gap:24px} }
+
+/* ---- footer ---- */
+.foot{margin-top:clamp(34px,5vw,54px); padding-top:18px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:14px 34px; justify-content:space-between;}
+.foot p{margin:0; max-width:52ch; font-size:12px; color:var(--dim); line-height:1.7;}
+.foot a{color:var(--mid); text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line2);}
+.foot a:hover{color:var(--gold); text-decoration-color:var(--gold)}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap;}
+@media (prefers-reduced-motion:reduce){ .plaque{transition:none} }
+</style>
+</head>
+<body>
+<div class="frame">
+  <header>
+    <div class="eyebrow">EVA 01 / Free flight / 23 objects</div>
+    <h1 class="wordmark">Amaze</h1>
+    <p class="kicker">&ldquo;Amaze.&rdquo; &mdash; Rocky, <i>Project Hail Mary</i></p>
+    <p class="standfirst">You let go of the handrail 408&nbsp;km above the Pacific. Fly where you like &mdash; there is nothing out here to push against, so you thrust, and then you keep going. The twenty-three objects are laid out by their <b>true distance from Earth</b>, which is why the entire solar system fits in the first breath of the scale and the rest of the trip is dark.</p>
+  </header>
+
+  <div class="stage" id="stage">
+    <canvas id="scene" role="img" aria-label="Pixel-art view of an astronaut drifting past an astronomical object"></canvas>
+    <span class="scrim top"></span><span class="scrim bot"></span>
+    <div class="hud">
+      <div class="hud-row">
+        <div class="read">
+          <span class="k">RANGE FROM EARTH</span>
+          <span class="v" id="hRange">408 km</span>
+        </div>
+        <div class="read r">
+          <span class="k">NEAREST OBJECT</span>
+          <span class="v t" id="hNear">Low Earth Orbit</span>
+        </div>
+      </div>
+      <div class="hud-row" style="align-items:flex-end">
+        <div class="ctl">
+          <button class="snd" id="btnSnd" type="button" aria-pressed="false">SOUND OFF</button>
+          <span class="beat" id="beat" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <button class="snd crew" id="btnCrew" type="button">PLAY AS ROCKY</button>
+          <span class="zoom">
+            <button class="znb" id="zOut" type="button" aria-label="Zoom out">-</button>
+            <span class="zval" id="zVal">1.0x</span>
+            <button class="znb" id="zIn" type="button" aria-label="Zoom in">+</button>
+          </span>
+          <span class="hint">WASD OR DRAG &middot; SCROLL TO ZOOM</span>
+        </div>
+        <div class="read r">
+          <span class="fic-flag" id="hFic" hidden>NOT REAL / FILM PHYSICS</span>
+          <span class="k">DELTA-V SPENT</span>
+          <span class="v sm" id="hDv">0.0 m/s</span>
+        </div>
+      </div>
+      <span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br brr"></span>
+    </div>
+    <button class="nav-btn prev" id="btnPrev" type="button" aria-label="Fly to previous object">&lt;</button>
+    <button class="nav-btn next" id="btnNext" type="button" aria-label="Fly to next object">&gt;</button>
+  </div>
+
+  <div class="axis" id="axis" aria-hidden="true">
+    <span class="axis-note l">LOG SCALE, METRES</span>
+  </div>
+
+  <div class="navhead"><span id="visited">VISITED <b>1</b> / 23</span><span>CLICK A NAME TO ENGAGE AUTOPILOT</span></div>
+  <nav class="stations" id="stations" aria-label="Objects along the drift"></nav>
+
+  <section class="plaque" id="plaque">
+    <div>
+      <div class="pclass" id="pClass"></div>
+      <h2 class="pname" id="pName"></h2>
+      <p class="pnote" id="pNote"></p>
+      <p class="pscale" id="pScale"></p>
+    </div>
+    <dl class="specs" id="pSpecs"></dl>
+  </section>
+
+  <footer class="foot">
+    <p>Figures are the published values for each object; where astronomers disagree &mdash; Betelgeuse&rsquo;s distance, Stephenson&nbsp;2-18&rsquo;s radius &mdash; the disagreement is noted rather than hidden. Object list drawn from the <a href="https://en.wikipedia.org/wiki/Lists_of_astronomical_objects" target="_blank" rel="noopener">Wikipedia lists of astronomical objects</a>.</p>
+    <p>Two stations are fiction and both wear a dashed tick, because neither has a distance to put on this axis. Gargantua is the black hole built for <i>Interstellar</i> (2014) out of real Kerr-metric ray tracing. Erid is Rocky’s world from Andy Weir’s <i>Project Hail Mary</i>, parked at the real 40 Eridani A; fly close with the sound on and it speaks to you in chords, the way Eridians do.<br>Thrust with WASD or the arrow keys, drag inside the frame to steer, scroll or pinch to zoom, press C to swap crew and M to cut the sound. Rocky flies in a xenonite bubble, since twenty-nine atmospheres of ammonia do not travel well. The delta-v counter is vanity &mdash; a real SAFER jetpack carries about 3&nbsp;m/s in total, enough to get you back to the handrail and no further.<br>The music is generated live in the browser &mdash; no recording &mdash; and opens up the further out you get. Pixel look and free roam after <a href="https://hallucinate.site/" target="_blank" rel="noopener">hallucinate.site</a>.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================ low-res framebuffer ============================ */
+var cv = document.getElementById('scene');
+var ctx = cv.getContext('2d', {alpha:false});
+var stage = document.getElementById('stage');
+var W=1, H=1, img=null, buf=null;
+
+function sizeBuffer(){
+  var r = stage.getBoundingClientRect();
+  var pxs = r.width < 520 ? 3 : (r.width < 900 ? 4 : 5);
+  var nw = Math.max(100, Math.round(r.width / pxs));
+  var nh = Math.max(70,  Math.round(r.height / pxs));
+  if(nw===W && nh===H && img) return;
+  W = nw; H = nh;
+  cv.width = W; cv.height = H;
+  img = ctx.createImageData(W, H);
+  buf = new Uint32Array(img.data.buffer);
+  ctx.imageSmoothingEnabled = false;
+  buildStars();
+}
+
+function pack(r,g,b){ return (0xff000000 | (b<<16) | (g<<8) | r) >>> 0; }
+var VOID = pack(3,5,12);
+
+function px(x,y,c){
+  x=x|0; y=y|0;
+  if(x<0||y<0||x>=W||y>=H) return;
+  buf[y*W+x]=c;
+}
+function blend(x,y,r,g,b,a){
+  x=x|0; y=y|0;
+  if(x<0||y<0||x>=W||y>=H) return;
+  if(a<=0) return; if(a>1) a=1;
+  var i=y*W+x, d=buf[i];
+  var dr=d&255, dg=(d>>8)&255, db=(d>>16)&255;
+  buf[i] = (0xff000000 | ((db+(b-db)*a)<<16 & 0xff0000) | ((dg+(g-dg)*a)<<8 & 0xff00) | ((dr+(r-dr)*a)&255)) >>> 0;
+}
+function rect(x,y,w,h,c,a){
+  x=Math.round(x); y=Math.round(y); w=Math.max(1,Math.round(w)); h=Math.max(1,Math.round(h));
+  for(var j=0;j<h;j++) for(var i=0;i<w;i++) blend(x+i,y+j,c[0],c[1],c[2],a);
+}
+function disc(cx,cy,r,fn){
+  var x0=Math.max(0,Math.floor(cx-r)), x1=Math.min(W-1,Math.ceil(cx+r));
+  var y0=Math.max(0,Math.floor(cy-r)), y1=Math.min(H-1,Math.ceil(cy+r));
+  for(var y=y0;y<=y1;y++) for(var x=x0;x<=x1;x++){
+    var dx=x-cx, dy=y-cy, d=Math.sqrt(dx*dx+dy*dy);
+    if(d>r) continue;
+    fn(x,y,dx,dy,d/r);
+  }
+}
+var BAYER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
+var JIT=new Float32Array(4096);
+function dith(x,y){ x=x|0; y=y|0; return (BAYER[((y&3)<<2)|(x&3)]+0.5)/16*0.68 + JIT[((y&63)<<6)|(x&63)]*0.32; }
+function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
+function q(v,n){ return Math.floor(clamp(v,0,0.99999)*n)/(n-1); }
+function mix(a,b,t){ return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t]; }
+
+/* ============================ tiled value noise ============================ */
+var NT=128, ntile=new Float32Array(NT*NT);
+function mulberry(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+(function buildNoise(){
+  var rnd=mulberry(20260922);
+  function octave(n,amp){
+    var g=new Float32Array(n*n);
+    for(var i=0;i<n*n;i++) g[i]=rnd();
+    for(var y=0;y<NT;y++) for(var x=0;x<NT;x++){
+      var fx=x/NT*n, fy=y/NT*n, xi=Math.floor(fx), yi=Math.floor(fy);
+      var tx=fx-xi, ty=fy-yi, u=tx*tx*(3-2*tx), v=ty*ty*(3-2*ty);
+      var x1=(xi+1)%n, y1=(yi+1)%n;
+      var a=g[yi*n+xi], b=g[yi*n+x1], c=g[y1*n+xi], d=g[y1*n+x1];
+      var m=a+(b-a)*u, p=c+(d-c)*u;
+      ntile[y*NT+x]+=amp*(m+(p-m)*v);
+    }
+  }
+  octave(4,0.50); octave(8,0.27); octave(16,0.15); octave(32,0.08);
+  var jr=mulberry(9931); for(var k=0;k<4096;k++) JIT[k]=jr();
+})();
+function noise(x,y){
+  x=((x%NT)+NT)%NT; y=((y%NT)+NT)%NT;
+  var xi=x|0, yi=y|0, tx=x-xi, ty=y-yi, x1=(xi+1)%NT, y1=(yi+1)%NT;
+  var a=ntile[yi*NT+xi], b=ntile[yi*NT+x1], c=ntile[y1*NT+xi], d=ntile[y1*NT+x1];
+  var m=a+(b-a)*tx, p=c+(d-c)*tx;
+  return m+(p-m)*ty;
+}
+
+/* ============================ starfield ============================ */
+var stars=[], band=[];
+function buildStars(){
+  var rnd=mulberry(1054), n=Math.round(W*H*0.019);
+  stars.length=0;
+  for(var i=0;i<n;i++){
+    var d=0.03+rnd()*0.30;
+    var warm=rnd();
+    stars.push({x:rnd(), y:rnd(), d:d, b:0.20+rnd()*0.8, ph:rnd()*6.28,
+      c: warm>0.92 ? [255,206,150] : (warm>0.78 ? [255,240,214] : [206,224,255])});
+  }
+  band.length=0;
+  var m=mulberry(1987), bn=Math.round(W*H*0.022);
+  for(var j=0;j<bn;j++){
+    var u=m(), spread=(m()+m()+m()-1.5)*0.13;
+    band.push({x:u, y:clamp(0.30+u*0.34+spread,0,1), b:0.10+m()*0.30, d:0.012+m()*0.02});
+  }
+}
+function wrap(v,m){ v=v%m; return v<0?v+m:v; }
+function drawStars(cx,cy){
+  var i,s,x,y,a;
+  for(i=0;i<band.length;i++){
+    s=band[i];
+    x=wrap(s.x*W - cx*s.d, W); y=wrap(s.y*H - cy*s.d*0.8, H);
+    blend(x, y, 168,178,224, s.b*0.55);
+  }
+  for(i=0;i<stars.length;i++){
+    s=stars[i];
+    x=wrap(s.x*W - cx*s.d, W);
+    y=wrap(s.y*H - cy*s.d*0.8, H);
+    a=s.b*(0.72+0.28*Math.sin(T*1.6+s.ph));
+    blend(x, y, s.c[0], s.c[1], s.c[2], a*0.95);
+    if(s.d>0.30 && s.b>0.93){
+      blend(x+1,y,s.c[0],s.c[1],s.c[2],a*0.30);
+      blend(x-1,y,s.c[0],s.c[1],s.c[2],a*0.30);
+      blend(x,y+1,s.c[0],s.c[1],s.c[2],a*0.30);
+      blend(x,y-1,s.c[0],s.c[1],s.c[2],a*0.30);
+    }
+  }
+}
+
+/* ============================ the astronaut ============================ */
+var SPRITE_ROWS=[
+'....KKKKKK....',
+'..KKWWWWWWKK..',
+'..KWVVVVVVSK..',
+'.KWVVvvvVVVSK.',
+'.KWVVVVVVVVSK.',
+'..KWVVVVVVSK..',
+'..KKWWWWWSKK..',
+'...KKWWWSKK...',
+'.KKKWWWWWSKKK.',
+'KWWKWWRRWSKWSK',
+'KWSKWTTWWSKWSK',
+'KWSKWWWWWSKWSK',
+'.KKKWWWWWSKKK.',
+'....KWWWSK....',
+'....KWWWSK....',
+'...KWWKKWSK...',
+'...KWWK.KWSK..',
+'..KKWWK.KWSKK.'];
+var PAL={ 'K':[20,24,40], 'W':[231,236,246], 'S':[160,170,196], 'V':[255,182,46], 'v':[255,229,158], 'R':[255,92,60], 'T':[58,214,192] };
+var ROCKY_ROWS=[
+'........KK........',
+'.......KRRK.......',
+'.......KRRK.......',
+'..KK...KRRK...KK..',
+'.KRRK..KrrK..KRRK.',
+'.KRRK.KKrrKK.KRRK.',
+'..KRRKKRLLRKKRRK..',
+'...KRRRLCCLRRRK...',
+'...KRRRLCCLRRRK...',
+'....KKRRLLRRKK....',
+'.....KRRrrRRK.....',
+'.....KRK..KRK.....',
+'....KRRK..KRRK....',
+'....KRK....KRK....',
+'...KRK......KRK...'];
+var RPAL={ 'K':[26,19,16], 'R':[140,104,76], 'r':[92,65,46], 'L':[186,150,114], 'C':[220,190,150] };
+function buildSprite(rows,pal){
+  var w=rows[0].length, h=rows.length, data=new Int8Array(w*h), keys=Object.keys(pal), out=[];
+  for(var k=0;k<keys.length;k++) out.push(pal[keys[k]]);
+  for(var y=0;y<h;y++) for(var x=0;x<w;x++){
+    var ch=rows[y][x];
+    data[y*w+x] = ch==='.' ? -1 : keys.indexOf(ch);
+  }
+  return {w:w,h:h,data:data,pal:out};
+}
+var SP=(function(){
+  var w=SPRITE_ROWS[0].length, h=SPRITE_ROWS.length, data=new Int8Array(w*h), keys=Object.keys(PAL), pal=[];
+  for(var k=0;k<keys.length;k++) pal.push(PAL[keys[k]]);
+  for(var y=0;y<h;y++) for(var x=0;x<w;x++){
+    var ch=SPRITE_ROWS[y][x];
+    data[y*w+x] = ch==='.' ? -1 : keys.indexOf(ch);
+  }
+  return {w:w,h:h,data:data,pal:pal};
+})();
+var RSP=buildSprite(ROCKY_ROWS,RPAL);
+var CREW=0;
+
+function drawSprite(sp,cx,cy,scale,rot,alpha){
+  var rad=Math.sqrt(sp.w*sp.w+sp.h*sp.h)*0.5*scale+1.5;
+  var cs=Math.cos(-rot), sn=Math.sin(-rot);
+  var y0=Math.floor(cy-rad), y1=Math.ceil(cy+rad), x0=Math.floor(cx-rad), x1=Math.ceil(cx+rad);
+  for(var y=y0;y<=y1;y++) for(var x=x0;x<=x1;x++){
+    var dx=(x+0.5-cx)/scale, dy=(y+0.5-cy)/scale;
+    var sx=Math.floor(dx*cs - dy*sn + sp.w/2), sy=Math.floor(dx*sn + dy*cs + sp.h/2);
+    if(sx<0||sy<0||sx>=sp.w||sy>=sp.h) continue;
+    var c=sp.data[sy*sp.w+sx]; if(c<0) continue;
+    var col=sp.pal[c];
+    blend(x,y,col[0],col[1],col[2],alpha);
+  }
+}
+
+var teth=[], tethInit=false;
+var DUST=(function(){ var m=mulberry(77), a=[]; for(var i=0;i<9;i++) a.push({a:m()*6.28, r:6+m()*24, s:0.5+m()}); return a; })();
+function tetherStep(ax,ay){
+  var i,j;
+  if(!tethInit){
+    teth.length=0;
+    for(i=0;i<20;i++) teth.push({x:ax-i*2.3, y:ay+i*0.4});
+    tethInit=true;
+  }
+  teth[0].x=ax; teth[0].y=ay;
+  for(j=1;j<teth.length;j++){
+    var p=teth[j], pr=teth[j-1];
+    p.x+=Math.sin(T*0.8+j*0.55)*0.055;
+    p.y+=Math.cos(T*0.62+j*0.42)*0.050;
+    var dx=p.x-pr.x, dy=p.y-pr.y, d=Math.sqrt(dx*dx+dy*dy)||1, L=2.3;
+    p.x=pr.x+dx/d*L; p.y=pr.y+dy/d*L;
+  }
+}
+function drawAstronaut(wx,wy,camx,camy,z,scale,rot,thrusting){
+  tetherStep(wx, wy+1.6);
+  var ox=W/2-camx*z, oy=H/2-camy*z, i;
+  for(i=1;i<teth.length;i++){
+    var warm=(i%5)<2;
+    var tr= CREW ? (warm?120:206) : (warm?255:198);
+    var tg= CREW ? (warm?222:240) : (warm?106:208);
+    var tb= CREW ? (warm?228:250) : (warm?68:228);
+    blend(teth[i].x*z+ox, teth[i].y*z+oy, tr,tg,tb, 0.95-i*0.018);
+  }
+  var ax=wx*z+ox, ay=wy*z+oy;
+  if(CREW===1){
+    var br=scale*10.5;
+    for(i=0;i<Math.max(30,br*5);i++){
+      var ba=i/Math.max(30,br*5)*6.283;
+      var bx=ax+Math.cos(ba)*br, by=ay+Math.sin(ba)*br;
+      if(dith(bx,by)>0.62) continue;
+      blend(bx,by,132,226,232,0.50);
+    }
+    for(i=0;i<9;i++){
+      var ha=-2.35+i*0.10;
+      blend(ax+Math.cos(ha)*br*0.86, ay+Math.sin(ha)*br*0.86, 226,252,255, 0.78);
+    }
+  }
+  if(thrusting){
+    for(i=0;i<8;i++){
+      var pr=i/8;
+      blend(ax - Math.cos(rot-Math.PI/2)*(scale*6.5+pr*8*scale) + (Math.random()-0.5)*1.6*scale,
+            ay - Math.sin(rot-Math.PI/2)*(scale*6.5+pr*8*scale) + (Math.random()-0.5)*1.6*scale,
+            255, 194-pr*80, 104-pr*70, (1-pr)*0.52);
+    }
+  }
+  drawSprite(CREW?RSP:SP,ax,ay,scale*(CREW?0.92:1),rot,1);
+  for(i=0;i<DUST.length;i++){
+    var d=DUST[i];
+    blend(ax+Math.cos(d.a+T*0.08*d.s)*d.r*z, ay+Math.sin(d.a+T*0.11*d.s)*d.r*0.7*z, 216,228,255, 0.20+0.20*Math.sin(T*1.3+i));
+  }
+}
+
+/* ============================ the objects ============================ */
+var SEA_D=[6,22,66], SEA_L=[36,104,196], LAND_D=[20,56,40], LAND_L=[104,152,88], CLOUD=[234,240,250];
+var NIGHT=[4,6,15];
+
+function drawEarth(o){
+  var r=Math.max(18, 88*o.s), cx=o.x-8*o.s, cy=o.y+r*0.62;
+  disc(cx,cy,r*1.075,function(x,y,dx,dy,t){
+    if(t<0.930) return;
+    var f=(t-0.930)/0.070;
+    var lt=clamp((dx*0.80-dy*0.44)/r*1.4+0.40,0,1);
+    blend(x,y,104,176,255,0.52*(1-f)*(1-f)*(0.12+0.95*lt)*o.a);
+  });
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var nx=dx/r, ny=dy/r, nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
+    var raw=nx*0.80 - ny*0.44 + nz*0.36;
+    var lit=q(raw*1.05+0.30,7);
+    var n=noise(dx*0.115+12, dy*0.115+30);
+    var land=n>0.625;
+    var col= land ? mix(LAND_D,LAND_L,lit) : mix(SEA_D,SEA_L,lit);
+    if(land && n>0.775) col=mix(col,[226,231,240],0.45*lit+0.10);
+    var cl=noise(dx*0.068-40, dy*0.068+70+o.t*0.35);
+    if(cl>0.612) col=mix(col,CLOUD,Math.min(0.92,q((cl-0.612)/0.20,4)*1.05)*Math.max(lit,0.20));
+    if(raw<-0.10){
+      col=mix(col,NIGHT,Math.min(0.93,(-raw-0.10)*5.2));
+      if(land && noise(dx*0.55+5,dy*0.55+9)>0.775) col=mix(col,[255,190,110],0.62);
+    }
+    if(t>0.945) col=mix(col,[9,14,28],(t-0.945)/0.055*0.75);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+}
+
+var SUN_CORE=[255,250,222], SUN_MID=[255,170,50], SUN_EDGE=[255,98,12], SPOT=[142,44,6];
+function drawSun(o){
+  var r=Math.max(12,58*o.s), cx=o.x, cy=o.y, i,k;
+  disc(cx,cy,r*1.66,function(x,y,dx,dy,t){
+    if(t<0.602) return;
+    var ang=Math.atan2(dy,dx);
+    var ray=noise(Math.cos(ang)*7+o.t*0.07+50, Math.sin(ang)*7+80);
+    var f=(t-0.602)/0.398;
+    var al=(1-f)*(1-f)*(1-f)*(0.42+0.70*ray)-0.04;
+    if(al<=0) return;
+    if(dith(x,y)>al*1.9) return;
+    blend(x,y,255,146,52,Math.min(0.62,al)*o.a);
+  });
+  for(i=0;i<4;i++){
+    var a0=o.t*0.07+i*1.57;
+    var len=r*(0.20+0.24*Math.abs(Math.sin(o.t*0.35+i*1.9)));
+    for(k=0;k<30;k++){
+      var u=k/29, arc=Math.sin(u*Math.PI);
+      var aa=a0+(u-0.5)*0.62, rr=r*0.96+arc*len;
+      blend(cx+Math.cos(aa)*rr, cy+Math.sin(aa)*rr, 255,96,48,(0.92-u*0.25)*o.a);
+      blend(cx+Math.cos(aa)*(rr+1), cy+Math.sin(aa)*(rr+1), 255,150,66,0.36*o.a);
+    }
+  }
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var g=noise(dx*0.30+o.t*0.30+200, dy*0.30+300);
+    var v=q(0.46+(g-0.5)*1.45-t*t*0.62,5);
+    var col;
+    if(g<0.255 && t<0.84) col=mix(SPOT,[255,138,30],q(g/0.255,3));
+    else col= v<0.5 ? mix(SUN_EDGE,SUN_MID,q(v/0.5,3)) : mix(SUN_MID,SUN_CORE,q((v-0.5)/0.5,3));
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+}
+
+var ROCKS=(function(){
+  var m=mulberry(4179), a=[];
+  for(var i=0;i<120;i++) a.push({rx:m()*2-1, ry:m()*2-1, rs:1.2+m()*3.4, d:0.25+m()*0.9, ph:m()*6.28, sp:0.4+m()*1.6, ty:m()>0.55?1:0});
+  return a;
+})();
+function drawRock(cx,cy,r,rot,al,ty){
+  var base = ty ? [152,138,112] : [120,118,130];
+  disc(cx,cy,r*1.3,function(x,y,dx,dy){
+    var ang=Math.atan2(dy,dx)+rot;
+    var rr=r*(0.78+0.34*noise(Math.cos(ang)*4+ty*17, Math.sin(ang)*4+7));
+    if(Math.sqrt(dx*dx+dy*dy)>rr) return;
+    var lit=q((dx*0.72-dy*0.60)/r*0.62+0.5,4);
+    var col=mix([28,26,34],base,lit);
+    blend(x,y,col[0],col[1],col[2],al);
+  });
+}
+function drawBelt(o){
+  for(var i=0;i<ROCKS.length;i++){
+    var k=ROCKS[i], d=k.d;
+    var x=o.x+k.rx*W*0.80*(0.45+d)*o.s+Math.sin(o.t*0.06*k.sp+k.ph)*3.5*o.s;
+    var y=o.y+k.ry*H*0.62*(0.45+d)*o.s+Math.cos(o.t*0.05*k.sp+k.ph)*2.5*o.s;
+    drawRock(x,y,Math.max(0.7,k.rs*o.s*(0.35+d*0.85)),o.t*0.12*k.sp+k.ph,(0.40+0.60*d)*o.a,k.ty);
+  }
+  var bx=o.x+W*0.12, by=o.y-H*0.05, br=Math.max(2.5,9*o.s);
+  drawRock(bx,by,br,o.t*0.06,o.a,1);
+  disc(bx,by,br*0.92,function(x,y,dx,dy){
+    var c=noise(dx*1.5+91,dy*1.5+33)*noise(dx*0.6+3,dy*0.6+44);
+    if(c>0.44) blend(x,y,58,54,50,0.60*o.a);
+    else if(c<0.13) blend(x,y,196,184,158,0.35*o.a);
+  });
+}
+
+var JB=[[-1.01,[216,196,154]],[-0.74,[166,114,62]],[-0.57,[230,217,188]],[-0.36,[186,133,76]],[-0.17,[239,228,203]],[0.02,[192,141,85]],[0.18,[242,232,210]],[0.37,[170,122,69]],[0.57,[221,203,166]],[0.76,[140,95,54]],[1.02,[200,180,142]]];
+function bandAt(v){ for(var i=0;i<JB.length;i++) if(v<=JB[i][0]) return JB[i][1]; return JB[JB.length-1][1]; }
+function drawJupiter(o){
+  var r=Math.max(12,54*o.s), cx=o.x, cy=o.y;
+  var gx=Math.sin(o.t*0.045)*0.46;
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var nx=dx/r, ny=dy/r, nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
+    var wob=(noise(nx*3.2+o.t*0.11+90, ny*9+40)-0.5)*0.11;
+    var col=bandAt(ny+wob).slice(0);
+    var hx=(nx-gx)/(0.24*Math.max(0.35,nz)), hy=(ny-0.24)/0.105;
+    if(hx*hx+hy*hy<1){
+      var inner=1-Math.min(1,Math.sqrt(hx*hx+hy*hy));
+      col=mix([164,76,54],[214,118,84],q(inner,3));
+    }
+    var raw=nx*0.62-ny*0.30+nz*0.56;
+    var lit=q(raw*0.85+0.30,5);
+    col=mix(mix([14,12,18],col,0.22),col,lit);
+    if(t>0.87) col=mix(col,[8,8,16],(t-0.87)/0.13*0.85);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+  var mx=cx+r*2.05, my=cy-r*0.74, mr=Math.max(1,r*0.075);
+  disc(mx,my,mr,function(x,y,dx,dy){
+    var lit=q((dx*0.7-dy*0.6)/mr*0.7+0.5,3);
+    var col=mix([48,44,52],[214,206,196],lit);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+}
+
+function drawComet(o){
+  var cx=o.x-Math.min(W*0.22,34*o.s), cy=o.y+4*o.s;
+  var L=Math.min(W*1.05,132*o.s), i, j;
+  for(i=2;i<L;i++){
+    var u=i/L, w=0.9+u*7.5*o.s;
+    var fl=(noise(i*0.12+o.t*1.5+400, 22)-0.5)*u*7;
+    for(j=-w;j<=w;j+=1){
+      var a=(1-u*0.86)*(1-Math.abs(j)/(w+0.6))*1.05;
+      a*=0.50+0.75*noise(i*0.22+o.t*1.2+11, j*0.5+66);
+      if(a<=0.03) continue;
+      var yy=cy+j*0.85+fl;
+      if(dith(cx+i,yy)>a*1.45) continue;
+      blend(cx+i, yy, 122,212,255, Math.min(0.95,a+0.18)*o.a);
+    }
+  }
+  for(i=2;i<L*0.78;i++){
+    var u2=i/(L*0.78), w2=1.4+u2*12*o.s;
+    var curve=u2*u2*17*o.s;
+    for(j=-w2;j<=w2;j+=1){
+      var a2=(1-u2*0.9)*(1-Math.abs(j)/(w2+0.6))*0.90;
+      a2*=0.42+0.80*noise(i*0.16+330, j*0.42+o.t*0.25+12);
+      if(a2<=0.035) continue;
+      var yy2=cy+j*0.9+curve;
+      if(dith(cx+i,yy2)>a2*1.5) continue;
+      blend(cx+i, yy2, 250,232,186, Math.min(0.88,a2+0.14)*o.a);
+    }
+  }
+  var cr=Math.max(3,10*o.s);
+  disc(cx,cy,cr*2.4,function(x,y,dx,dy,t){
+    var a=(1-t)*(1-t)*0.95;
+    if(dith(x,y)>a*1.7) return;
+    blend(x,y,214,238,255,a*o.a);
+  });
+  disc(cx,cy,Math.max(2,5*o.s),function(x,y,dx,dy,t){
+    var col=mix([62,55,46],[24,21,18],q(t,3));
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+  blend(cx-1,cy-1,255,244,214,0.95*o.a); blend(cx-2,cy-2,255,228,176,0.65*o.a);
+}
+
+function drawPluto(o){
+  var r=Math.max(8,34*o.s), cx=o.x-10*o.s, cy=o.y+3*o.s;
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var nx=dx/r, ny=dy/r, nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
+    var n=noise(dx*0.17+210, dy*0.17+55);
+    var col=mix([126,88,62],[221,192,156],q(n,4));
+    if(n<0.405) col=mix(col,[84,50,36],0.82);
+    var hx=nx+0.10, hy=ny-0.02;
+    var lobeL=((hx+0.20)*(hx+0.20))/0.075+((hy+0.06)*(hy+0.06))/0.075;
+    var lobeR=((hx-0.17)*(hx-0.17))/0.070+((hy+0.04)*(hy+0.04))/0.070;
+    var taper=(hy>0)&&(Math.abs(hx-hy*0.30)<0.30-hy*0.62)&&(hy<0.46);
+    if(lobeL<1||lobeR<1||taper) col=mix([238,228,212],[255,250,242],q(n,3));
+    var raw=nx*0.70-ny*0.54+nz*0.46;
+    col=mix(mix([10,10,16],col,0.12),col,q(raw*0.95+0.22,5));
+    if(t>0.90) col=mix(col,[7,8,16],(t-0.90)/0.10*0.9);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+  var chx=cx+r*1.95, chy=cy-r*1.12, chr=Math.max(2.5,r*0.44);
+  disc(chx,chy,chr,function(x,y,dx,dy,t){
+    var nx=dx/chr, ny=dy/chr, nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
+    var n=noise(dx*0.3+9,dy*0.3+77);
+    var col=mix([118,112,108],[188,182,176],q(n,3));
+    if(ny<-0.45 && n>0.5) col=mix(col,[122,82,66],0.6);
+    col=mix(mix([10,10,16],col,0.10),col,q((nx*0.70-ny*0.54+nz*0.46)*0.95+0.22,4));
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+}
+
+function redGiant(o,rad,cool,warm,hot,cellScale,lump,haloCol){
+  var r=Math.max(10,rad*o.s), cx=o.x, cy=o.y;
+  disc(cx,cy,r*1.85,function(x,y,dx,dy,t){
+    if(t<0.54) return;
+    var f=(t-0.54)/0.46;
+    var a=(1-f)*(1-f)*0.42*(0.4+0.8*noise(dx*0.05+o.t*0.02+700,dy*0.05+310));
+    if(dith(x,y)>a*1.8) return;
+    blend(x,y,haloCol[0],haloCol[1],haloCol[2],a*o.a);
+  });
+  var x0=Math.max(0,Math.floor(cx-r*1.15)), x1=Math.min(W-1,Math.ceil(cx+r*1.15));
+  var y0=Math.max(0,Math.floor(cy-r*1.15)), y1=Math.min(H-1,Math.ceil(cy+r*1.15));
+  for(var y=y0;y<=y1;y++) for(var x=x0;x<=x1;x++){
+    var dx=x-cx, dy=y-cy, d=Math.sqrt(dx*dx+dy*dy);
+    var ang=Math.atan2(dy,dx);
+    var rr=r*(1-lump+2*lump*noise(Math.cos(ang)*3.4+o.t*0.02+44, Math.sin(ang)*3.4+88));
+    if(d>rr) continue;
+    var t2=d/rr;
+    var cell=noise(dx*cellScale+o.t*0.05+500, dy*cellScale+o.t*0.03+120)
+           + 0.45*noise(dx*cellScale*2.7+o.t*0.09+70, dy*cellScale*2.7+18) - 0.225;
+    var v=q((cell-0.44)*2.5 - t2*t2*0.42 + 0.42, 5);
+    var col=v<0.5 ? mix(cool,warm,q(v/0.5,3)) : mix(warm,hot,q((v-0.5)/0.5,3));
+    if(t2>0.84) col=mix(col,cool,(t2-0.84)/0.16*0.92);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  }
+}
+function drawBetelgeuse(o){
+  redGiant(o,46,[112,28,16],[208,70,30],[255,164,96],0.17,0.16,[186,62,34]);
+  var cx=o.x+38*o.s, cy=o.y-30*o.s;
+  disc(cx,cy,Math.max(4,26*o.s),function(x,y,dx,dy,t){
+    var a=(1-t)*(1-t)*0.5*noise(dx*0.16+800,dy*0.16+404);
+    if(dith(x,y)>a*1.9) return;
+    blend(x,y,128,72,58,a*o.a);
+  });
+}
+function drawStephenson(o){
+  redGiant(o,74,[92,20,10],[178,48,20],[248,128,64],0.095,0.11,[154,44,22]);
+}
+
+var NEB_CORE=[255,246,220], NEB_TEAL=[62,216,176], NEB_PINK=[255,94,134], NEB_BLUE=[112,132,255];
+function drawOrion(o){
+  var R=Math.max(16,66*o.s), cx=o.x, cy=o.y, dr=o.t*0.05;
+  var x0=Math.max(0,Math.floor(cx-R*1.55)), x1=Math.min(W-1,Math.ceil(cx+R*1.55));
+  var y0=Math.max(0,Math.floor(cy-R*1.15)), y1=Math.min(H-1,Math.ceil(cy+R*1.15));
+  for(var y=y0;y<=y1;y++) for(var x=x0;x<=x1;x++){
+    var dx=(x-cx)/(R*1.5), dy=(y-cy)/(R*1.1);
+    var rr=Math.sqrt(dx*dx+dy*dy);
+    if(rr>1) continue;
+    var n1=noise((x-cx)*0.075+dr+300,(y-cy)*0.075+140);
+    var n2=noise((x-cx)*0.20-dr*0.6+600,(y-cy)*0.20+40);
+    var n3=noise((x-cx)*0.055-dr*0.35+55,(y-cy)*0.055+910);
+    var shape=1-rr*(0.52+1.05*n3);
+    var d=shape*(0.30+1.25*n1)*(0.45+0.80*n2);
+    d-=Math.max(0,n2-0.565)*2.6;
+    if(d<=0.055) continue;
+    var hue=clamp(rr*0.38+(n1-0.5)*1.25+(n3-0.5)*0.85+0.12,0,0.999);
+    var col;
+    if(hue<0.26) col=mix(NEB_CORE,NEB_TEAL,q(hue/0.26,4));
+    else if(hue<0.62) col=mix(NEB_TEAL,NEB_PINK,q((hue-0.26)/0.36,4));
+    else col=mix(NEB_PINK,NEB_BLUE,q((hue-0.62)/0.38,3));
+    var al=Math.min(0.90,d*1.30);
+    if(dith(x,y)>al*1.25) continue;
+    blend(x,y,col[0],col[1],col[2],Math.min(0.95,al+0.28)*o.a);
+  }
+  var m=mulberry(1769);
+  for(var s=0;s<58;s++){
+    var a=m()*6.28, rad=m()*R*1.2;
+    blend(cx+Math.cos(a)*rad*1.3, cy+Math.sin(a)*rad*0.9, 236,244,255, (0.3+m()*0.6)*o.a);
+  }
+  var tp=[[-0.06,-0.04],[0.05,-0.08],[0.02,0.05],[-0.10,0.06]];
+  for(var i=0;i<4;i++){
+    var tx=cx+tp[i][0]*R*2.2, ty=cy+tp[i][1]*R*2.2;
+    var pul=0.80+0.20*Math.sin(o.t*1.1+i*1.7);
+    disc(tx,ty,Math.max(2,5*o.s),function(x,y,dx,dy,t){
+      blend(x,y,222,238,255,(1-t)*(1-t)*0.55*pul*o.a);
+    });
+    blend(tx,ty,255,255,255,o.a*pul);
+  }
+}
+
+function drawPulsar(o){
+  var cx=o.x, cy=o.y, ang=o.t*0.52, i, j, k, m=mulberry(1054);
+  for(k=0;k<70;k++){
+    var fa=m()*6.28, fr=(0.25+m()*0.85)*Math.min(W*0.42,96*o.s);
+    var wob=Math.sin(o.t*0.3+k)*2;
+    var fx=cx+Math.cos(fa)*fr, fy=cy+Math.sin(fa)*fr*0.72+wob;
+    var fc=m()>0.5?[96,214,190]:[226,108,150];
+    for(var q2=0;q2<5;q2++) blend(fx+Math.cos(fa)*q2*1.6, fy+Math.sin(fa)*q2*1.1, fc[0],fc[1],fc[2], (0.30-q2*0.05)*o.a);
+  }
+  for(var sgn=-1;sgn<=1;sgn+=2){
+    var bx=Math.cos(ang)*sgn, by=Math.sin(ang)*0.60*sgn;
+    var L=Math.min(W*0.52,86*o.s);
+    for(i=2;i<L;i++){
+      var w=0.8+i*0.13;
+      for(j=-w;j<=w;j+=1){
+        var fall=(1-i/L)*(1-Math.abs(j)/(w+0.55));
+        var a=fall*0.80;
+        if(a<=0.025) continue;
+        var pxx=cx+bx*i-by*j, pyy=cy+by*i+bx*j;
+        if(dith(pxx,pyy)>a*1.5) continue;
+        var col=mix([118,186,255],[244,251,255],q(fall,4));
+        blend(pxx,pyy,col[0],col[1],col[2],Math.min(0.9,a+0.16)*o.a);
+      }
+    }
+  }
+  var rr=Math.max(5,17*o.s);
+  for(i=0;i<74;i++){
+    var aa=i/74*6.28;
+    var rx=cx+Math.cos(aa)*rr, ry=cy+Math.sin(aa)*rr*0.42;
+    if(dith(rx,ry)>0.55) continue;
+    blend(rx,ry,126,168,255,0.50*o.a);
+  }
+  disc(cx,cy,Math.max(3,8*o.s),function(x,y,dx,dy,t){
+    blend(x,y,214,236,255,(1-t)*(1-t)*0.75*o.a);
+  });
+  px(cx,cy,pack(255,255,255)); px(cx+1,cy,pack(255,255,255));
+  px(cx,cy+1,pack(240,248,255)); px(cx+1,cy+1,pack(240,248,255));
+}
+
+var GORD=[[255,248,218],[255,216,132],[255,172,56],[255,120,26],[206,70,16]];
+var SORD=[[255,238,200],[255,190,104],[255,138,46],[228,88,24],[164,46,12]];
+function blackHole(o,rad,yc,PAL,outer,bright){
+  var r=Math.max(6,rad*o.s), cx=o.x, cy=o.y;
+  var bx0=Math.max(0,Math.floor(cx-r*(outer+0.2))), bx1=Math.min(W-1,Math.ceil(cx+r*(outer+0.2)));
+  var by0=Math.max(0,Math.floor(cy-r*2.0)), by1=Math.min(H-1,Math.ceil(cy+r*2.0));
+  function emit(x,y,frontOnly){
+    var dx=x-cx, dy=y-cy;
+    var rc=Math.sqrt(dx*dx+dy*dy)/r;
+    var rd=Math.sqrt(dx*dx+(dy/yc)*(dy/yc))/r;
+    var a1=0, a2=0;
+    if(!frontOnly && rc>1.03 && rc<1.95){
+      var u=(rc-1.03)/0.92;
+      var vert=Math.abs(dy)/(Math.sqrt(dx*dx+dy*dy)+0.001);
+      a1=(1-u)*(1-u*0.4)*(0.34+0.80*vert);
+    }
+    if(rd>1.30 && rd<outer){
+      var v=(rd-1.30)/(outer-1.30);
+      var horiz=Math.abs(dx)/(Math.sqrt(dx*dx+(dy/yc)*(dy/yc))+0.001);
+      a2=(1-v)*(1-v*0.35)*(0.52+0.58*horiz);
+    }
+    var a=Math.max(a1,a2);
+    if(a<=0.02) return;
+    a*= dx<0 ? 1.22 : 0.80;
+    a*= (0.80+0.40*noise(Math.atan2(dy,dx)*8+o.t*0.8+500, rc*6+220))*bright;
+    if(a<=0.03) return;
+    if(dith(x,y)>Math.min(1,a*1.55)) return;
+    var col=PAL[Math.min(4,Math.floor((1-Math.min(0.999,a*1.15))*5))];
+    blend(x,y,col[0],col[1],col[2],Math.min(1,a*1.7)*o.a);
+  }
+  var x,y;
+  for(y=by0;y<=by1;y++) for(x=bx0;x<=bx1;x++) emit(x,y,false);
+  disc(cx,cy,r*1.005,function(xx,yy){ blend(xx,yy,2,2,6,o.a); });
+  for(var i=0;i<Math.max(48,r*7);i++){
+    var aa=i/Math.max(48,r*7)*6.283;
+    blend(cx+Math.cos(aa)*r*1.02, cy+Math.sin(aa)*r*1.02, 255,240,196, 0.85*o.a);
+  }
+  for(y=Math.max(by0,Math.ceil(cy));y<=by1;y++) for(x=bx0;x<=bx1;x++) emit(x,y,true);
+}
+function drawGargantua(o){ blackHole(o,36,0.135,GORD,2.80,1.00); }
+function drawSgrA(o){
+  blackHole(o,19,0.24,SORD,2.25,0.66);
+  var cx=o.x, cy=o.y, r=Math.max(6,19*o.s), i;
+  var ORB=[[3.4,0.42,0.9,0.0],[4.6,0.30,0.58,2.1],[2.9,0.62,1.35,4.0],[5.6,0.22,0.41,5.2]];
+  for(i=0;i<ORB.length;i++){
+    var a=o.t*ORB[i][2]*0.35+ORB[i][3];
+    var sx=cx+Math.cos(a)*r*ORB[i][0], sy=cy+Math.sin(a)*r*ORB[i][0]*ORB[i][1];
+    for(var k=0;k<52;k++){
+      var ka=k/52*6.283;
+      var ox=cx+Math.cos(ka)*r*ORB[i][0], oy=cy+Math.sin(ka)*r*ORB[i][0]*ORB[i][1];
+      if(dith(ox,oy)>0.30) continue;
+      blend(ox,oy,120,146,214,0.26*o.a);
+    }
+    disc(sx,sy,Math.max(1.5,3.2*o.s),function(x,y,dx,dy,t){
+      blend(x,y,214,230,255,(1-t)*(1-t)*0.9*o.a);
+    });
+    blend(sx,sy,255,255,255,o.a);
+  }
+}
+
+function drawAndromeda(o){
+  var r=Math.max(14,78*o.s), cx=o.x, cy=o.y;
+  var A=-0.38, ca=Math.cos(A), sa=Math.sin(A), spin=o.t*0.02;
+  var x0=Math.max(0,Math.floor(cx-r*1.35)), x1=Math.min(W-1,Math.ceil(cx+r*1.35));
+  var y0=Math.max(0,Math.floor(cy-r*1.0)), y1=Math.min(H-1,Math.ceil(cy+r*1.0));
+  var m=mulberry(31);
+  for(var y=y0;y<=y1;y++) for(var x=x0;x<=x1;x++){
+    var dx=x-cx, dy=y-cy;
+    var u=(dx*ca+dy*sa), v=(-dx*sa+dy*ca)/0.42;
+    var rr=Math.sqrt(u*u+v*v)/r;
+    if(rr>1.28) continue;
+    var th=Math.atan2(v,u);
+    var ph=2*(th-Math.log(rr*2.6+0.26)*3.1+spin);
+    var arm=0.5+0.5*Math.cos(ph);
+    var armP=arm*arm*arm;
+    var core=Math.exp(-rr*rr*30);
+    var dsk=Math.exp(-rr*2.0);
+    var bright=core*1.7+dsk*(0.08+1.55*armP);
+    bright*=0.66+0.68*noise(u*0.10+900,v*0.10+55);
+    var lane=Math.max(0,Math.cos(ph+2.55));
+    bright-=lane*lane*dsk*0.90;
+    if(bright<=0.035) continue;
+    var col= core>0.30 ? mix([255,226,164],[255,250,230],q(core,4))
+           : mix([118,142,232],[216,230,255],q(armP,4));
+    var al=Math.min(0.92,bright*0.95);
+    if(dith(x,y)>al*1.35) continue;
+    blend(x,y,col[0],col[1],col[2],Math.min(0.95,al+0.22)*o.a);
+    if(bright>0.55 && rr>0.24 && noise(x*3.9+404,y*3.9+17)>0.855) blend(x,y,255,255,255,0.85*o.a);
+  }
+  for(var s=0;s<22;s++){
+    var aa=m()*6.28, rad=(0.9+m()*0.5)*r;
+    blend(cx+Math.cos(aa)*rad*1.2, cy+Math.sin(aa)*rad*0.42, 198,214,255, 0.3*o.a);
+  }
+}
+
+function drawQuasar(o){
+  var cx=o.x-14*o.s, cy=o.y-10*o.s, i, j;
+  var pulse=0.86+0.14*Math.sin(o.t*1.4)+0.06*Math.sin(o.t*3.7);
+  var hr=Math.max(8,30*o.s);
+  disc(cx,cy,hr,function(x,y,dx,dy,t){
+    var a=(1-t)*(1-t)*0.42*(0.6+0.7*noise(dx*0.16+120,dy*0.16+909));
+    if(dith(x,y)>a*1.8) return;
+    blend(x,y,142,164,216,a*o.a);
+  });
+  var L=Math.min(W*0.72,118*o.s);
+  for(i=4;i<L;i++){
+    var u=i/L;
+    var bend=u*u*11*o.s;
+    var w=0.7+u*5.4*o.s;
+    var knot=0.50+0.72*Math.pow(Math.max(0,Math.sin(u*10.5-0.6)),4);
+    for(j=-w;j<=w;j+=1){
+      var a=(1-u*0.72)*(1-Math.abs(j)/(w+0.5))*0.92*knot;
+      if(a<=0.03) continue;
+      var xx=cx+i*0.96, yy=cy+i*0.34+bend+j;
+      if(dith(xx,yy)>a*1.5) continue;
+      var col=mix([104,168,255],[236,248,255],q(a*1.5,4));
+      blend(xx,yy,col[0],col[1],col[2],Math.min(0.88,a+0.14)*o.a);
+    }
+  }
+  var sl=Math.max(8,34*o.s);
+  for(i=1;i<sl;i++){
+    var fa=(1-i/sl)*0.75*pulse;
+    if(fa<=0.03) continue;
+    blend(cx+i,cy,206,230,255,fa*o.a); blend(cx-i,cy,206,230,255,fa*o.a);
+    blend(cx,cy+i,206,230,255,fa*0.85*o.a); blend(cx,cy-i,206,230,255,fa*0.85*o.a);
+  }
+  disc(cx,cy,Math.max(4,12*o.s),function(x,y,dx,dy,t){
+    blend(x,y,236,246,255,(1-t)*(1-t)*0.9*pulse*o.a);
+  });
+  px(cx,cy,pack(255,255,255)); px(cx+1,cy,pack(255,255,255));
+  px(cx,cy+1,pack(255,255,255)); px(cx+1,cy+1,pack(255,255,255));
+}
+
+var MCRAT=[[-0.34,0.44,0.145],[0.24,-0.31,0.115],[0.50,0.20,0.078],[-0.14,-0.56,0.068],[0.06,0.26,0.058],[-0.55,-0.18,0.052],[0.38,0.54,0.062],[-0.62,0.28,0.045],[0.14,0.66,0.042],[-0.30,-0.10,0.038]];
+function drawMoon(o){
+  var r=Math.max(6,44*o.s), cx=o.x, cy=o.y, i;
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var nx=dx/r, ny=dy/r, nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
+    var n=noise(dx*0.26+404, dy*0.26+77);
+    var col=mix([112,108,104],[226,222,214],q(n,5));
+    var mm=noise(dx*0.105+900, dy*0.105+250)*0.7 + noise(dx*0.30+11, dy*0.30+88)*0.3;
+    if(mm<0.455) col=mix(col,[62,61,66],q((0.455-mm)/0.17,3)*0.95);
+    for(i=0;i<MCRAT.length;i++){
+      var kx=nx-MCRAT[i][0], ky=ny-MCRAT[i][1], kr=MCRAT[i][2];
+      var kd=Math.sqrt(kx*kx+ky*ky)/kr;
+      if(kd<1.16){
+        if(kd>0.86) col=mix(col,[246,244,238],0.80);
+        else col=mix(col,[64,62,64],0.72-kd*0.28);
+      }
+    }
+    var raw=nx*0.80-ny*0.44+nz*0.36;
+    col=mix(mix([7,8,13],col,0.05),col,q(raw*1.06+0.24,6));
+    if(t>0.955) col=mix(col,[6,7,13],(t-0.955)/0.045);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+}
+
+function drawMars(o){
+  var r=Math.max(6,42*o.s), cx=o.x, cy=o.y;
+  disc(cx,cy,r*1.055,function(x,y,dx,dy,t){
+    if(t<0.945) return;
+    blend(x,y,226,150,104,0.30*(1-(t-0.945)/0.055)*o.a);
+  });
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var nx=dx/r, ny=dy/r, nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
+    var n=noise(dx*0.21+700, dy*0.21+310);
+    var col=mix([118,52,28],[224,146,94],q(n,6));
+    if(n<0.415) col=mix(col,[84,42,32],0.85);
+    var vv=ny-0.12-Math.sin(nx*1.7)*0.055;
+    if(Math.abs(vv)<0.030 && Math.abs(nx)<0.58 && nz>0.45) col=mix(col,[84,42,28],0.55);
+    col=mix(mix([9,9,15],col,0.08),col,q((nx*0.80-ny*0.44+nz*0.36)*1.05+0.25,6));
+    var cap=Math.abs(ny)-0.845;
+    if(cap>0) col=mix(col,[236,241,248],clamp(cap*11,0,1)*0.90);
+    if(t>0.945) col=mix(col,[8,8,15],(t-0.945)/0.055*0.85);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+}
+
+function drawSaturn(o){
+  var r=Math.max(6,38*o.s), cx=o.x, cy=o.y, yc=0.30, ct=Math.cos(-0.20), st=Math.sin(-0.20);
+  var R1=1.26, R2=2.30;
+  var bx0=Math.max(0,Math.floor(cx-r*R2-2)), bx1=Math.min(W-1,Math.ceil(cx+r*R2+2));
+  var by0=Math.max(0,Math.floor(cy-r*R2*yc-r-2)), by1=Math.min(H-1,Math.ceil(cy+r*R2*yc+r+2));
+  function ring(x,y,front){
+    var dx=x-cx, dy=y-cy;
+    var u=dx*ct+dy*st, w=(-dx*st+dy*ct);
+    var v=w/yc;
+    var rr=Math.sqrt(u*u+v*v)/r;
+    if(rr<R1||rr>R2) return;
+    if((w>0)!==front) return;
+    var a=1;
+    if(rr>1.90&&rr<2.00) a=0.10;
+    else if(rr<1.35) a=0.34;
+    else if(rr>2.18) a=0.26;
+    else if(rr>1.62&&rr<1.69) a=0.45;
+    var band=0.58+0.42*noise(rr*30+140,11);
+    a*=band*0.92;
+    if(dith(x,y)>Math.min(1,a*1.35)) return;
+    var col=mix([118,100,78],[238,226,198],q(band,4));
+    blend(x,y,col[0],col[1],col[2],Math.min(0.95,a)*o.a);
+  }
+  var x,y;
+  for(y=by0;y<=by1;y++) for(x=bx0;x<=bx1;x++) ring(x,y,false);
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var nx=dx/r, ny=dy/(r*0.90), nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
+    var wob=(noise(nx*3.0+o.t*0.08+330, ny*7+60)-0.5)*0.09;
+    var by=ny+wob;
+    var col;
+    if(by<-0.66) col=[188,170,140];
+    else if(by<-0.34) col=[232,214,176];
+    else if(by<-0.06) col=[208,182,138];
+    else if(by<0.20) col=[240,226,192];
+    else if(by<0.50) col=[196,170,128];
+    else if(by<0.76) col=[226,208,172];
+    else col=[170,150,124];
+    col=mix(mix([12,11,16],col,0.20),col,q((nx*0.62-ny*0.28+nz*0.54)*0.86+0.30,6));
+    if(t>0.90) col=mix(col,[9,9,16],(t-0.90)/0.10*0.85);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+  for(y=by0;y<=by1;y++) for(x=bx0;x<=bx1;x++) ring(x,y,true);
+}
+
+function drawVoyager(o){
+  var z=Math.max(0.5,1.5*o.s), cx=o.x+4*z, cy=o.y, i;
+  var HL=[178,184,200], HD=[98,104,124], GLD=[228,180,66], DK=[36,40,56];
+  for(i=0;i<56;i++){
+    var a=(0.95-i*0.013)*o.a; if(a<=0) break;
+    blend(cx+8*z+i*1.10*z, cy+1.2*z+i*0.09*z, HL[0],HL[1],HL[2], a);
+  }
+  for(i=0;i<15;i++) blend(cx+0.5*z-i*0.55*z, cy+4*z+i*1.0*z, HD[0],HD[1],HD[2], 0.85*o.a);
+  for(i=0;i<13;i++) blend(cx+5*z+i*0.85*z, cy+5*z+i*0.85*z, HD[0],HD[1],HD[2], 0.85*o.a);
+  for(i=0;i<3;i++) rect(cx+12*z+i*2.3*z, cy+13*z+i*2.1*z, 2*z, 3*z, DK, o.a);
+  disc(cx,cy,10.5*z,function(x,y,dx,dy){
+    var ex=dx/0.74, d2=Math.sqrt(ex*ex+dy*dy)/(10*z);
+    if(d2>1) return;
+    var col = d2>0.90 ? [242,246,254] : mix([144,152,176],[234,239,250],q(1-d2,4));
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+  rect(cx-4*z, cy-1*z, 2*z, 2*z, DK, o.a);
+  rect(cx+2*z, cy-3*z, 6*z, 6*z, HL, o.a);
+  rect(cx+2*z, cy+1*z, 6*z, 2*z, HD, o.a);
+  rect(cx+3.5*z, cy-1.5*z, 2*z, 2*z, GLD, o.a);
+  blend(cx+4*z, cy-1*z, 255,236,170, o.a);
+}
+
+function drawProxima(o){
+  var r=Math.max(3,16*o.s), cx=o.x, cy=o.y, i;
+  disc(cx,cy,r*3.0,function(x,y,dx,dy,t){
+    if(t<0.333) return;
+    var f=(t-0.333)/0.667;
+    var a=(1-f)*(1-f)*(1-f)*0.55;
+    if(dith(x,y)>a*1.8) return;
+    blend(x,y,255,110,58,a*o.a);
+  });
+  var ph=(o.t*0.16)%1;
+  if(ph<0.20){
+    var fl=Math.sin(ph/0.20*Math.PI);
+    for(i=0;i<34;i++){
+      var u=i/33, arc=Math.sin(u*Math.PI);
+      var aa=1.05+(u-0.5)*1.1, rr=r*0.95+arc*r*1.5*fl;
+      blend(cx+Math.cos(aa)*rr, cy+Math.sin(aa)*rr, 255,180,120,(0.95-u*0.2)*fl*o.a);
+      blend(cx+Math.cos(aa)*(rr+1), cy+Math.sin(aa)*(rr+1), 255,236,190, 0.5*fl*o.a);
+    }
+  }
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var g=noise(dx*0.50+o.t*0.18+610, dy*0.50+120);
+    var v=q(0.46+(g-0.5)*1.3-t*t*0.55,5);
+    var col=mix([168,44,20],[255,196,132],v);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+  var pa=o.t*0.40, pr=r*3.9;
+  var bx=cx+Math.cos(pa)*pr, by=cy+Math.sin(pa)*pr*0.42;
+  disc(bx,by,Math.max(1,r*0.20),function(x,y,dx,dy,t){
+    var lit=q((dx*0.7-dy*0.5)/(r*0.2)*0.7+0.5,3);
+    var col=mix([52,38,34],[178,138,110],lit);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+}
+
+var TPER=[1.51,2.42,4.05,6.10,9.21,12.35,18.77];
+var TCOL=[[190,142,106],[168,126,96],[146,152,168],[118,146,180],[152,160,152],[176,166,148],[136,140,160]];
+function drawTrappist(o){
+  var cx=o.x-Math.min(W*0.26,58*o.s), cy=o.y, i, k;
+  var r=Math.max(2.5,12*o.s);
+  disc(cx,cy,r*2.4,function(x,y,dx,dy,t){
+    if(t<0.42) return;
+    var f=(t-0.42)/0.58, a=(1-f)*(1-f)*0.42;
+    if(dith(x,y)>a*1.8) return;
+    blend(x,y,255,128,64,a*o.a);
+  });
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var g=noise(dx*0.6+o.t*0.2+880, dy*0.6+44);
+    var col=mix([182,58,22],[255,200,138],q(0.48+(g-0.5)*1.2-t*t*0.5,4));
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+  for(i=0;i<7;i++){
+    var orb=(20+i*14)*o.s;
+    for(k=0;k<78;k++){
+      var ka=k/78*6.283;
+      var ox=cx+Math.cos(ka)*orb, oy=cy+Math.sin(ka)*orb*0.26;
+      if(dith(ox,oy)>0.42) continue;
+      blend(ox,oy,132,146,190,0.42*o.a);
+    }
+    var a2=o.t*(2.6/TPER[i])+i*0.9;
+    var x2=cx+Math.cos(a2)*orb, y2=cy+Math.sin(a2)*orb*0.26;
+    var pr=Math.max(1,2.8*o.s), c2=TCOL[i];
+    disc(x2,y2,pr,function(x,y,dx,dy,t){
+      var lit=q((-dx*0.8-dy*0.3)/pr*0.8+0.5,3);
+      var col=mix([26,24,32],c2,lit);
+      blend(x,y,col[0],col[1],col[2],o.a);
+    });
+  }
+}
+
+function drawErid(o){
+  var r=Math.max(6,46*o.s), cx=o.x, cy=o.y;
+  var sx=cx+r*2.45, sy=cy-r*1.30, sr=Math.max(1.6,r*0.19);
+  disc(sx,sy,sr*3.4,function(x,y,dx,dy,t){
+    if(t<0.294) return;
+    var f=(t-0.294)/0.706, a=(1-f)*(1-f)*(1-f)*0.62;
+    if(dith(x,y)>a*1.8) return;
+    blend(x,y,255,172,86,a*o.a);
+  });
+  disc(sx,sy,sr,function(x,y,dx,dy,t){
+    var col=mix([255,146,44],[255,240,200],q(1-t*t*0.75,4));
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+  disc(cx,cy,r*1.17,function(x,y,dx,dy,t){
+    if(t<0.855) return;
+    var f=(t-0.855)/0.145;
+    var lt=clamp((dx*0.78-dy*0.50)/r*1.4+0.40,0,1);
+    blend(x,y,216,166,106,0.62*(1-f)*(1-f)*(0.08+0.98*lt)*o.a);
+  });
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var nx=dx/r, ny=dy/r, nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
+    var wob=(noise(nx*2.6+o.t*0.045+480, ny*7+220)-0.5)*0.13;
+    var band=0.5+0.5*Math.sin((ny+wob)*8.2);
+    var col=mix([70,46,32],[172,126,76],q(band,4));
+    var raw=nx*0.78-ny*0.50+nz*0.38;
+    col=mix(mix([13,8,6],col,0.10),col,q(raw*1.05+0.24,6));
+    if(raw<0.02){
+      var heat=noise(dx*0.15+66, dy*0.15+900);
+      col=mix(col,[11,7,9],0.87);
+      if(heat>0.615) col=mix(col,[186,58,28],(heat-0.615)/0.385*0.60);
+    }
+    if(t>0.93) col=mix(col,[10,7,10],(t-0.93)/0.07*0.82);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+}
+
+function drawLMC(o){
+  var R=Math.max(12,72*o.s), cx=o.x, cy=o.y;
+  var A=0.34, ca=Math.cos(A), sa=Math.sin(A);
+  var x0=Math.max(0,Math.floor(cx-R*1.3)), x1=Math.min(W-1,Math.ceil(cx+R*1.3));
+  var y0=Math.max(0,Math.floor(cy-R*1.0)), y1=Math.min(H-1,Math.ceil(cy+R*1.0));
+  for(var y=y0;y<=y1;y++) for(var x=x0;x<=x1;x++){
+    var dx=x-cx, dy=y-cy;
+    var u=(dx*ca+dy*sa)/1.28, v=(-dx*sa+dy*ca)/0.62;
+    var rr=Math.sqrt(u*u+v*v)/R;
+    if(rr>1.15) continue;
+    var lump=noise(u*0.055+1400, v*0.055+320);
+    var d=(1.12-rr)*(0.30+1.35*lump);
+    var bar=Math.exp(-(v*v)/(R*R*0.028))*Math.exp(-(u*u)/(R*R*0.30));
+    d+=bar*0.85;
+    d*=0.62+0.72*noise(u*0.18+70, v*0.18+900);
+    if(d<=0.06) continue;
+    var col=mix([124,144,214],[232,238,255],q(Math.min(1,d*0.9),4));
+    var al=Math.min(0.88,d*1.05);
+    if(dith(x,y)>al*1.3) continue;
+    blend(x,y,col[0],col[1],col[2],Math.min(0.95,al+0.20)*o.a);
+    if(d>0.62 && noise(x*3.7+55,y*3.7+21)>0.86) blend(x,y,255,255,255,0.9*o.a);
+  }
+  var tx=cx-R*0.56, ty=cy-R*0.22, tr=Math.max(3,R*0.24);
+  disc(tx,ty,tr,function(x,y,dx,dy,t){
+    var g=noise(dx*0.36+2200, dy*0.36+180);
+    var a=(1-t)*(0.55+0.85*g);
+    if(dith(x,y)>a*1.4) return;
+    var col=mix([255,110,150],[255,206,224],q(g,3));
+    blend(x,y,col[0],col[1],col[2],Math.min(0.92,a+0.2)*o.a);
+  });
+  blend(tx,ty,255,255,255,o.a);
+}
+
+function drawCMB(o){
+  var R=Math.max(26,170*o.s), cx=o.x, cy=o.y;
+  disc(cx,cy,R,function(x,y,dx,dy,t){
+    var raw=(noise(dx*0.085+1200,dy*0.085+640)-noise(dx*0.085+61,dy*0.085+17))*1.55
+          + (noise(dx*0.24+40,dy*0.24+9)-noise(dx*0.24+305,dy*0.24+711))*0.95
+          + (noise(dx*0.58+700,dy*0.58+301)-noise(dx*0.58+88,dy*0.58+455))*0.50;
+    var v=q(clamp(0.5+raw,0,0.999),6);
+    var col = v<0.5 ? mix([22,40,122],[96,176,218],q(v/0.4,3))
+                    : mix([236,206,96],[206,56,36],q((v-0.6)/0.4,3));
+    var a=o.a*(t>0.92?Math.max(0,1-(t-0.92)/0.08):1);
+    blend(x,y,col[0],col[1],col[2],a*0.90);
+  });
+  for(var i=0;i<Math.max(60,R*4);i++){
+    var aa=i/Math.max(60,R*4)*6.283;
+    blend(cx+Math.cos(aa)*R*0.995, cy+Math.sin(aa)*R*0.995, 240,246,255, 0.30*o.a);
+  }
+}
+
+/* ============================ the itinerary ============================ */
+var AU=1.495979e11, LY=9.4607e15;
+var STATIONS=[
+ { name:"Low Earth Orbit", cls:"DEPARTURE POINT", m:4.08e5, range:"408 km", draw:drawEarth,
+   specs:[["ORBITAL SPEED","7.66 km/s"],["PERIOD","92 minutes"],["ORBITS PER DAY","15.5"],["SUNRISES PER DAY","16"],["YOU WEIGH","the same; you are just falling"]],
+   note:"You let go here. The station is not floating — it is falling around the planet at nearly eight kilometres a second and missing every time. For the next ninety minutes the Sun comes up sixteen times.",
+   scale:"Straight up, 408 km is barely further than New York to Washington. Everything else on this page is further than a person has ever been." },
+
+ { name:"The Moon", cls:"NATURAL SATELLITE", m:3.844e8, range:"384,400 km (mean)", draw:drawMoon,
+   specs:[["RADIUS","1,737 km"],["GRAVITY","one sixth of Earth's"],["LIGHT DELAY","1.28 seconds"],["RECEDING","3.8 cm per year"],["CREWED LANDINGS","6"],["LAST FOOTPRINT","December 1972"]],
+   note:"Close enough that a radio call takes a second and a quarter each way. It is drifting away from us at roughly the speed your fingernails grow, and the same face has pointed at Earth for billions of years.",
+   scale:"Twelve people have stood on it. The furthest any human has ever been from Earth is 400,171 km — Apollo 13, swinging round the far side. On this map that is still the first tick." },
+
+ { name:"The Sun", cls:"G2V MAIN-SEQUENCE STAR", m:1.0*AU, range:"1 AU", draw:drawSun,
+   specs:[["RANGE","149.6 million km"],["LIGHT DELAY","8 min 20 s"],["RADIUS","696,340 km"],["SURFACE","5,772 K"],["CORE","15.7 million K"],["AGE","4.6 billion years"]],
+   note:"Every second it converts about four million tonnes of itself into light. The photons landing on your visor began as gamma rays in the core and spent tens of thousands of years fighting their way to the surface.",
+   scale:"It holds 99.86% of all the mass in the solar system. Roughly 1.3 million Earths would fit inside it." },
+
+ { name:"Mars", cls:"TERRESTRIAL PLANET", m:1.523*AU, range:"1.52 AU (mean)", draw:drawMars,
+   specs:[["RADIUS","3,390 km"],["DAY","24 h 37 m"],["YEAR","687 Earth days"],["MEAN SURFACE","210 K"],["AIR PRESSURE","0.6% of Earth's"],["OLYMPUS MONS","21.9 km high"]],
+   note:"A day here is forty minutes longer than yours. Olympus Mons is two and a half times the height of Everest and so broad that standing on it you could not tell you were on a mountain — the slope is about the grade of a wheelchair ramp.",
+   scale:"Valles Marineris would stretch from Los Angeles to New York and drop seven kilometres deep." },
+
+ { name:"The Main Belt", cls:"ASTEROID BELT", m:2.77*AU, range:"2.2 – 3.2 AU", draw:drawBelt,
+   specs:[["KNOWN BODIES","1.4 million over 1 km"],["LARGEST","Vesta, 525 km across"],["TOTAL MASS","about 3% of the Moon"],["TYPICAL GAP","around 1 million km"],["CROSSINGS","a dozen spacecraft, no dodging"]],
+   note:"Films make this a hail of rock you have to weave through. In practice the belt is mostly nothing — every probe sent outward has crossed it without a single evasive manoeuvre.",
+   scale:"Melt every asteroid together and you would not build a body half the width of the Moon." },
+
+ { name:"Jupiter", cls:"GAS GIANT", m:5.2*AU, range:"5.2 AU", draw:drawJupiter,
+   specs:[["RADIUS","69,911 km"],["MASS","317.8 Earths"],["DAY","9 h 56 m"],["MOONS","95 and counting"],["GREAT RED SPOT","about 16,000 km wide"]],
+   note:"It spins so fast that it is visibly squashed at the poles. The Great Red Spot is a storm wider than Earth that astronomers have been watching for at least 190 years, and it is shrinking.",
+   scale:"Jupiter outweighs every other planet in the solar system combined — two and a half times over." },
+
+ { name:"Saturn", cls:"GAS GIANT", m:9.58*AU, range:"9.58 AU", draw:drawSaturn,
+   specs:[["RADIUS","58,232 km"],["DENSITY","0.69 — less than water"],["RINGS","282,000 km across"],["RING THICKNESS","tens of metres"],["DAY","10 h 33 m"],["MOONS","146 confirmed"]],
+   note:"The rings are almost pure water ice and, for something a quarter of a million kilometres wide, absurdly thin. Cassini's last measurements put them at only 10 to 100 million years old — younger than the last dinosaurs — and raining slowly down into the planet.",
+   scale:"Saturn is less dense than water. Given a bathtub large enough, it would float." },
+
+ { name:"1P / Halley", cls:"PERIODIC COMET", m:35.1*AU, range:"35.1 AU at aphelion", draw:drawComet,
+   specs:[["NUCLEUS","15 × 8 km"],["PERIOD","75.3 years"],["LAST PERIHELION","9 February 1986"],["NEXT PERIHELION","28 July 2061"],["ALBEDO","0.04 — darker than coal"]],
+   note:"Out here the comet is inert: a dark, dusty lump of ice with no tail at all. The tails only grow when sunlight boils the surface away, and they always point away from the Sun, never backwards along the track.",
+   scale:"The straight blue tail is gas blown off by the solar wind. The pale curved one is dust, left behind along the orbit — the two point in different directions, which is how you can tell them apart." },
+
+ { name:"Pluto", cls:"DWARF PLANET / KUIPER BELT", m:39.5*AU, range:"39.5 AU (mean)", draw:drawPluto,
+   specs:[["RADIUS","1,188 km"],["YEAR","248 Earth years"],["DAY","6.4 Earth days"],["SURFACE","44 K"],["MOONS","5"],["RECLASSIFIED","24 August 2006"]],
+   note:"The pale heart is Tombaugh Regio, a basin of nitrogen ice that convects in cells tens of kilometres across and resurfaces itself. New Horizons spent nine and a half years getting here and had about twenty minutes to look.",
+   scale:"Charon is half Pluto's width. Neither orbits the other — they both swing around a point in the empty space between them." },
+
+ { name:"Voyager 1", cls:"SPACECRAFT / FURTHEST HUMAN OBJECT", m:170*AU, range:"about 170 AU, and rising", draw:drawVoyager,
+   specs:[["LAUNCHED","5 September 1977"],["SPEED","17 km/s"],["SIGNAL DELAY","about 23 hours each way"],["TRANSMITTER","23 W — a fridge bulb"],["INTERSTELLAR SINCE","25 August 2012"],["POWER","falling about 4 W a year"]],
+   note:"The furthest thing our species has ever moved. It runs on the heat of decaying plutonium, has been losing power every day since it left, and its instruments are being switched off one at a time to keep the rest alive.",
+   scale:"Forty-nine years of flight, and it is not yet a thousandth of the way to the nearest star. Everything past this point is somewhere nothing of ours will reach." },
+
+ { name:"Proxima Centauri", cls:"M5.5Ve RED DWARF / FLARE STAR", m:4.2465*LY, range:"4.25 ly", draw:drawProxima,
+   specs:[["RADIUS","14% of the Sun"],["MASS","12% of the Sun"],["SURFACE","about 3,040 K"],["LUMINOSITY","0.0017 of the Sun"],["AGE","about 4.85 billion years"],["PLANETS","3 known"]],
+   note:"The nearest star to the Sun, and you cannot see it — far too faint for the naked eye despite being next door. It is a flare star: in 2019 it threw a burst that brightened it thousands of times over in ultraviolet, for a few seconds.",
+   scale:"Proxima b sits in the habitable zone and finishes a year every 11 days, close enough that those flares wash straight over it." },
+
+ { name:"Erid", cls:"FICTION / PROJECT HAIL MARY", m:16.26*LY, range:"no distance", fiction:true, voice:true, flag:"NOT REAL / ERIDIAN SPEECH", draw:drawErid,
+   specs:[["HOST STAR","40 Eridani A — real, 16.3 ly"],["GRAVITY","about 2 × Earth"],["AIR","ammonia at roughly 29 atmospheres"],["SURFACE","around 210 C"],["DAYLIGHT","none reaches the ground"],["THE HAIL MARY WENT TO","Tau Ceti, 11.9 ly"]],
+   note:"Rocky's home, from Andy Weir's Project Hail Mary. The air is ammonia at twenty-nine atmospheres and it is completely opaque, so no Eridian has ever seen a star. They deduced that other suns had to exist from physics alone, built a ship, and went to one.",
+   scale:"The star is real — 40 Eridani A, an orange dwarf 16.3 light-years out. The planet is not. Eridians hear instead of seeing and speak in five-note chords, so turn the sound on while you are here: it answers." },
+
+ { name:"TRAPPIST-1", cls:"ULTRACOOL DWARF / SEVEN PLANETS", m:40.66*LY, range:"40.7 ly", draw:drawTrappist,
+   specs:[["STAR","12% of the Sun's mass, 2,566 K"],["PLANETS","7, all roughly Earth-sized"],["YEARS","1.5 to 18.8 days"],["ORBITS","all inside Mercury's"],["FOUND","2016–17"],["RESONANCE","all seven in one chain"]],
+   note:"Seven Earth-sized worlds around a star barely larger than Jupiter, packed so tightly that every orbit would fit inside Mercury's. Their periods lock into whole-number ratios, so they tug at each other on a schedule. They move here at their real period ratios.",
+   scale:"Stand on one and the neighbouring planets would look larger in the sky than our Moon does from Earth." },
+
+ { name:"Betelgeuse", cls:"M1-2 Ia-ab RED SUPERGIANT", m:548*LY, range:"about 550 ly", draw:drawBetelgeuse,
+   specs:[["DISTANCE","disputed: 500 – 720 ly"],["RADIUS","about 760 × the Sun"],["MASS","16 – 19 × the Sun"],["SURFACE","3,600 K"],["LUMINOSITY","about 126,000 × the Sun"],["AGE","roughly 10 million years"]],
+   note:"In 2019 the shoulder of Orion dimmed by two thirds and the world briefly wondered whether it was about to explode. It had coughed out a cloud of dust that cooled and blocked its own light. It will go supernova — probably not this century.",
+   scale:"Put it where the Sun is and its surface would swallow Mercury, Venus, Earth and Mars, and reach into the asteroid belt." },
+
+ { name:"The Orion Nebula", cls:"H II REGION / STELLAR NURSERY / M42", m:1344*LY, range:"1,344 ly", draw:drawOrion,
+   specs:[["WIDTH","24 light-years"],["MASS","about 2,000 × the Sun"],["AGE","roughly 3 million years"],["FORMING NOW","around 700 protostars"],["IONISED BY","the Trapezium, four hot stars"]],
+   note:"The fuzzy middle star of Orion's sword is not a star. Four blue-white giants at its heart are boiling the surrounding gas into colour: red where hydrogen recombines, green-teal where oxygen has lost two electrons.",
+   scale:"You can see it from a dark field with no equipment at all — the nearest place in the galaxy where stars are being made right now." },
+
+ { name:"The Crab Pulsar", cls:"NEUTRON STAR / PSR B0531+21", m:6500*LY, range:"about 6,500 ly", draw:drawPulsar,
+   specs:[["DIAMETER","about 20 km"],["MASS","1.4 × the Sun"],["SPIN","30.2 turns per second"],["SLOWING BY","38 nanoseconds per day"],["MAGNETIC FIELD","around a trillion gauss"],["PROGENITOR","SN 1054, recorded in July 1054"]],
+   note:"A city-sized ball of neutrons left behind by a star that Chinese astronomers watched explode in the summer of 1054. It sweeps two beams past Earth thirty times a second. Here they are slowed about sixty-fold so you can watch them turn.",
+   scale:"A teaspoon of its interior would weigh roughly a billion tonnes." },
+
+ { name:"Stephenson 2-18", cls:"M6 RED SUPERGIANT / LARGEST KNOWN", m:19570*LY, range:"about 19,570 ly", draw:drawStephenson,
+   specs:[["RADIUS","about 2,150 × the Sun"],["DIAMETER","roughly 3 billion km"],["SURFACE","about 3,200 K"],["LUMINOSITY","about 440,000 × the Sun"],["LIGHT CROSSES IT IN","close to 3 hours"],["CONFIDENCE","contested — see below"]],
+   note:"The largest star anyone has measured, and the measurement is an argument. Its size depends on whether it really belongs to the Stephenson 2 cluster in Scutum; move it closer and it shrinks to something ordinary.",
+   scale:"Centred on the Sun, its surface would reach past the orbit of Saturn. At the size it is drawn on your screen, the Sun would be about a twentieth of one pixel." },
+
+ { name:"Sagittarius A*", cls:"SUPERMASSIVE BLACK HOLE", m:26670*LY, range:"26,670 ly", draw:drawSgrA,
+   specs:[["MASS","4.3 million × the Sun"],["HORIZON","about 25 million km across"],["PHOTOGRAPHED","12 May 2022"],["S2's ORBIT","16 years"],["S2's SPEED","3% of light at closest"],["ACCRETION","unusually starved"]],
+   note:"The centre of our galaxy. We knew it was there because stars nearby swing around something invisible and enormous; one of them, S2, whips past at three percent of the speed of light. The Event Horizon Telescope finally photographed it in 2022.",
+   scale:"Its event horizon would fit comfortably inside Mercury's orbit. Every star you have ever seen is going round it." },
+
+ { name:"Gargantua", cls:"FICTION / INTERSTELLAR (2014)", m:27500*LY, range:"no distance", fiction:true, flag:"NOT REAL / FILM PHYSICS", draw:drawGargantua,
+   specs:[["MASS","about 100 million × the Sun"],["SPIN","0.99999 of the maximum"],["HORIZON","roughly the width of Earth's orbit"],["ON MILLER'S PLANET","1 hour = 7 years outside"],["REAL COUSIN","Sagittarius A*, one stop back"]],
+   note:"Kip Thorne handed the effects team the equations and they wrote a renderer that traced light rays through curved spacetime. The images came back with a band arcing over and under the hole — light from the far side of the disc, bent across the top — and the team published two physics papers about what they had drawn.",
+   scale:"It is twenty-three times heavier than the real one you just passed, and spins so near the limit that an hour on a planet beside it costs you seven years out here." },
+
+ { name:"Large Magellanic Cloud", cls:"SATELLITE GALAXY", m:163000*LY, range:"163,000 ly", draw:drawLMC,
+   specs:[["WIDTH","about 32,000 ly"],["STARS","around 20 billion"],["MASS","roughly 1.4% of the Milky Way"],["TARANTULA NEBULA","most active nursery known"],["SN 1987A","nearest supernova in 380 years"]],
+   note:"A ragged companion galaxy that hangs in the southern sky like a torn-off piece of the Milky Way. Its Tarantula Nebula is the most violent star-forming region anyone has found, and in 1987 a star there exploded close enough that detectors on Earth caught the neutrinos three hours before the light arrived.",
+   scale:"European ships logged it in 1519. Aboriginal Australian and Polynesian peoples had been naming it for a very long time before that." },
+
+ { name:"Andromeda", cls:"BARRED SPIRAL GALAXY / M31", m:2.537e6*LY, range:"2.5 million ly", draw:drawAndromeda,
+   specs:[["WIDTH","about 152,000 light-years"],["STARS","roughly 1 trillion"],["APPROACHING AT","110 km/s"],["COLLISION IN","about 4.5 billion years"],["APPARENT SIZE","six full Moons wide"]],
+   note:"The furthest thing a human eye can see unaided: a faint smudge below the W of Cassiopeia. The light reaching you left it before our species existed, and the galaxy is falling towards us the whole time.",
+   scale:"It covers six times more sky than the full Moon. You only ever notice the bright core — the arms are there, just too faint." },
+
+ { name:"3C 273", cls:"QUASAR / FIRST EVER IDENTIFIED", m:2.4e9*LY, range:"about 2.4 billion ly", draw:drawQuasar,
+   specs:[["REDSHIFT","z = 0.158"],["LUMINOSITY","about 4 trillion × the Sun"],["ENGINE","886 million solar mass black hole"],["JET","roughly 200,000 ly long"],["IDENTIFIED","1963, by Maarten Schmidt"]],
+   note:"A black hole feeding fast enough to outshine its entire galaxy. In 1963 Schmidt realised its baffling spectrum was ordinary hydrogen shifted enormously far to the red — which meant the object was billions of light-years away, and therefore impossibly bright.",
+   scale:"Move it to 33 light-years — seven times further than Alpha Centauri — and it would still be as bright in our sky as the Sun." },
+
+ { name:"The Microwave Background", cls:"THE OLDEST LIGHT / EDGE OF THE MAP", m:1.306e26, range:"13.8 billion ly of travel time", draw:drawCMB,
+   specs:[["LIGHT'S AGE","13.8 billion years"],["EMITTED AT","379,000 years after the start"],["TEMPERATURE","2.725 K"],["VARIATION","1 part in 100,000"],["ACTUALLY NOW AT","about 45.7 billion ly"],["FOUND","1964, by accident"]],
+   note:"The oldest light there is. Before this the universe was an opaque fog; at 379,000 years old it cooled enough to turn clear, and that first flash has been travelling ever since, stretched by expansion from white heat down into microwaves. Penzias and Wilson found it in 1964 while trying to get rid of a hiss in their antenna.",
+   scale:"The plasma that let this light go is now about 45.7 billion light-years away — further than the 13.8 billion the light actually travelled, because space kept stretching while it was in flight. There is no station after this one." }
+];
+
+/* ============================ readout formatting ============================ */
+function group(n){ return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+function fmtRange(m){
+  if(m < 1e10) return group(Math.round(m/1000)) + " km";
+  if(m < 0.04*LY){ var au=m/AU; return (au<10?au.toFixed(2):group(Math.round(au))) + " AU"; }
+  var ly=m/LY;
+  if(ly < 1000) return ly.toFixed(ly<100?1:0) + " ly";
+  if(ly < 1e6) return (ly/1e3).toFixed(1) + " kly";
+  if(ly < 1e9) return (ly/1e6).toFixed(2) + " Mly";
+  return (ly/1e9).toFixed(2) + " Gly";
+}
+function rangeAt(p){
+  var i=Math.floor(p), f=p-i;
+  if(i<0) return STATIONS[0].m;
+  if(i>=STATIONS.length-1) return STATIONS[STATIONS.length-1].m;
+  var a=Math.log(STATIONS[i].m), b=Math.log(STATIONS[i+1].m);
+  return Math.exp(a+(b-a)*f);
+}
+
+/* ============================ world layout ============================ */
+var SPACING=340, NS=STATIONS.length;
+var YOFF=[0,74,-62,92,-104,58,-84,118,-52,96,-116,-46,64,-90,52,-108,78,-58,112,-70,88,-120,66];
+for(var _i=0;_i<NS;_i++){ STATIONS[_i].wx=_i*SPACING; STATIONS[_i].wy=YOFF[_i]||0; STATIONS[_i].seen=(_i===0); }
+var XMIN=-300, XMAX=(NS-1)*SPACING+300, YLIM=340;
+
+/* ============================ axis + chips ============================ */
+var LO=5.30, HI=26.45;
+var axisEl=document.getElementById('axis'), cursorEl;
+var TICKS=[[1e6,"1000 KM"],[AU,"1 AU"],[LY,"1 LY"],[1e3*LY,"1 KLY"],[1e6*LY,"1 MLY"],[1e9*LY,"1 GLY"],[1e10*LY,"10 GLY"]];
+function posPct(m){ return (Math.log(m)/Math.LN10 - LO)/(HI-LO)*100; }
+(function buildAxis(){
+  var frag=document.createDocumentFragment(), i, e;
+  for(i=0;i<TICKS.length;i++){
+    e=document.createElement('span'); e.className='tick'; e.style.left=posPct(TICKS[i][0])+'%'; frag.appendChild(e);
+    e=document.createElement('span'); e.className='tick-lab'; e.style.left=posPct(TICKS[i][0])+'%'; e.textContent=TICKS[i][1]; frag.appendChild(e);
+  }
+  e=document.createElement('span'); e.className='tick'; e.style.left=posPct(170*AU)+'%'; e.style.background='var(--teal)'; e.style.height='11px'; frag.appendChild(e);
+  e=document.createElement('span'); e.className='tick-lab v1'; e.style.left=posPct(170*AU)+'%'; e.style.color='var(--teal)'; e.textContent='VOYAGER 1'; frag.appendChild(e);
+  for(i=0;i<NS;i++){
+    e=document.createElement('span'); e.className='node'+(STATIONS[i].fiction?' fic':'');
+    e.style.left=posPct(STATIONS[i].m)+'%'; frag.appendChild(e);
+  }
+  cursorEl=document.createElement('span'); cursorEl.className='cursor'; frag.appendChild(cursorEl);
+  axisEl.appendChild(frag);
+})();
+
+var chips=[];
+(function buildChips(){
+  var host=document.getElementById('stations');
+  for(var i=0;i<NS;i++){
+    (function(i){
+      var b=document.createElement('button');
+      b.type='button'; b.className='st'+(STATIONS[i].fiction?' fic':'');
+      b.textContent=STATIONS[i].name.toUpperCase();
+      if(STATIONS[i].seen) b.classList.add('seen');
+      b.addEventListener('click',function(){ autopilot(i); });
+      host.appendChild(b); chips.push(b);
+    })(i);
+  }
+})();
+
+/* ============================ plaque ============================ */
+var plaque=document.getElementById('plaque');
+var elClass=document.getElementById('pClass'), elName=document.getElementById('pName');
+var elNote=document.getElementById('pNote'), elScale=document.getElementById('pScale'), elSpecs=document.getElementById('pSpecs');
+var elRange=document.getElementById('hRange'), elNear=document.getElementById('hNear'), elFic=document.getElementById('hFic');
+var elDv=document.getElementById('hDv'), elVisited=document.getElementById('visited');
+var beatPips=document.getElementById('beat').getElementsByTagName('i');
+var pipEl=document.createElement('div');
+pipEl.className='pip'; pipEl.hidden=true; pipEl.innerHTML='<b></b>';
+stage.appendChild(pipEl);
+var pipLab=pipEl.firstChild, pipName='';
+var shown=-1;
+
+function showStation(i){
+  if(i===shown) return;
+  shown=i;
+  var s=STATIONS[i];
+  elClass.textContent=s.cls; elClass.className='pclass'+(s.fiction?' fic':'');
+  elName.textContent=s.name;
+  elNote.textContent=s.note;
+  elScale.textContent=s.scale;
+  var h='';
+  for(var k=0;k<s.specs.length;k++) h+='<dt>'+s.specs[k][0]+'</dt><dd>'+s.specs[k][1]+'</dd>';
+  elSpecs.innerHTML=h;
+  elNear.textContent=s.name;
+  elFic.textContent=s.flag||'NOT REAL / FICTION';
+  elFic.hidden=!s.fiction;
+  cv.setAttribute('aria-label','Pixel-art view near '+s.name+': '+s.cls.toLowerCase()+'.');
+  for(var c=0;c<chips.length;c++) chips[c].setAttribute('aria-current', c===i?'true':'false');
+  if(!reduced){ plaque.classList.add('swap'); setTimeout(function(){ plaque.classList.remove('swap'); },20); }
+}
+function markSeen(i){
+  if(STATIONS[i].seen) return;
+  STATIONS[i].seen=true; chips[i].classList.add('seen');
+  var c=0; for(var k=0;k<NS;k++) if(STATIONS[k].seen) c++;
+  elVisited.innerHTML='VISITED <b>'+c+'</b> / '+NS;
+}
+
+/* ============================ flight ============================ */
+var T=3.0, lastMs=0, lastBeat=-1, lastAuto=0, reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var px_=0, py_=0, vx=0, vy=0, camX=0, camY=0, dvSpent=0, thrusting=false, rot=0.2;
+var ACC=190, auto=null, keys={};
+var zoom=1, zTarget=1, ZMIN=0.34, ZMAX=2.4, zShown='';
+var elZval=document.getElementById('zVal');
+function zoomBy(f){ zTarget=clamp(zTarget*f,ZMIN,ZMAX); }
+document.getElementById('zIn').addEventListener('click',function(){ zoomBy(1.22); });
+document.getElementById('zOut').addEventListener('click',function(){ zoomBy(1/1.22); });
+stage.addEventListener('wheel',function(e){
+  e.preventDefault();
+  var d=e.deltaY; if(e.deltaMode===1) d*=16; if(e.deltaMode===2) d*=300;
+  zoomBy(Math.exp(-d*0.0016));
+},{passive:false});
+
+function autopilot(i){ auto={i:i}; }
+document.getElementById('btnPrev').addEventListener('click',function(){ autopilot(Math.max(0,nearestIndex()-1)); });
+document.getElementById('btnNext').addEventListener('click',function(){ autopilot(Math.min(NS-1,nearestIndex()+1)); });
+
+function nearestIndex(){
+  var best=0, bd=1e18;
+  for(var i=0;i<NS;i++){
+    var dx=STATIONS[i].wx-px_, dy=STATIONS[i].wy-py_, d=dx*dx+dy*dy;
+    if(d<bd){ bd=d; best=i; }
+  }
+  return best;
+}
+
+var KEYMAP={'w':[0,-1],'a':[-1,0],'s':[0,1],'d':[1,0],
+  'arrowup':[0,-1],'arrowleft':[-1,0],'arrowdown':[0,1],'arrowright':[1,0]};
+document.addEventListener('keydown',function(e){
+  var nn=e.target && e.target.nodeName;
+  if(nn==='INPUT'||nn==='TEXTAREA') return;
+  var k=e.key.toLowerCase();
+  if(k==='m'){ toggleSound(); return; }
+  if(k==='c'){ toggleCrew(); return; }
+  if(k==='='||k==='+'){ e.preventDefault(); zoomBy(1.18); return; }
+  if(k==='-'||k==='_'){ e.preventDefault(); zoomBy(1/1.18); return; }
+  if(k==='0'){ zTarget=1; return; }
+  if(KEYMAP[k]){ keys[k]=1; auto=null; if(k.indexOf('arrow')===0) e.preventDefault(); }
+});
+document.addEventListener('keyup',function(e){ keys[e.key.toLowerCase()]=0; });
+window.addEventListener('blur',function(){ keys={}; });
+
+var ptr=null, pts={}, nPts=0, pinchD=0;
+function ptDist(){
+  var k=Object.keys(pts); if(k.length<2) return 0;
+  var a=pts[k[0]], b=pts[k[1]];
+  return Math.sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+}
+stage.addEventListener('pointerdown',function(e){
+  if(e.target.tagName==='BUTTON') return;
+  pts[e.pointerId]={x:e.clientX,y:e.clientY}; nPts=Object.keys(pts).length;
+  auto=null;
+  if(nPts>=2){ ptr=null; pinchD=ptDist(); stage.classList.remove('dragging'); }
+  else { ptr={x:e.clientX,y:e.clientY}; stage.classList.add('dragging'); }
+  try{ stage.setPointerCapture(e.pointerId); }catch(err){}
+  e.preventDefault();
+});
+stage.addEventListener('pointermove',function(e){
+  if(!pts[e.pointerId]) return;
+  pts[e.pointerId].x=e.clientX; pts[e.pointerId].y=e.clientY;
+  if(nPts>=2){
+    var d=ptDist();
+    if(pinchD>6 && d>6) zoomBy(d/pinchD);
+    pinchD=d;
+  } else if(ptr){ ptr.x=e.clientX; ptr.y=e.clientY; }
+});
+function endPtr(e){
+  if(e && e.pointerId!==undefined) delete pts[e.pointerId]; else pts={};
+  nPts=Object.keys(pts).length;
+  if(nPts<2) pinchD=0;
+  if(nPts===0){ ptr=null; stage.classList.remove('dragging'); }
+  else { var k0=Object.keys(pts)[0]; ptr={x:pts[k0].x,y:pts[k0].y}; }
+}
+stage.addEventListener('pointerup',endPtr);
+stage.addEventListener('pointercancel',endPtr);
+stage.addEventListener('lostpointercapture',endPtr);
+
+function thrustVector(){
+  var ax=0, ay=0, k;
+  for(k in keys) if(keys[k] && KEYMAP[k]){ ax+=KEYMAP[k][0]; ay+=KEYMAP[k][1]; }
+  if(ptr){
+    var r=stage.getBoundingClientRect();
+    var tx=(ptr.x-r.left)/r.width*W, ty=(ptr.y-r.top)/r.height*H;
+    var sx=(px_-camX)*zoom+W/2, sy=(py_-camY)*zoom+H/2;
+    var dx=tx-sx, dy=ty-sy, d=Math.sqrt(dx*dx+dy*dy);
+    if(d>3){ var f=Math.min(1,d/(W*0.22)); ax+=dx/d*f; ay+=dy/d*f; }
+  }
+  if(auto){
+    var ast=STATIONS[auto.i];
+    var adx=(ast.wx-95/zoom)-px_, ady=(ast.wy+48/zoom)-py_, ad=Math.sqrt(adx*adx+ady*ady);
+    if(ad<7 && Math.sqrt(vx*vx+vy*vy)<9){ auto=null; }
+    else{ ax+=clamp(adx*0.030-vx*0.045,-1,1); ay+=clamp(ady*0.030-vy*0.045,-1,1); }
+  }
+  var m=Math.sqrt(ax*ax+ay*ay);
+  if(m>1){ ax/=m; ay/=m; }
+  return [ax,ay,m];
+}
+
+/* ============================ sound: deep space set ============================ */
+var AC=null, aMaster, aDuck, aRev, aRevWet, aDly, aDlyWet, noiseBuf, drone=null, wash=null;
+var musicOn=false, schedTimer=0, stepN=0, nextT=0, t0=0, space=0, arr=0.15, eridNear=false;
+var BPM=112, STEPD=60/112/4;
+/* Cm9 - Abmaj9 - Ebmaj7 - Bb11, two bars each, top voice the only one that moves */
+var CHORDS=[{b:36,n:[63,67,70,74]},{b:32,n:[63,67,70,72]},{b:39,n:[62,67,70,74]},{b:34,n:[63,67,70,72]}];
+function mtof(m){ return 440*Math.pow(2,(m-69)/12); }
+
+function initAudio(){
+  AC=new (window.AudioContext||window.webkitAudioContext)();
+  var comp=AC.createDynamicsCompressor();
+  comp.threshold.value=-17; comp.knee.value=22; comp.ratio.value=3; comp.attack.value=0.006; comp.release.value=0.35;
+  aMaster=AC.createGain(); aMaster.gain.value=0.0001;
+  aMaster.connect(comp); comp.connect(AC.destination);
+  aDuck=AC.createGain(); aDuck.gain.value=1; aDuck.connect(aMaster);
+  var sr=AC.sampleRate, irN=Math.floor(sr*5.6), pre=Math.floor(sr*0.035);
+  var ir=AC.createBuffer(2,irN,sr);
+  for(var c=0;c<2;c++){
+    var dch=ir.getChannelData(c);
+    for(var i=pre;i<irN;i++){
+      var u=(i-pre)/(irN-pre);
+      dch[i]=(Math.random()*2-1)*Math.pow(1-u,2.1)*(u<0.02?u/0.02:1);
+    }
+  }
+  aRev=AC.createConvolver(); aRev.buffer=ir;
+  aRevWet=AC.createGain(); aRevWet.gain.value=0.52;
+  aRev.connect(aRevWet); aRevWet.connect(aMaster);
+  aDly=AC.createDelay(1.5); aDly.delayTime.value=STEPD*3;
+  var fb=AC.createGain(); fb.gain.value=0.46;
+  var dlf=AC.createBiquadFilter(); dlf.type='lowpass'; dlf.frequency.value=1900;
+  aDly.connect(dlf); dlf.connect(fb); fb.connect(aDly);
+  aDlyWet=AC.createGain(); aDlyWet.gain.value=0.34;
+  dlf.connect(aDlyWet); aDlyWet.connect(aMaster); dlf.connect(aRev);
+  var nN=Math.floor(sr*2.5), nb=AC.createBuffer(1,nN,sr), nd=nb.getChannelData(0);
+  for(var j=0;j<nN;j++) nd[j]=Math.random()*2-1;
+  noiseBuf=nb;
+}
+function noiseSrc(rate){ var s=AC.createBufferSource(); s.buffer=noiseBuf; s.playbackRate.value=rate||1; return s; }
+function sendRev(node,amt){ var r=AC.createGain(); r.gain.value=amt; node.connect(r); r.connect(aRev); }
+function sendDly(node,amt){ var d=AC.createGain(); d.gain.value=amt; node.connect(d); d.connect(aDly); }
+
+function kick(t){
+  var o=AC.createOscillator(), g=AC.createGain();
+  o.type='sine';
+  o.frequency.setValueAtTime(118,t); o.frequency.exponentialRampToValueAtTime(37,t+0.115);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.82,t+0.009);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+0.48);
+  o.connect(g); g.connect(aMaster); o.start(t); o.stop(t+0.5);
+  var s=noiseSrc(0.7), f=AC.createBiquadFilter(), cg=AC.createGain();
+  f.type='bandpass'; f.frequency.value=320; f.Q.value=1.1;
+  cg.gain.setValueAtTime(0.055,t); cg.gain.exponentialRampToValueAtTime(0.0001,t+0.05);
+  s.connect(f); f.connect(cg); cg.connect(aMaster); s.start(t); s.stop(t+0.06);
+  aDuck.gain.cancelScheduledValues(t);
+  aDuck.gain.setValueAtTime(0.40,t);
+  aDuck.gain.linearRampToValueAtTime(1,t+0.42);
+}
+function sub(t,midi,dur){
+  var o=AC.createOscillator(), o2=AC.createOscillator(), f=AC.createBiquadFilter(), g=AC.createGain();
+  o.type='sine'; o2.type='triangle';
+  o.frequency.value=mtof(midi); o2.frequency.value=mtof(midi); o2.detune.value=7;
+  f.type='lowpass'; f.frequency.value=240; f.Q.value=1.4;
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.30,t+0.03);
+  g.gain.setValueAtTime(0.30,t+dur*0.55); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(f); o2.connect(f); f.connect(g); g.connect(aMaster);
+  o.start(t); o2.start(t); o.stop(t+dur+0.05); o2.stop(t+dur+0.05);
+}
+function shaker(t,vel){
+  var s=noiseSrc(1.7), f=AC.createBiquadFilter(), g=AC.createGain();
+  f.type='highpass'; f.frequency.value=7400;
+  g.gain.setValueAtTime(vel,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.055);
+  s.connect(f); f.connect(g); g.connect(aMaster); sendRev(g,0.7);
+  s.start(t); s.stop(t+0.08);
+}
+function rim(t){
+  var o=AC.createOscillator(), g=AC.createGain();
+  o.type='triangle'; o.frequency.setValueAtTime(1750,t); o.frequency.exponentialRampToValueAtTime(760,t+0.03);
+  g.gain.setValueAtTime(0.10,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.075);
+  o.connect(g); g.connect(aMaster); sendRev(g,1.15); sendDly(g,0.30);
+  o.start(t); o.stop(t+0.09);
+}
+function padChord(t,notes,dur,open){
+  var f=AC.createBiquadFilter(), g=AC.createGain();
+  f.type='lowpass'; f.Q.value=1.6;
+  f.frequency.setValueAtTime(330+open*900,t);
+  f.frequency.linearRampToValueAtTime(420+open*1500,t+dur*0.55);
+  f.frequency.linearRampToValueAtTime(300+open*700,t+dur+1.4);
+  g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(0.058,t+1.9);
+  g.gain.setValueAtTime(0.058,t+dur*0.8); g.gain.exponentialRampToValueAtTime(0.0001,t+dur+2.4);
+  for(var i=0;i<notes.length;i++){
+    for(var k=0;k<2;k++){
+      var o=AC.createOscillator();
+      o.type= k? 'triangle':'sawtooth';
+      o.frequency.value=mtof(notes[i]-12);
+      o.detune.value=(i-1.5)*9 + (k?11:-11);
+      o.connect(f); o.start(t); o.stop(t+dur+2.5);
+    }
+  }
+  f.connect(g); g.connect(aDuck); sendRev(g,0.85+open*0.5);
+}
+function keys(t,notes){
+  var f=AC.createBiquadFilter(), g=AC.createGain();
+  f.type='lowpass'; f.Q.value=1.2;
+  f.frequency.setValueAtTime(1500,t); f.frequency.exponentialRampToValueAtTime(420,t+0.6);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.055,t+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+0.75);
+  for(var i=0;i<notes.length;i++){
+    var o=AC.createOscillator(); o.type= i%2?'sine':'triangle';
+    o.frequency.value=mtof(notes[i]); o.detune.value=i%2?5:-5;
+    o.connect(f); o.start(t); o.stop(t+0.8);
+  }
+  f.connect(g); g.connect(aDuck); sendRev(g,1.0); sendDly(g,0.22);
+}
+function bell(t,midi,vel){
+  var g=AC.createGain();
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vel,t+0.006);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+1.5);
+  var o=AC.createOscillator(); o.type='sine'; o.frequency.value=mtof(midi);
+  var o2=AC.createOscillator(); o2.type='sine'; o2.frequency.value=mtof(midi)*2.76;
+  var h=AC.createGain(); h.gain.value=0.22; o2.connect(h); h.connect(g);
+  o.connect(g); g.connect(aMaster); sendRev(g,1.25); sendDly(g,0.70);
+  o.start(t); o2.start(t); o.stop(t+1.6); o2.stop(t+1.6);
+}
+function ping(t,midi){
+  var o=AC.createOscillator(), g=AC.createGain();
+  o.type='sine'; o.frequency.value=mtof(midi);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.10,t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+3.2);
+  o.connect(g); g.connect(aMaster); sendRev(g,1.6); sendDly(g,0.55);
+  o.start(t); o.stop(t+3.3);
+}
+
+function startAmbient(){
+  var t=AC.currentTime, i;
+  var f=AC.createBiquadFilter(); f.type='lowpass'; f.frequency.value=300; f.Q.value=3.2;
+  var lfo=AC.createOscillator(), lg=AC.createGain();
+  lfo.frequency.value=0.047; lg.gain.value=180; lfo.connect(lg); lg.connect(f.frequency); lfo.start(t);
+  var g=AC.createGain(); g.gain.value=0.0001;
+  var oscs=[], roots=[24,24,31,36];
+  for(i=0;i<roots.length;i++){
+    var o=AC.createOscillator();
+    o.type= i<2?'sawtooth':'triangle';
+    o.frequency.value=mtof(roots[i]); o.detune.value=(i-1.5)*11;
+    o.connect(f); o.start(t); oscs.push(o);
+  }
+  f.connect(g); g.connect(aMaster); sendRev(g,0.9);
+  g.gain.setTargetAtTime(0.050,t,2.2);
+  drone={g:g,f:f,oscs:oscs,lfo:lfo};
+
+  var ws=noiseSrc(0.30); ws.loop=true;
+  var wf=AC.createBiquadFilter(); wf.type='bandpass'; wf.frequency.value=640; wf.Q.value=0.7;
+  var wl=AC.createOscillator(), wlg=AC.createGain();
+  wl.frequency.value=0.029; wlg.gain.value=520; wl.connect(wlg); wlg.connect(wf.frequency); wl.start(t);
+  var wg=AC.createGain(); wg.gain.value=0.0001;
+  ws.connect(wf); wf.connect(wg); wg.connect(aMaster); sendRev(wg,1.1);
+  ws.start(t); wg.gain.setTargetAtTime(0.028,t,3.5);
+  wash={g:wg,s:ws,f:wf,lfo:wl};
+}
+function stopAmbient(){
+  var t=AC.currentTime, i;
+  if(drone){
+    drone.g.gain.cancelScheduledValues(t); drone.g.gain.setTargetAtTime(0.0001,t,0.3);
+    for(i=0;i<drone.oscs.length;i++) drone.oscs[i].stop(t+1.4);
+    drone.lfo.stop(t+1.4); drone=null;
+  }
+  if(wash){
+    wash.g.gain.cancelScheduledValues(t); wash.g.gain.setTargetAtTime(0.0001,t,0.3);
+    wash.s.stop(t+1.4); wash.lfo.stop(t+1.4); wash=null;
+  }
+}
+
+function eridianChord(t,notes){
+  var g=AC.createGain();
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(0.052,t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+0.95);
+  for(var i=0;i<notes.length;i++){
+    var o=AC.createOscillator();
+    o.type= i%2?'sine':'triangle';
+    o.frequency.value=mtof(notes[i]); o.detune.value=(i-2)*4;
+    o.connect(g); o.start(t); o.stop(t+1.0);
+  }
+  g.connect(aMaster); sendRev(g,1.3); sendDly(g,0.45);
+}
+function scheduleStep(sN,t){
+  var ch=CHORDS[Math.floor(sN/32)%4], b=sN%16;
+  if(eridNear){
+    var pb=sN%32;
+    if(pb===0) eridianChord(t,[62,66,69,73,76]);
+    else if(pb===7) eridianChord(t,[59,63,66,70,73]);
+    else if(pb===13) eridianChord(t,[64,67,71,74,78]);
+  }
+  if(b%2===1) t+=STEPD*0.14;
+  if(b%4===0) kick(t);
+  if(b===0) sub(t,ch.b,STEPD*6);
+  if(arr>0.30 && (b===6||b===10)) sub(t, ch.b+(b===10?7:0), STEPD*2.2);
+  if(arr>0.10 && b%2===1) shaker(t, (b%4===3)?0.040:0.024);
+  if(arr>0.50 && b===8) shaker(t,0.046);
+  if(arr>0.30 && b===8) rim(t);
+  if(sN%32===0) padChord(t,ch.n,STEPD*32,clamp(arr,0,1));
+  if(arr>0.22 && (b===6||b===14)) keys(t,ch.n);
+  if(arr>0.55 && (b===2||b===7||b===11)) bell(t, ch.n[(sN>>1)%4]+12, 0.045+arr*0.02);
+  if(arr>0.80 && b===13) bell(t, ch.n[(sN>>2)%4]+24, 0.030);
+  if(sN===0) ping(t, ch.b+12);
+}
+function sched(){
+  if(!musicOn) return;
+  if(AC.currentTime-nextT>0.8) nextT=AC.currentTime+0.1;
+  while(nextT<AC.currentTime+0.15){
+    scheduleStep(stepN,nextT);
+    nextT+=STEPD; stepN=(stepN+1)%128;
+  }
+}
+var btnSnd=document.getElementById('btnSnd');
+function toggleSound(){
+  if(!AC){ try{ initAudio(); }catch(err){ btnSnd.textContent='NO AUDIO'; btnSnd.disabled=true; return; } }
+  if(musicOn){
+    musicOn=false; clearInterval(schedTimer); stopAmbient();
+    aMaster.gain.cancelScheduledValues(AC.currentTime);
+    aMaster.gain.setTargetAtTime(0.0001,AC.currentTime,0.25);
+    btnSnd.textContent='SOUND OFF'; btnSnd.setAttribute('aria-pressed','false');
+    lastBeat=-1; for(var z=0;z<4;z++) beatPips[z].className='';
+  }else{
+    if(AC.state==='suspended') AC.resume();
+    musicOn=true; stepN=0; nextT=AC.currentTime+0.15; t0=nextT;
+    aMaster.gain.cancelScheduledValues(AC.currentTime);
+    aMaster.gain.setValueAtTime(0.0001,AC.currentTime);
+    aMaster.gain.setTargetAtTime(0.34,AC.currentTime,1.1);
+    startAmbient();
+    schedTimer=setInterval(sched,25);
+    btnSnd.textContent='SOUND ON'; btnSnd.setAttribute('aria-pressed','true');
+  }
+}
+btnSnd.addEventListener('click',toggleSound);
+
+var btnCrew=document.getElementById('btnCrew');
+function toggleCrew(){
+  CREW = CREW ? 0 : 1;
+  btnCrew.textContent = CREW ? 'PLAY AS ASTRONAUT' : 'PLAY AS ROCKY';
+  btnCrew.className = CREW ? 'snd crew on' : 'snd crew';
+  cv.setAttribute('data-crew', CREW ? 'rocky' : 'astronaut');
+}
+btnCrew.addEventListener('click',toggleCrew);
+
+/* ============================ frame loop ============================ */
+function render(){
+  buf.fill(VOID);
+  drawStars(camX*zoom,camY*zoom);
+  var order=[], i;
+  for(i=0;i<NS;i++){
+    var sx=(STATIONS[i].wx-camX)*zoom+W/2, sy=(STATIONS[i].wy-camY)*zoom+H/2;
+    if(Math.abs(sx-W/2)>W*0.6+340*zoom||Math.abs(sy-H/2)>H*0.6+340*zoom) continue;
+    var dd=(STATIONS[i].wx-px_)*(STATIONS[i].wx-px_)+(STATIONS[i].wy-py_)*(STATIONS[i].wy-py_);
+    order.push([dd,i,sx,sy]);
+  }
+  order.sort(function(a,b){ return b[0]-a[0]; });
+  for(i=0;i<order.length;i++){
+    STATIONS[order[i][1]].draw({x:order[i][2], y:order[i][3], s:zoom, a:1, t:T});
+  }
+  drawAstronaut(px_,py_,camX,camY,zoom,Math.max(0.8,(H/94)*zoom),rot,thrusting);
+  ctx.putImageData(img,0,0);
+}
+
+function frame(ms){
+  var dt=lastMs?Math.max(0,Math.min(0.05,(ms-lastMs)/1000)):0.016;
+  lastMs=ms;
+  if(!reduced) T+=dt;
+
+  var tv=thrustVector(), ax=tv[0]*ACC, ay=tv[1]*ACC;
+  thrusting=(tv[0]*tv[0]+tv[1]*tv[1])>0.02;
+  vx+=ax*dt; vy+=ay*dt;
+  var damp=Math.exp(-0.85*dt); vx*=damp; vy*=damp;
+  px_+=vx*dt; py_+=vy*dt;
+  if(px_<XMIN){ px_=XMIN; vx*=-0.25; } if(px_>XMAX){ px_=XMAX; vx*=-0.25; }
+  if(py_<-YLIM){ py_=-YLIM; vy*=-0.25; } if(py_>YLIM){ py_=YLIM; vy*=-0.25; }
+  if(thrusting) dvSpent+=Math.sqrt(ax*ax+ay*ay)*dt*0.0075;
+
+  var sp=Math.sqrt(vx*vx+vy*vy);
+  var want = sp>12 ? Math.atan2(vy,vx)+Math.PI/2 : rot+0.30*dt;
+  var da=want-rot; while(da>Math.PI) da-=Math.PI*2; while(da<-Math.PI) da+=Math.PI*2;
+  rot+=da*Math.min(1,3.2*dt);
+
+  zoom+=(zTarget-zoom)*Math.min(1,7*dt);
+  var zs=zoom.toFixed(1)+'x';
+  if(zs!==zShown){ zShown=zs; elZval.textContent=zs; }
+
+  var f=Math.min(1,4*dt);
+  camX+=(px_+vx*0.22-camX)*f; camY+=(py_+vy*0.22-camY)*f;
+
+  var pos=clamp(camX/SPACING,0,NS-1);
+  space=clamp(camX/((NS-1)*SPACING),0,1); arr=0.15+space*0.85;
+  var ni=nearestIndex(), near=STATIONS[ni];
+  var ndx=near.wx-px_, ndy=near.wy-py_;
+  if(ndx*ndx+ndy*ndy < 155*155) markSeen(ni);
+  eridNear = !!near.voice && (ndx*ndx+ndy*ndy < 300*300);
+  showStation(ni);
+  var nsx=((near.wx-camX)*zoom+W/2)/W, nsy=((near.wy-camY)*zoom+H/2)/H;
+  if(nsx<0.05||nsx>0.95||nsy<0.08||nsy>0.92){
+    var cy2=clamp(nsy,0.14,0.86);
+    pipEl.hidden=false;
+    pipEl.style.left=(clamp(nsx,0.06,0.94)*100)+'%';
+    pipEl.style.top=(cy2*100)+'%';
+    pipEl.className = cy2>0.72 ? 'pip up' : 'pip';
+    if(pipName!==near.name){ pipName=near.name; pipLab.textContent=near.name.toUpperCase(); }
+  } else if(!pipEl.hidden){ pipEl.hidden=true; }
+  var m=rangeAt(pos);
+  elRange.textContent = (near.fiction && ndx*ndx+ndy*ndy < 190*190) ? "—" : fmtRange(m);
+  elDv.textContent = dvSpent.toFixed(1)+' m/s';
+  cursorEl.style.left=Math.max(0,Math.min(100,posPct(m)))+'%';
+
+  if(musicOn && AC){
+    var beat=Math.floor((AC.currentTime-t0)/(60/BPM));
+    if(beat<0) beat=0;
+    beat=beat%4;
+    if(beat!==lastBeat){ lastBeat=beat; for(var q=0;q<4;q++) beatPips[q].className = q===beat?'on':''; }
+    if(AC.currentTime-lastAuto>0.4){
+      lastAuto=AC.currentTime;
+      aRevWet.gain.setTargetAtTime(0.42+space*0.34,AC.currentTime,1.2);
+      aDlyWet.gain.setTargetAtTime(0.24+space*0.26,AC.currentTime,1.2);
+      if(drone){
+        drone.f.frequency.setTargetAtTime(220+space*430,AC.currentTime,1.5);
+        drone.oscs[0].detune.setTargetAtTime(-16-space*30,AC.currentTime,2.0);
+        drone.oscs[1].detune.setTargetAtTime(16+space*30,AC.currentTime,2.0);
+      }
+      if(wash) wash.g.gain.setTargetAtTime(0.020+space*0.030,AC.currentTime,2.5);
+    }
+  }
+
+  render();
+  requestAnimationFrame(frame);
+}
+
+var ro=('ResizeObserver' in window)?new ResizeObserver(function(){ sizeBuffer(); }):null;
+if(ro) ro.observe(stage); else window.addEventListener('resize',sizeBuffer);
+px_=-40; py_=-25; camX=px_; camY=py_;
+sizeBuffer();
+showStation(0);
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
