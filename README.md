@@ -3,7 +3,7 @@
 <p align="center"><em>&ldquo;Amaze.&rdquo; &mdash; Rocky, <strong>Project Hail Mary</strong></em></p>
 
 <p align="center">
-A pixel-art spacewalk past <strong>23 astronomical objects</strong>, laid out by their<br>
+A pixel-art spacewalk past <strong>27 astronomical objects</strong>, laid out by their<br>
 <strong>true distance from Earth</strong> &mdash; from a handrail 408&nbsp;km up to the oldest light there is.
 </p>
 
@@ -44,7 +44,12 @@ kilometres to AU to light-years to gigalight-years.
 | Cycle crew | `C` (player 2: `V`) |
 | Second player | `P` |
 | Fullscreen | `F` |
+| True-size comparison | `X` |
+| Light delay | `L` |
+| Guided tour | `T` |
+| Photo mode | `H`, then **SHOOT** |
 | Sound | `M` |
+| Share this exact view | **COPY LINK** |
 
 There is no drag in vacuum, so you thrust and then you keep going. The **delta-v counter** is pure
 vanity: a real SAFER jetpack carries about 3&nbsp;m/s in total, enough to get you back to the handrail
@@ -58,38 +63,79 @@ and no further. You will spend that before you clear the Sun.
 | --: | --- | --- | --- |
 | 1 | Low Earth Orbit | departure point | 408 km |
 | 2 | The Moon | natural satellite | 384,400 km |
-| 3 | The Sun | G2V main-sequence star | 1 AU |
-| 4 | Mars | terrestrial planet | 1.52 AU |
-| 5 | The Main Belt | asteroid belt | 2.2&ndash;3.2 AU |
-| 6 | Jupiter | gas giant | 5.2 AU |
-| 7 | Saturn | gas giant | 9.58 AU |
-| 8 | 1P/Halley | periodic comet | 35.1 AU at aphelion |
-| 9 | Pluto | dwarf planet | 39.5 AU |
-| 10 | Voyager 1 | furthest human object | ~170 AU |
+| 3 | **Rama** | *fiction &mdash; Clarke, 1973* | &mdash; |
+| 4 | The Sun | G2V main-sequence star | 1 AU |
+| 5 | Mars | terrestrial planet | 1.52 AU |
+| 6 | The Main Belt | asteroid belt | 2.2&ndash;3.2 AU |
+| 7 | Jupiter | gas giant | 5.2 AU |
+| 8 | **Discovery One** | *fiction &mdash; 2001* | &mdash; |
+| 9 | Saturn | gas giant | 9.58 AU |
+| 10 | 1P/Halley | periodic comet | 35.1 AU at aphelion |
+| 11 | Pluto | dwarf planet | 39.5 AU |
 | 11 | Proxima Centauri | red dwarf / flare star | 4.25 ly |
-| 12 | **Erid** | *fiction &mdash; Project Hail Mary* | 40 Eridani A, 16.3 ly |
-| 13 | TRAPPIST-1 | ultracool dwarf, 7 planets | 40.7 ly |
-| 14 | Betelgeuse | red supergiant | ~550 ly |
-| 15 | The Orion Nebula | H II region | 1,344 ly |
-| 16 | The Crab Pulsar | neutron star | ~6,500 ly |
-| 17 | Stephenson 2-18 | largest known star | ~19,570 ly |
-| 18 | Sagittarius A* | supermassive black hole | 26,670 ly |
-| 19 | **Gargantua** | *fiction &mdash; Interstellar* | &mdash; |
-| 20 | Large Magellanic Cloud | satellite galaxy | 163,000 ly |
-| 21 | Andromeda | barred spiral galaxy | 2.5 Mly |
-| 22 | 3C 273 | first quasar identified | ~2.4 Gly |
-| 23 | The Microwave Background | the oldest light | 13.8 Gly |
+| 12 | Tau Ceti | G8V star, the Hail Mary's destination | 11.9 ly |
+| 13 | **Erid** | *fiction &mdash; Project Hail Mary* | 40 Eridani A, 16.3 ly |
+| 14 | TRAPPIST-1 | ultracool dwarf, 7 planets | 40.7 ly |
+| 15 | Betelgeuse | red supergiant | ~550 ly |
+| 16 | **Solaris** | *fiction &mdash; Lem, 1961* | &mdash; |
+| 17 | The Orion Nebula | H II region | 1,344 ly |
+| 18 | The Crab Pulsar | neutron star | ~6,500 ly |
+| 19 | Stephenson 2-18 | largest known star | ~19,570 ly |
+| 20 | Sagittarius A* | supermassive black hole | 26,670 ly |
+| 21 | **Gargantua** | *fiction &mdash; Interstellar* | &mdash; |
+| 22 | Large Magellanic Cloud | satellite galaxy | 163,000 ly |
+| 23 | Andromeda | barred spiral galaxy | 2.5 Mly |
+| 24 | 3C 273 | first quasar identified | ~2.4 Gly |
+| 25 | The Microwave Background | the oldest light | 13.8 Gly |
 
 Every figure on every plaque is a published value. Where astronomers disagree &mdash; Betelgeuse's
 distance, Stephenson 2-18's radius &mdash; the disagreement is printed rather than hidden.
 
-### Two of them are fiction, and they say so
+### Five of them are fiction, and they say so
 
-**Gargantua** is the black hole built for *Interstellar* (2014) out of real Kerr-metric ray tracing &mdash;
-the effects team published two physics papers about what they drew. **Erid** is Rocky's world from
-Andy Weir's *Project Hail Mary*, parked at the real 40 Eridani A.
+**Rama** (Clarke), **Discovery One** (Kubrick &amp; Clarke), **Erid** (Andy Weir), **Gargantua**
+(*Interstellar*, built from real Kerr-metric ray tracing &mdash; the effects team published two physics
+papers about what they drew) and **Solaris** (Lem).
 
-Both wear a **dashed tick** on the axis, because neither has a distance to put on it.
+Each wears a **dashed tick** on the axis, because none of them has a distance to put on it. Solaris
+says so out loud: Lem never wrote down how far away it is, so its plaque admits the placement is
+arbitrary.
+
+## True-size comparison
+
+![Scale comparisons](docs/scale.png)
+
+Press `X`. The object you are nearest is drawn **to true scale against a pinned reference** &mdash; Earth
+by default, or anything else via **PIN THIS AS THE REFERENCE**.
+
+The ratios are computed from published radii, and the renderers are the same ones the world uses,
+just scaled. Which means most comparisons end the same way: the smaller object drops below one pixel
+and gets a ring and a sentence instead. Earth beside Saturn is a visible blue dot at 9.1&times;. Earth
+beside the Sun, at 109&times;, is already sub-pixel. Earth beside Stephenson 2-18 is 1 : 234,971.
+
+That failure to fit is the honest result, and it is the reason the mode exists.
+
+## Light delay
+
+Press `L`. A second readout appears: **how old the view is.** The Sun 8.3 minutes, Jupiter 43
+minutes, Andromeda 2.5 million years, the microwave background 13.8 billion. You are never looking
+at the present.
+
+## Guided tour
+
+Press `T` and it flies the whole itinerary on autopilot, six seconds a stop, plaques turning over
+and the soundtrack opening up as the range climbs. Any input you make takes the controls back.
+
+## Photo mode
+
+Press `H`: the HUD, the scrims and the buttons fade out and a **SHOOT** button appears. It captures
+the framebuffer at an integer multiple (about 1920&nbsp;px wide) with nearest-neighbour scaling, so the
+export is pixel-exact rather than resampled.
+
+## Shareable views
+
+The address bar tracks where you are &mdash; position, zoom, crew, player count &mdash; so copying the URL
+copies the view. **COPY LINK** does it in one click. Open one and you start exactly there.
 
 ## Four crews
 
