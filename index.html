@@ -82,11 +82,14 @@ body{
 .snd.md[aria-pressed="true"]{background:var(--gold); border-color:var(--gold); color:#0a0b12}
 .v.lt{color:var(--teal)}
 .k.lt{margin-top:5px}
-.shoot{position:absolute; left:50%; bottom:20px; transform:translateX(-50%); z-index:4;
-  font-family:var(--bit); font-size:11px; letter-spacing:.14em; padding:11px 18px;
-  background:rgba(4,6,14,.82); border:1px solid var(--gold); color:var(--gold); cursor:pointer;}
+.photobar{position:absolute; left:50%; top:16px; transform:translateX(-50%); z-index:6; display:flex; gap:8px;}
+.shoot{font-family:var(--bit); font-size:11px; letter-spacing:.14em; padding:11px 18px;
+  background:rgba(4,6,14,.86); border:1px solid var(--gold); color:var(--gold); cursor:pointer;}
 .shoot:hover{background:var(--gold); color:#0a0b12}
+.shoot.alt{border-color:var(--line2); color:var(--mid)}
+.shoot.alt:hover{background:transparent; border-color:var(--teal); color:var(--teal)}
 .stage.photo .hud,.stage.photo .scrim,.stage.photo .nav-btn,.stage.photo .pip{opacity:0; pointer-events:none}
+.stage.photo .stick{opacity:.35}
 .stage.scaling .hud,.stage.scaling .pip,.stage.scaling .nav-btn,.stage.scaling .scrim.bot{display:none}
 .scalepanel{position:absolute; left:0; right:0; bottom:0; padding:14px 18px 16px;
   background:linear-gradient(to top,rgba(4,6,14,.94),rgba(4,6,14,.72) 60%,rgba(4,6,14,0));
@@ -99,16 +102,20 @@ body{
   border:1px solid var(--line2); background:rgba(4,6,14,.5); pointer-events:auto; touch-action:none; z-index:4;}
 .knob{position:absolute; left:50%; top:50%; width:38px; height:38px; margin:-19px 0 0 -19px; border-radius:50%;
   background:rgba(58,214,192,.22); border:1px solid var(--teal);}
-.shotmodal{position:fixed; inset:0; background:rgba(2,3,8,.92); z-index:50; display:flex; align-items:center; justify-content:center; padding:20px;}
-.shotbox{max-width:min(96vw,1100px); display:flex; flex-direction:column; gap:12px;}
-.shotbox img{width:100%; height:auto; image-rendering:pixelated; border:1px solid var(--line2); background:#04060e;}
+.shotmodal{position:absolute; inset:0; background:rgba(2,3,8,.94); z-index:60; display:flex; align-items:center; justify-content:center; padding:16px; overflow:auto;}
+.shotbox{max-width:100%; max-height:100%; display:flex; flex-direction:column; gap:10px; align-items:center;}
+.shotbox img{max-width:100%; max-height:62vh; width:auto; height:auto; image-rendering:pixelated; border:1px solid var(--line2); background:#04060e;}
 .shotbar{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
 .shothint{font-family:var(--mono); font-size:11.5px; color:var(--dim);}
 a.snd.md{text-decoration:none; display:inline-block}
 @media (pointer:coarse){
   .snd,.st{padding:11px 12px; font-size:10.5px}
   .znb{width:30px;height:30px;font-size:13px}
-  .nav-btn{width:44px;height:58px;font-size:17px}
+  .nav-btn{width:44px;height:58px;font-size:17px; top:36%}
+  .stick{left:auto; right:16px; bottom:16px; width:112px; height:112px; z-index:7;}
+  .knob{width:46px; height:46px; margin:-23px 0 0 -23px;}
+  .hud-row.btm .read.r{margin-bottom:124px;}
+  .photobar{top:12px}
 }
 .beat{display:flex; gap:3px; align-items:center;}
 .beat i{width:5px; height:5px; background:#232b43; display:block;}
@@ -230,7 +237,7 @@ a.snd.md{text-decoration:none; display:inline-block}
           <span class="v t" id="hNear">Low Earth Orbit</span>
         </div>
       </div>
-      <div class="hud-row" style="align-items:flex-end">
+      <div class="hud-row btm" style="align-items:flex-end">
         <div class="ctlwrap">
         <div class="ctl">
           <button class="snd" id="btnSnd" type="button" aria-pressed="false">SOUND OFF</button>
@@ -262,26 +269,28 @@ a.snd.md{text-decoration:none; display:inline-block}
       </div>
       <span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br brr"></span>
     </div>
-    <button class="shoot" id="btnShoot" type="button" hidden>SHOOT</button>
+    <div class="photobar" id="photoBar" hidden>
+      <button class="shoot" id="btnShoot" type="button">SHOOT</button>
+      <button class="shoot alt" id="btnPhotoOut" type="button">EXIT PHOTO</button>
+    </div>
     <div class="scalepanel" id="scalePanel" hidden>
       <div class="sp-row"><span class="sp-a" id="spA"></span><span class="sp-b" id="spB"></span></div>
       <p class="sp-note" id="spNote"></p>
       <div class="sp-bar"><button class="snd md" id="btnPin" type="button">PIN THIS AS THE REFERENCE</button><button class="snd md" id="btnScaleOut" type="button">EXIT SCALE</button></div>
     </div>
     <div class="stick" id="stick" hidden><span class="knob" id="knob"></span></div>
-    <button class="nav-btn prev" id="btnPrev" type="button" aria-label="Fly to previous object">&lt;</button>
-    <button class="nav-btn next" id="btnNext" type="button" aria-label="Fly to next object">&gt;</button>
-  </div>
-
-  <div class="shotmodal" id="shotModal" hidden>
-    <div class="shotbox">
-      <img id="shotImg" alt="Captured frame">
-      <div class="shotbar">
-        <a class="snd md" id="shotSave" download="amaze.png" href="#">SAVE PNG</a>
-        <span class="shothint">or right-click the image to save it</span>
-        <button class="snd md" id="shotClose" type="button">CLOSE</button>
+    <div class="shotmodal" id="shotModal" hidden>
+      <div class="shotbox">
+        <img id="shotImg" alt="Captured frame">
+        <div class="shotbar">
+          <a class="snd md" id="shotSave" download="amaze.png" href="#">SAVE PNG</a>
+          <span class="shothint">or press and hold the image to save it</span>
+          <button class="snd md" id="shotClose" type="button">CLOSE</button>
+        </div>
       </div>
     </div>
+    <button class="nav-btn prev" id="btnPrev" type="button" aria-label="Fly to previous object">&lt;</button>
+    <button class="nav-btn next" id="btnNext" type="button" aria-label="Fly to next object">&gt;</button>
   </div>
 
   <div class="axis" id="axis" aria-hidden="true">
@@ -1828,10 +1837,22 @@ function thrustVector(idx){
     if(d>3){ var f=Math.min(1,d/(W*0.22)); ax+=dx/d*f; ay+=dy/d*f; }
   }
   if(idx===0 && auto){
+    /* Park just outside the object's own drawn edge, approaching from below-left,
+       and steer toward a desired velocity so both axes converge instead of the
+       long axis starving the short one. */
     var ast=STATIONS[auto.i];
-    var adx=(ast.wx-95/zoom)-pl.x, ady=(ast.wy+48/zoom)-pl.y, ad=Math.sqrt(adx*adx+ady*ady);
-    if(ad<7 && Math.sqrt(pl.vx*pl.vx+pl.vy*pl.vy)<9){ auto=null; }
-    else{ ax+=clamp(adx*0.030-pl.vx*0.045,-1,1); ay+=clamp(ady*0.030-pl.vy*0.045,-1,1); }
+    var off=(ast.nom||40)+16;
+    var adx=(ast.wx-off*0.74)-pl.x, ady=(ast.wy+off*0.44)-pl.y;
+    var ad=Math.sqrt(adx*adx+ady*ady);
+    var sp0=Math.sqrt(pl.vx*pl.vx+pl.vy*pl.vy);
+    if(ad<3.5 && sp0<4){ auto=null; }
+    else{
+      var slow=Math.min(1,ad/150);
+      var wx0=(adx/(ad||1))*210*slow - pl.vx;
+      var wy0=(ady/(ad||1))*210*slow - pl.vy;
+      var wm=Math.sqrt(wx0*wx0+wy0*wy0)||1;
+      ax+=wx0/wm; ay+=wy0/wm;
+    }
   }
   var m=Math.sqrt(ax*ax+ay*ay);
   if(m>1){ ax/=m; ay/=m; }
@@ -2146,6 +2167,8 @@ var btnScale=document.getElementById('btnScale'), btnLight=document.getElementBy
 var btnTour=document.getElementById('btnTour'), btnPhoto=document.getElementById('btnPhoto');
 var btnLink=document.getElementById('btnLink'), btnPin=document.getElementById('btnPin');
 var btnShoot=document.getElementById('btnShoot');
+var photoBar=document.getElementById('photoBar');
+var btnPhotoOut=document.getElementById('btnPhotoOut');
 var shotModal=document.getElementById('shotModal'), shotImg=document.getElementById('shotImg');
 var shotSave=document.getElementById('shotSave'), shotClose=document.getElementById('shotClose');
 
@@ -2157,7 +2180,7 @@ function paintModes(){
   elScalePanel.hidden=!scaleOn;
   stage.classList.toggle('scaling',scaleOn);
   kLight.hidden=!lightOn; hLight.hidden=!lightOn;
-  btnShoot.hidden=!photoOn;
+  photoBar.hidden=!photoOn;
   stage.classList.toggle('photo',photoOn);
 }
 function toggleScale(){ scaleOn=!scaleOn; if(scaleOn){ photoOn=false; } paintModes(); }
@@ -2214,6 +2237,7 @@ shotSave.addEventListener('click',function(e){
   },'image/png');
 });
 btnShoot.addEventListener('click',shoot);
+btnPhotoOut.addEventListener('click',function(){ if(!shotModal.hidden){ shotModal.hidden=true; shotImg.src=''; } togglePhoto(); });
 shotClose.addEventListener('click',function(){ shotModal.hidden=true; shotImg.src=''; });
 shotModal.addEventListener('click',function(e){ if(e.target===shotModal){ shotModal.hidden=true; shotImg.src=''; } });
 
