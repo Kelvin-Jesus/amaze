@@ -8,6 +8,11 @@ A pixel-art spacewalk past <strong>23 astronomical objects</strong>, laid out by
 </p>
 
 <p align="center">
+Fly it as an astronaut, as <strong>Rocky</strong>, as the <strong>Hail Mary</strong> or as the <strong>Blip-A</strong>.<br>
+Solo, or two players on one keyboard.
+</p>
+
+<p align="center">
   <a href="https://kelvin-jesus.github.io/amaze/"><strong>&#9654;&nbsp; Open it</strong></a>
   &nbsp;&middot;&nbsp; no install, no build, no dependencies
 </p>
@@ -35,9 +40,11 @@ kilometres to AU to light-years to gigalight-years.
 | --- | --- |
 | Thrust | `W` `A` `S` `D` / arrow keys, or drag inside the frame |
 | Zoom | scroll, pinch, `+` / `-`, or the `&minus; 1.0x +` cluster (`0` resets) |
-| Autopilot | click any object name |
-| Swap crew | `C`, or **PLAY AS ROCKY** |
-| Sound | `M`, or **SOUND OFF** |
+| Autopilot | click any object name, or `[` / `]` for the previous / next one |
+| Cycle crew | `C` (player 2: `V`) |
+| Second player | `P` |
+| Fullscreen | `F` |
+| Sound | `M` |
 
 There is no drag in vacuum, so you thrust and then you keep going. The **delta-v counter** is pure
 vanity: a real SAFER jetpack carries about 3&nbsp;m/s in total, enough to get you back to the handrail
@@ -84,15 +91,41 @@ Andy Weir's *Project Hail Mary*, parked at the real 40 Eridani A.
 
 Both wear a **dashed tick** on the axis, because neither has a distance to put on it.
 
-## Crew
+## Four crews
 
-![Astronaut and Rocky](docs/crew.png)
+![Astronaut, Rocky, the Hail Mary and the Blip-A](docs/crew.png)
 
-Press `C`. Rocky flies in a xenonite bubble, because twenty-nine atmospheres of ammonia do not
-travel well.
+Press `C` to cycle. Every one is a hand-authored sprite, rotated by nearest-neighbour sampling so it
+stays chunky at any angle.
+
+| Crew | Notes |
+| --- | --- |
+| **Astronaut** | Gold visor, EVA tether, white RCS plume |
+| **Rocky** | Five limbs on a rock carapace, inside a xenonite bubble &mdash; twenty-nine atmospheres of ammonia do not travel well |
+| **Hail Mary** | Grace's ship, with the spin drive burning **Petrova red** at the stern |
+| **Blip-A** | Rocky's ship: rock hull, xenonite panels, cyan exhaust |
 
 And because Eridians hear instead of seeing and speak in five-note chords &mdash; fly close to Erid with
 the sound on. It answers.
+
+## Two players, one screen
+
+Press `P`. **Player 1 flies on WASD, player 2 on the arrow keys**, each with their own crew
+(`C` and `V` to change them).
+
+The camera frames both: it tracks the midpoint and zooms out on its own to keep the pair in shot.
+Because the minimum zoom can only frame so much, the two of you share **one EVA** &mdash; an elastic
+leash at 330 world units means you can never drift out of each other's sight, and a dotted guide
+line points at your partner whenever they get far away.
+
+This is **local co-op**, and it is deliberate: the site is a flat static file on GitHub Pages, which
+cannot host a WebSocket server. Online multiplayer needs a backend &mdash; see below.
+
+## Fullscreen
+
+Press `F` or hit **FULLSCREEN**. The stage takes the whole screen and keeps its HUD; the page chrome
+goes away. The renderer resizes its buffer to match, so you get more pixels of space rather than
+bigger pixels.
 
 ## The soundtrack is not a file
 
@@ -141,6 +174,18 @@ Or just double-click `index.html`. There is nothing to install.
 - Pixel look and free roam inspired by [hallucinate.site](https://hallucinate.site/) by [stagas](https://github.com/stagas)
 - Gargantua from *Interstellar* (2014), Kip Thorne & Double Negative
 - Rocky and Erid from *Project Hail Mary* by Andy Weir
+
+## Wanted: a server
+
+Everything here runs from a single static file, which is why it costs nothing to host and why
+**online multiplayer is the one thing it cannot do.** GitHub Pages serves files; it does not run
+processes, so there is nowhere for a WebSocket to live.
+
+If that changes, the shape is small: a relay that accepts `{id, x, y, vx, vy, rot, crew}` at ~15&nbsp;Hz
+and fans it out to a room. The renderer already draws an arbitrary list of players &mdash; `drawCrew`
+takes a plain object &mdash; so the client side is mostly wiring. Cloudflare Workers with a Durable
+Object, PartyKit, Deno Deploy and Fly.io all have free tiers that fit, and the page can stay on
+Pages and just dial out.
 
 ## License
 
