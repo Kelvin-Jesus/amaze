@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Fly an astronaut, Rocky, the Hail Mary or the Blip-A past twenty-three real astronomical objects, from low Earth orbit to the oldest light in the universe, on a true logarithmic distance scale.">
+<meta name="description" content="Fly an astronaut, Rocky, the Hail Mary or the Blip-A past twenty-seven astronomical objects, from low Earth orbit to the oldest light in the universe, on a true logarithmic distance scale.">
 <meta name="theme-color" content="#04060e">
 <meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Amaze">
-<meta property="og:description" content="Fly an astronaut, Rocky, the Hail Mary or the Blip-A past twenty-three real astronomical objects, from low Earth orbit to the oldest light in the universe, on a true logarithmic distance scale.">
+<meta property="og:description" content="Fly an astronaut, Rocky, the Hail Mary or the Blip-A past twenty-seven astronomical objects, from low Earth orbit to the oldest light in the universe, on a true logarithmic distance scale.">
 <meta property="og:image" content="docs/hero.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%AA%90%3C/text%3E%3C/svg%3E">
@@ -77,6 +77,39 @@ body{
 .znb{font-family:var(--bit); font-size:10px; width:20px; height:20px; padding:0; background:rgba(4,6,14,.78); border:1px solid var(--line2); color:var(--mid); cursor:pointer; line-height:1;}
 .znb:hover{color:var(--gold); border-color:var(--gold)}
 .zval{font-family:var(--mono); font-size:10px; font-weight:600; color:var(--mid); min-width:30px; text-align:center; font-variant-numeric:tabular-nums;}
+.ctlwrap{display:flex; flex-direction:column; gap:7px; pointer-events:auto;}
+.snd.md{color:var(--dim)}
+.snd.md[aria-pressed="true"]{background:var(--gold); border-color:var(--gold); color:#0a0b12}
+.v.lt{color:var(--teal)}
+.k.lt{margin-top:5px}
+.shoot{position:absolute; left:50%; bottom:20px; transform:translateX(-50%); z-index:4;
+  font-family:var(--bit); font-size:11px; letter-spacing:.14em; padding:11px 18px;
+  background:rgba(4,6,14,.82); border:1px solid var(--gold); color:var(--gold); cursor:pointer;}
+.shoot:hover{background:var(--gold); color:#0a0b12}
+.stage.photo .hud,.stage.photo .scrim,.stage.photo .nav-btn,.stage.photo .pip{opacity:0; pointer-events:none}
+.stage.scaling .hud,.stage.scaling .pip,.stage.scaling .nav-btn,.stage.scaling .scrim.bot{display:none}
+.scalepanel{position:absolute; left:0; right:0; bottom:0; padding:14px 18px 16px;
+  background:linear-gradient(to top,rgba(4,6,14,.94),rgba(4,6,14,.72) 60%,rgba(4,6,14,0));
+  pointer-events:auto; z-index:3;}
+.sp-row{display:flex; justify-content:space-between; gap:18px; font-family:var(--bit); font-size:10px; letter-spacing:.1em;}
+.sp-a{color:var(--teal)} .sp-b{color:var(--gold); text-align:right}
+.sp-bar{display:flex; gap:7px; flex-wrap:wrap}
+.sp-note{margin:9px 0 10px; font-size:12.5px; color:var(--text); line-height:1.6; max-width:62ch;}
+.stick{position:absolute; left:18px; bottom:64px; width:96px; height:96px; border-radius:50%;
+  border:1px solid var(--line2); background:rgba(4,6,14,.5); pointer-events:auto; touch-action:none; z-index:4;}
+.knob{position:absolute; left:50%; top:50%; width:38px; height:38px; margin:-19px 0 0 -19px; border-radius:50%;
+  background:rgba(58,214,192,.22); border:1px solid var(--teal);}
+.shotmodal{position:fixed; inset:0; background:rgba(2,3,8,.92); z-index:50; display:flex; align-items:center; justify-content:center; padding:20px;}
+.shotbox{max-width:min(96vw,1100px); display:flex; flex-direction:column; gap:12px;}
+.shotbox img{width:100%; height:auto; image-rendering:pixelated; border:1px solid var(--line2); background:#04060e;}
+.shotbar{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+.shothint{font-family:var(--mono); font-size:11.5px; color:var(--dim);}
+a.snd.md{text-decoration:none; display:inline-block}
+@media (pointer:coarse){
+  .snd,.st{padding:11px 12px; font-size:10.5px}
+  .znb{width:30px;height:30px;font-size:13px}
+  .nav-btn{width:44px;height:58px;font-size:17px}
+}
 .beat{display:flex; gap:3px; align-items:center;}
 .beat i{width:5px; height:5px; background:#232b43; display:block;}
 .beat i.on{background:var(--gold);}
@@ -175,10 +208,10 @@ body{
 <body>
 <div class="frame">
   <header>
-    <div class="eyebrow">EVA 01 / Free flight / 23 objects</div>
+    <div class="eyebrow">EVA 01 / Free flight / 27 objects</div>
     <h1 class="wordmark">Amaze</h1>
     <p class="kicker">&ldquo;Amaze.&rdquo; &mdash; Rocky, <i>Project Hail Mary</i></p>
-    <p class="standfirst">You let go of the handrail 408&nbsp;km above the Pacific. Fly where you like &mdash; there is nothing out here to push against, so you thrust, and then you keep going. The twenty-three objects are laid out by their <b>true distance from Earth</b>, which is why the entire solar system fits in the first breath of the scale and the rest of the trip is dark.</p>
+    <p class="standfirst">You let go of the handrail 408&nbsp;km above the Pacific. Fly where you like &mdash; there is nothing out here to push against, so you thrust, and then you keep going. The twenty-seven objects are laid out by their <b>true distance from Earth</b>, which is why the entire solar system fits in the first breath of the scale and the rest of the trip is dark.</p>
   </header>
 
   <div class="stage" id="stage">
@@ -189,6 +222,8 @@ body{
         <div class="read">
           <span class="k">RANGE FROM EARTH</span>
           <span class="v" id="hRange">408 km</span>
+          <span class="k lt" id="kLight" hidden>LIGHT LEFT IT</span>
+          <span class="v sm lt" id="hLight" hidden>1.4 ms ago</span>
         </div>
         <div class="read r">
           <span class="k">NEAREST OBJECT</span>
@@ -196,6 +231,7 @@ body{
         </div>
       </div>
       <div class="hud-row" style="align-items:flex-end">
+        <div class="ctlwrap">
         <div class="ctl">
           <button class="snd" id="btnSnd" type="button" aria-pressed="false">SOUND OFF</button>
           <span class="beat" id="beat" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
@@ -208,7 +244,15 @@ body{
             <span class="zval" id="zVal">1.0x</span>
             <button class="znb" id="zIn" type="button" aria-label="Zoom in">+</button>
           </span>
+        </div>
+        <div class="ctl">
+          <button class="snd md" id="btnScale" type="button" aria-pressed="false">SCALE</button>
+          <button class="snd md" id="btnLight" type="button" aria-pressed="false">LIGHT</button>
+          <button class="snd md" id="btnTour" type="button" aria-pressed="false">TOUR</button>
+          <button class="snd md" id="btnPhoto" type="button" aria-pressed="false">PHOTO</button>
+          <button class="snd md" id="btnLink" type="button">COPY LINK</button>
           <span class="hint">WASD OR DRAG &middot; SCROLL ZOOMS</span>
+        </div>
         </div>
         <div class="read r">
           <span class="fic-flag" id="hFic" hidden>NOT REAL / FILM PHYSICS</span>
@@ -218,15 +262,33 @@ body{
       </div>
       <span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br brr"></span>
     </div>
+    <button class="shoot" id="btnShoot" type="button" hidden>SHOOT</button>
+    <div class="scalepanel" id="scalePanel" hidden>
+      <div class="sp-row"><span class="sp-a" id="spA"></span><span class="sp-b" id="spB"></span></div>
+      <p class="sp-note" id="spNote"></p>
+      <div class="sp-bar"><button class="snd md" id="btnPin" type="button">PIN THIS AS THE REFERENCE</button><button class="snd md" id="btnScaleOut" type="button">EXIT SCALE</button></div>
+    </div>
+    <div class="stick" id="stick" hidden><span class="knob" id="knob"></span></div>
     <button class="nav-btn prev" id="btnPrev" type="button" aria-label="Fly to previous object">&lt;</button>
     <button class="nav-btn next" id="btnNext" type="button" aria-label="Fly to next object">&gt;</button>
+  </div>
+
+  <div class="shotmodal" id="shotModal" hidden>
+    <div class="shotbox">
+      <img id="shotImg" alt="Captured frame">
+      <div class="shotbar">
+        <a class="snd md" id="shotSave" download="amaze.png" href="#">SAVE PNG</a>
+        <span class="shothint">or right-click the image to save it</span>
+        <button class="snd md" id="shotClose" type="button">CLOSE</button>
+      </div>
+    </div>
   </div>
 
   <div class="axis" id="axis" aria-hidden="true">
     <span class="axis-note l">LOG SCALE, METRES</span>
   </div>
 
-  <div class="navhead"><span id="visited">VISITED <b>1</b> / 23</span><span>CLICK A NAME TO ENGAGE AUTOPILOT</span></div>
+  <div class="navhead"><span id="visited">VISITED <b>1</b> / 27</span><span>CLICK A NAME TO ENGAGE AUTOPILOT</span></div>
   <nav class="stations" id="stations" aria-label="Objects along the drift"></nav>
 
   <section class="plaque" id="plaque">
@@ -241,7 +303,7 @@ body{
 
   <footer class="foot">
     <p>Figures are the published values for each object; where astronomers disagree &mdash; Betelgeuse&rsquo;s distance, Stephenson&nbsp;2-18&rsquo;s radius &mdash; the disagreement is noted rather than hidden. Object list drawn from the <a href="https://en.wikipedia.org/wiki/Lists_of_astronomical_objects" target="_blank" rel="noopener">Wikipedia lists of astronomical objects</a>.</p>
-    <p>Two stations are fiction and both wear a dashed tick, because neither has a distance to put on this axis. Gargantua is the black hole built for <i>Interstellar</i> (2014) out of real Kerr-metric ray tracing. Erid is Rocky’s world from Andy Weir’s <i>Project Hail Mary</i>, parked at the real 40 Eridani A; fly close with the sound on and it speaks to you in chords, the way Eridians do.<br>Thrust with WASD or the arrow keys, drag to steer, scroll or pinch to zoom. <b>C</b> cycles crew, <b>P</b> adds a second player on the arrow keys (you share one EVA, so you cannot drift out of each other&rsquo;s sight), <b>F</b> goes fullscreen, <b>[</b> and <b>]</b> jump between objects, <b>M</b> cuts the sound. Rocky flies in a xenonite bubble, since twenty-nine atmospheres of ammonia do not travel well. The delta-v counter is vanity &mdash; a real SAFER jetpack carries about 3&nbsp;m/s in total, enough to get you back to the handrail and no further.<br>The music is generated live in the browser &mdash; no recording &mdash; and opens up the further out you get. Pixel look and free roam after <a href="https://hallucinate.site/" target="_blank" rel="noopener">hallucinate.site</a>.</p>
+    <p>Five stations are fiction and each wears a dashed tick, because none of them has a distance to put on this axis. Gargantua is the black hole built for <i>Interstellar</i> (2014) out of real Kerr-metric ray tracing. Erid is Rocky’s world from Andy Weir’s <i>Project Hail Mary</i>, parked at the real 40 Eridani A; fly close with the sound on and it speaks to you in chords, the way Eridians do.<br>Thrust with WASD or the arrow keys, drag to steer, scroll or pinch to zoom. <b>C</b> cycles crew, <b>P</b> adds a second player on the arrow keys (you share one EVA, so you cannot drift out of each other&rsquo;s sight), <b>F</b> goes fullscreen, <b>[</b> and <b>]</b> jump between objects, <b>M</b> cuts the sound. Rocky flies in a xenonite bubble, since twenty-nine atmospheres of ammonia do not travel well. The delta-v counter is vanity &mdash; a real SAFER jetpack carries about 3&nbsp;m/s in total, enough to get you back to the handrail and no further.<br>The music is generated live in the browser &mdash; no recording &mdash; and opens up the further out you get. Pixel look and free roam after <a href="https://hallucinate.site/" target="_blank" rel="noopener">hallucinate.site</a>.</p>
   </footer>
 </div>
 
@@ -531,7 +593,7 @@ var SEA_D=[6,22,66], SEA_L=[36,104,196], LAND_D=[20,56,40], LAND_L=[104,152,88],
 var NIGHT=[4,6,15];
 
 function drawEarth(o){
-  var r=Math.max(18, 88*o.s), cx=o.x-8*o.s, cy=o.y+r*0.62;
+  var r=Math.max(0.6, 88*o.s), cx=o.x-8*o.s, cy=o.y+r*0.62;
   disc(cx,cy,r*1.075,function(x,y,dx,dy,t){
     if(t<0.930) return;
     var f=(t-0.930)/0.070;
@@ -559,7 +621,7 @@ function drawEarth(o){
 
 var SUN_CORE=[255,250,222], SUN_MID=[255,170,50], SUN_EDGE=[255,98,12], SPOT=[142,44,6];
 function drawSun(o){
-  var r=Math.max(12,58*o.s), cx=o.x, cy=o.y, i,k;
+  var r=Math.max(0.6, 58*o.s), cx=o.x, cy=o.y, i,k;
   disc(cx,cy,r*1.66,function(x,y,dx,dy,t){
     if(t<0.602) return;
     var ang=Math.atan2(dy,dx);
@@ -613,7 +675,7 @@ function drawBelt(o){
     var y=o.y+k.ry*H*0.62*(0.45+d)*o.s+Math.cos(o.t*0.05*k.sp+k.ph)*2.5*o.s;
     drawRock(x,y,Math.max(0.7,k.rs*o.s*(0.35+d*0.85)),o.t*0.12*k.sp+k.ph,(0.40+0.60*d)*o.a,k.ty);
   }
-  var bx=o.x+W*0.12, by=o.y-H*0.05, br=Math.max(2.5,9*o.s);
+  var bx=o.x+W*0.12, by=o.y-H*0.05, br=Math.max(0.6, 9*o.s);
   drawRock(bx,by,br,o.t*0.06,o.a,1);
   disc(bx,by,br*0.92,function(x,y,dx,dy){
     var c=noise(dx*1.5+91,dy*1.5+33)*noise(dx*0.6+3,dy*0.6+44);
@@ -625,7 +687,7 @@ function drawBelt(o){
 var JB=[[-1.01,[216,196,154]],[-0.74,[166,114,62]],[-0.57,[230,217,188]],[-0.36,[186,133,76]],[-0.17,[239,228,203]],[0.02,[192,141,85]],[0.18,[242,232,210]],[0.37,[170,122,69]],[0.57,[221,203,166]],[0.76,[140,95,54]],[1.02,[200,180,142]]];
 function bandAt(v){ for(var i=0;i<JB.length;i++) if(v<=JB[i][0]) return JB[i][1]; return JB[JB.length-1][1]; }
 function drawJupiter(o){
-  var r=Math.max(12,54*o.s), cx=o.x, cy=o.y;
+  var r=Math.max(0.6, 54*o.s), cx=o.x, cy=o.y;
   var gx=Math.sin(o.t*0.045)*0.46;
   disc(cx,cy,r,function(x,y,dx,dy,t){
     var nx=dx/r, ny=dy/r, nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
@@ -677,13 +739,13 @@ function drawComet(o){
       blend(cx+i, yy2, 250,232,186, Math.min(0.88,a2+0.14)*o.a);
     }
   }
-  var cr=Math.max(3,10*o.s);
+  var cr=Math.max(0.6, 10*o.s);
   disc(cx,cy,cr*2.4,function(x,y,dx,dy,t){
     var a=(1-t)*(1-t)*0.95;
     if(dith(x,y)>a*1.7) return;
     blend(x,y,214,238,255,a*o.a);
   });
-  disc(cx,cy,Math.max(2,5*o.s),function(x,y,dx,dy,t){
+  disc(cx,cy,Math.max(0.6, 5*o.s),function(x,y,dx,dy,t){
     var col=mix([62,55,46],[24,21,18],q(t,3));
     blend(x,y,col[0],col[1],col[2],o.a);
   });
@@ -691,7 +753,7 @@ function drawComet(o){
 }
 
 function drawPluto(o){
-  var r=Math.max(8,34*o.s), cx=o.x-10*o.s, cy=o.y+3*o.s;
+  var r=Math.max(0.6, 34*o.s), cx=o.x-10*o.s, cy=o.y+3*o.s;
   disc(cx,cy,r,function(x,y,dx,dy,t){
     var nx=dx/r, ny=dy/r, nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
     var n=noise(dx*0.17+210, dy*0.17+55);
@@ -746,7 +808,7 @@ function redGiant(o,rad,cool,warm,hot,cellScale,lump,haloCol){
 function drawBetelgeuse(o){
   redGiant(o,46,[112,28,16],[208,70,30],[255,164,96],0.17,0.16,[186,62,34]);
   var cx=o.x+38*o.s, cy=o.y-30*o.s;
-  disc(cx,cy,Math.max(4,26*o.s),function(x,y,dx,dy,t){
+  disc(cx,cy,Math.max(0.6, 26*o.s),function(x,y,dx,dy,t){
     var a=(1-t)*(1-t)*0.5*noise(dx*0.16+800,dy*0.16+404);
     if(dith(x,y)>a*1.9) return;
     blend(x,y,128,72,58,a*o.a);
@@ -758,7 +820,7 @@ function drawStephenson(o){
 
 var NEB_CORE=[255,246,220], NEB_TEAL=[62,216,176], NEB_PINK=[255,94,134], NEB_BLUE=[112,132,255];
 function drawOrion(o){
-  var R=Math.max(16,66*o.s), cx=o.x, cy=o.y, dr=o.t*0.05;
+  var R=Math.max(0.6, 66*o.s), cx=o.x, cy=o.y, dr=o.t*0.05;
   var x0=Math.max(0,Math.floor(cx-R*1.55)), x1=Math.min(W-1,Math.ceil(cx+R*1.55));
   var y0=Math.max(0,Math.floor(cy-R*1.15)), y1=Math.min(H-1,Math.ceil(cy+R*1.15));
   for(var y=y0;y<=y1;y++) for(var x=x0;x<=x1;x++){
@@ -790,7 +852,7 @@ function drawOrion(o){
   for(var i=0;i<4;i++){
     var tx=cx+tp[i][0]*R*2.2, ty=cy+tp[i][1]*R*2.2;
     var pul=0.80+0.20*Math.sin(o.t*1.1+i*1.7);
-    disc(tx,ty,Math.max(2,5*o.s),function(x,y,dx,dy,t){
+    disc(tx,ty,Math.max(0.6, 5*o.s),function(x,y,dx,dy,t){
       blend(x,y,222,238,255,(1-t)*(1-t)*0.55*pul*o.a);
     });
     blend(tx,ty,255,255,255,o.a*pul);
@@ -822,14 +884,14 @@ function drawPulsar(o){
       }
     }
   }
-  var rr=Math.max(5,17*o.s);
+  var rr=Math.max(0.6, 17*o.s);
   for(i=0;i<74;i++){
     var aa=i/74*6.28;
     var rx=cx+Math.cos(aa)*rr, ry=cy+Math.sin(aa)*rr*0.42;
     if(dith(rx,ry)>0.55) continue;
     blend(rx,ry,126,168,255,0.50*o.a);
   }
-  disc(cx,cy,Math.max(3,8*o.s),function(x,y,dx,dy,t){
+  disc(cx,cy,Math.max(0.6, 8*o.s),function(x,y,dx,dy,t){
     blend(x,y,214,236,255,(1-t)*(1-t)*0.75*o.a);
   });
   px(cx,cy,pack(255,255,255)); px(cx+1,cy,pack(255,255,255));
@@ -878,7 +940,7 @@ function blackHole(o,rad,yc,PAL,outer,bright){
 function drawGargantua(o){ blackHole(o,36,0.135,GORD,2.80,1.00); }
 function drawSgrA(o){
   blackHole(o,19,0.24,SORD,2.25,0.66);
-  var cx=o.x, cy=o.y, r=Math.max(6,19*o.s), i;
+  var cx=o.x, cy=o.y, r=Math.max(0.6, 19*o.s), i;
   var ORB=[[3.4,0.42,0.9,0.0],[4.6,0.30,0.58,2.1],[2.9,0.62,1.35,4.0],[5.6,0.22,0.41,5.2]];
   for(i=0;i<ORB.length;i++){
     var a=o.t*ORB[i][2]*0.35+ORB[i][3];
@@ -889,7 +951,7 @@ function drawSgrA(o){
       if(dith(ox,oy)>0.30) continue;
       blend(ox,oy,120,146,214,0.26*o.a);
     }
-    disc(sx,sy,Math.max(1.5,3.2*o.s),function(x,y,dx,dy,t){
+    disc(sx,sy,Math.max(0.6, 3.2*o.s),function(x,y,dx,dy,t){
       blend(x,y,214,230,255,(1-t)*(1-t)*0.9*o.a);
     });
     blend(sx,sy,255,255,255,o.a);
@@ -897,7 +959,7 @@ function drawSgrA(o){
 }
 
 function drawAndromeda(o){
-  var r=Math.max(14,78*o.s), cx=o.x, cy=o.y;
+  var r=Math.max(0.6, 78*o.s), cx=o.x, cy=o.y;
   var A=-0.38, ca=Math.cos(A), sa=Math.sin(A), spin=o.t*0.02;
   var x0=Math.max(0,Math.floor(cx-r*1.35)), x1=Math.min(W-1,Math.ceil(cx+r*1.35));
   var y0=Math.max(0,Math.floor(cy-r*1.0)), y1=Math.min(H-1,Math.ceil(cy+r*1.0));
@@ -934,7 +996,7 @@ function drawAndromeda(o){
 function drawQuasar(o){
   var cx=o.x-14*o.s, cy=o.y-10*o.s, i, j;
   var pulse=0.86+0.14*Math.sin(o.t*1.4)+0.06*Math.sin(o.t*3.7);
-  var hr=Math.max(8,30*o.s);
+  var hr=Math.max(0.6, 30*o.s);
   disc(cx,cy,hr,function(x,y,dx,dy,t){
     var a=(1-t)*(1-t)*0.42*(0.6+0.7*noise(dx*0.16+120,dy*0.16+909));
     if(dith(x,y)>a*1.8) return;
@@ -955,14 +1017,14 @@ function drawQuasar(o){
       blend(xx,yy,col[0],col[1],col[2],Math.min(0.88,a+0.14)*o.a);
     }
   }
-  var sl=Math.max(8,34*o.s);
+  var sl=Math.max(0.6, 34*o.s);
   for(i=1;i<sl;i++){
     var fa=(1-i/sl)*0.75*pulse;
     if(fa<=0.03) continue;
     blend(cx+i,cy,206,230,255,fa*o.a); blend(cx-i,cy,206,230,255,fa*o.a);
     blend(cx,cy+i,206,230,255,fa*0.85*o.a); blend(cx,cy-i,206,230,255,fa*0.85*o.a);
   }
-  disc(cx,cy,Math.max(4,12*o.s),function(x,y,dx,dy,t){
+  disc(cx,cy,Math.max(0.6, 12*o.s),function(x,y,dx,dy,t){
     blend(x,y,236,246,255,(1-t)*(1-t)*0.9*pulse*o.a);
   });
   px(cx,cy,pack(255,255,255)); px(cx+1,cy,pack(255,255,255));
@@ -971,7 +1033,7 @@ function drawQuasar(o){
 
 var MCRAT=[[-0.34,0.44,0.145],[0.24,-0.31,0.115],[0.50,0.20,0.078],[-0.14,-0.56,0.068],[0.06,0.26,0.058],[-0.55,-0.18,0.052],[0.38,0.54,0.062],[-0.62,0.28,0.045],[0.14,0.66,0.042],[-0.30,-0.10,0.038]];
 function drawMoon(o){
-  var r=Math.max(6,44*o.s), cx=o.x, cy=o.y, i;
+  var r=Math.max(0.6, 44*o.s), cx=o.x, cy=o.y, i;
   disc(cx,cy,r,function(x,y,dx,dy,t){
     var nx=dx/r, ny=dy/r, nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
     var n=noise(dx*0.26+404, dy*0.26+77);
@@ -994,7 +1056,7 @@ function drawMoon(o){
 }
 
 function drawMars(o){
-  var r=Math.max(6,42*o.s), cx=o.x, cy=o.y;
+  var r=Math.max(0.6, 42*o.s), cx=o.x, cy=o.y;
   disc(cx,cy,r*1.055,function(x,y,dx,dy,t){
     if(t<0.945) return;
     blend(x,y,226,150,104,0.30*(1-(t-0.945)/0.055)*o.a);
@@ -1015,7 +1077,7 @@ function drawMars(o){
 }
 
 function drawSaturn(o){
-  var r=Math.max(6,38*o.s), cx=o.x, cy=o.y, yc=0.30, ct=Math.cos(-0.20), st=Math.sin(-0.20);
+  var r=Math.max(0.6, 38*o.s), cx=o.x, cy=o.y, yc=0.30, ct=Math.cos(-0.20), st=Math.sin(-0.20);
   var R1=1.26, R2=2.30;
   var bx0=Math.max(0,Math.floor(cx-r*R2-2)), bx1=Math.min(W-1,Math.ceil(cx+r*R2+2));
   var by0=Math.max(0,Math.floor(cy-r*R2*yc-r-2)), by1=Math.min(H-1,Math.ceil(cy+r*R2*yc+r+2));
@@ -1059,7 +1121,7 @@ function drawSaturn(o){
 }
 
 function drawVoyager(o){
-  var z=Math.max(0.5,1.5*o.s), cx=o.x+4*z, cy=o.y, i;
+  var z=Math.max(0.6, 1.5*o.s), cx=o.x+4*z, cy=o.y, i;
   var HL=[178,184,200], HD=[98,104,124], GLD=[228,180,66], DK=[36,40,56];
   for(i=0;i<56;i++){
     var a=(0.95-i*0.013)*o.a; if(a<=0) break;
@@ -1082,7 +1144,7 @@ function drawVoyager(o){
 }
 
 function drawProxima(o){
-  var r=Math.max(3,16*o.s), cx=o.x, cy=o.y, i;
+  var r=Math.max(0.6, 16*o.s), cx=o.x, cy=o.y, i;
   disc(cx,cy,r*3.0,function(x,y,dx,dy,t){
     if(t<0.333) return;
     var f=(t-0.333)/0.667;
@@ -1119,7 +1181,7 @@ var TPER=[1.51,2.42,4.05,6.10,9.21,12.35,18.77];
 var TCOL=[[190,142,106],[168,126,96],[146,152,168],[118,146,180],[152,160,152],[176,166,148],[136,140,160]];
 function drawTrappist(o){
   var cx=o.x-Math.min(W*0.26,58*o.s), cy=o.y, i, k;
-  var r=Math.max(2.5,12*o.s);
+  var r=Math.max(0.6, 12*o.s);
   disc(cx,cy,r*2.4,function(x,y,dx,dy,t){
     if(t<0.42) return;
     var f=(t-0.42)/0.58, a=(1-f)*(1-f)*0.42;
@@ -1141,7 +1203,7 @@ function drawTrappist(o){
     }
     var a2=o.t*(2.6/TPER[i])+i*0.9;
     var x2=cx+Math.cos(a2)*orb, y2=cy+Math.sin(a2)*orb*0.26;
-    var pr=Math.max(1,2.8*o.s), c2=TCOL[i];
+    var pr=Math.max(0.6, 2.8*o.s), c2=TCOL[i];
     disc(x2,y2,pr,function(x,y,dx,dy,t){
       var lit=q((-dx*0.8-dy*0.3)/pr*0.8+0.5,3);
       var col=mix([26,24,32],c2,lit);
@@ -1151,7 +1213,7 @@ function drawTrappist(o){
 }
 
 function drawErid(o){
-  var r=Math.max(6,46*o.s), cx=o.x, cy=o.y;
+  var r=Math.max(0.6, 46*o.s), cx=o.x, cy=o.y;
   var sx=cx+r*2.45, sy=cy-r*1.30, sr=Math.max(1.6,r*0.19);
   disc(sx,sy,sr*3.4,function(x,y,dx,dy,t){
     if(t<0.294) return;
@@ -1186,8 +1248,129 @@ function drawErid(o){
   });
 }
 
+function drawTauCeti(o){
+  var r=Math.max(0.6, 30*o.s), cx=o.x, cy=o.y, i;
+  var ct=Math.cos(-0.26), st=Math.sin(-0.26);
+  for(var y=Math.max(0,Math.floor(cy-r*3.2));y<=Math.min(H-1,Math.ceil(cy+r*3.2));y++)
+  for(var x=Math.max(0,Math.floor(cx-r*6.4));x<=Math.min(W-1,Math.ceil(cx+r*6.4));x++){
+    var dx=x-cx, dy=y-cy;
+    var u=dx*ct+dy*st, v=(-dx*st+dy*ct)/0.22;
+    var rr=Math.sqrt(u*u+v*v)/r;
+    if(rr<2.1||rr>6.0) continue;
+    var a=(1-(rr-2.1)/3.9)*0.55*(0.4+0.9*noise(rr*9+220, Math.atan2(v,u)*5+40));
+    if(a<=0.03) continue;
+    if(dith(x,y)>a*1.5) continue;
+    var col=mix([96,82,66],[214,192,160],q(a*1.6,3));
+    blend(x,y,col[0],col[1],col[2],Math.min(0.7,a+0.12)*o.a);
+  }
+  disc(cx,cy,r*2.5,function(x,y,dx,dy,t){
+    if(t<0.40) return;
+    var f=(t-0.40)/0.60, a=(1-f)*(1-f)*(1-f)*0.55;
+    if(dith(x,y)>a*1.8) return;
+    blend(x,y,255,196,110,a*o.a);
+  });
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var g=noise(dx*0.36+o.t*0.24+930, dy*0.36+512);
+    var v2=q(0.46+(g-0.5)*1.35-t*t*0.58,5);
+    var col= v2<0.5 ? mix([255,132,26],[255,196,92],q(v2/0.5,3)) : mix([255,196,92],[255,248,214],q((v2-0.5)/0.5,3));
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+}
+
+var D1_ROWS=[
+'....KWWK....','...KWWWWK...','..KWWSSWWK..','..KWSCCSWK..','..KWWSSWWK..',
+'...KWWWWK...','....KWWK....','.....KK.....','.....KK.....','....KWWK....',
+'.....KK.....','.....KK.....','....KWWK....','.....KK.....','.....KK.....',
+'....KGGK....','...KGGGGK...','..KGGGGGGK..','..KGGGGGGK..','...KGGGGK...',
+'...KRRRRK...','....KRRK....'];
+var D1PAL={ 'K':[20,22,32], 'W':[222,226,236], 'S':[56,60,78], 'C':[255,70,52], 'G':[112,116,132], 'R':[255,142,60] };
+var D1SP=null;
+function drawDiscovery(o){
+  if(!D1SP) D1SP=buildSprite(D1_ROWS,D1PAL);
+  var z=Math.max(0.6, 1.35*o.s);
+  drawSprite(D1SP,o.x,o.y,z,0.42+Math.sin(o.t*0.06)*0.05,o.a);
+  var i, ex=o.x-Math.sin(0.42)*z*13, ey=o.y+Math.cos(0.42)*z*13;
+  for(i=0;i<7;i++){
+    var u=i/7;
+    blend(ex+Math.sin(0.42)*(-u*7*z)+(Math.random()-0.5)*1.4*z,
+          ey-Math.cos(0.42)*(-u*7*z)+(Math.random()-0.5)*1.4*z,
+          255,150-u*70,70-u*50,(1-u)*0.5*o.a);
+  }
+}
+
+function drawRama(o){
+  var L=Math.max(0.6, 74*o.s), R=Math.max(0.6, 20*o.s), cx=o.x, cy=o.y;
+  var a=-0.30, ca=Math.cos(a), sa=Math.sin(a);
+  var rad=Math.sqrt(L*L+R*R)+2;
+  var x0=Math.max(0,Math.floor(cx-rad)), x1=Math.min(W-1,Math.ceil(cx+rad));
+  var y0=Math.max(0,Math.floor(cy-rad)), y1=Math.min(H-1,Math.ceil(cy+rad));
+  for(var y=y0;y<=y1;y++) for(var x=x0;x<=x1;x++){
+    var dx=x-cx, dy=y-cy;
+    var u=dx*ca+dy*sa, v=-dx*sa+dy*ca;
+    if(Math.abs(u)>L||Math.abs(v)>R) continue;
+    var av=Math.abs(v)/R;
+    var shade=q(1-av*av*0.92,5);
+    var lit=q(clamp(0.72-v/R*0.85,0,1),5);
+    var col=mix([26,28,34],[148,150,158],Math.min(shade,lit));
+    var band=noise(u*0.09+1700, v*0.30+90);
+    if(band>0.66) col=mix(col,[176,178,188],0.35);
+    if(u>L-2.5) col=mix(col,[214,218,228],0.55);
+    if(u<-L+1.5) col=mix(col,[10,11,16],0.65);
+    if(Math.abs(av-1)<0.10) col=mix(col,[18,19,26],0.55);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  }
+  for(var k=0;k<3;k++){
+    var uu=-L+ (k+1)*L*0.5;
+    for(var j=-R;j<=R;j+=1){
+      var px_=cx+uu*ca-j*sa, py_=cy+uu*sa+j*ca;
+      if(dith(px_,py_)>0.35) continue;
+      blend(px_,py_,206,212,224,0.28*o.a);
+    }
+  }
+}
+
+function drawSolaris(o){
+  var r=Math.max(0.6, 50*o.s), cx=o.x, cy=o.y;
+  var s1x=cx+r*2.05, s1y=cy-r*1.20, s2x=cx+r*2.55, s2y=cy-r*0.72;
+  var sr=Math.max(1.5,r*0.17);
+  disc(s1x,s1y,sr*3.0,function(x,y,dx,dy,t){
+    if(t<0.333) return; var f=(t-0.333)/0.667, a=(1-f)*(1-f)*(1-f)*0.6;
+    if(dith(x,y)>a*1.8) return; blend(x,y,255,80,66,a*o.a);
+  });
+  disc(s1x,s1y,sr,function(x,y,dx,dy,t){
+    var col=mix([238,58,40],[255,196,166],q(1-t*t*0.8,3)); blend(x,y,col[0],col[1],col[2],o.a);
+  });
+  disc(s2x,s2y,sr*2.6,function(x,y,dx,dy,t){
+    if(t<0.385) return; var f=(t-0.385)/0.615, a=(1-f)*(1-f)*(1-f)*0.55;
+    if(dith(x,y)>a*1.8) return; blend(x,y,120,180,255,a*o.a);
+  });
+  disc(s2x,s2y,sr*0.8,function(x,y,dx,dy,t){
+    var col=mix([140,196,255],[236,248,255],q(1-t*t*0.8,3)); blend(x,y,col[0],col[1],col[2],o.a);
+  });
+  disc(cx,cy,r*1.08,function(x,y,dx,dy,t){
+    if(t<0.926) return;
+    var f=(t-0.926)/0.074;
+    blend(x,y,168,140,236,0.50*(1-f)*(1-f)*o.a);
+  });
+  disc(cx,cy,r,function(x,y,dx,dy,t){
+    var nx=dx/r, ny=dy/r, nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
+    var w1=noise(dx*0.10+o.t*0.16+2400, dy*0.10+310);
+    var w2=noise(dx*0.27-o.t*0.11+55, dy*0.27+880);
+    var sw=w1*0.64+w2*0.36;
+    var swirl=0.5+0.5*Math.sin(sw*13.0+Math.atan2(dy,dx)*2.0+o.t*0.30);
+    var col;
+    if(swirl<0.42) col=mix([34,24,74],[92,56,168],q(swirl/0.42,4));
+    else if(swirl<0.74) col=mix([92,56,168],[196,112,206],q((swirl-0.42)/0.32,4));
+    else col=mix([196,112,206],[255,216,150],q((swirl-0.74)/0.26,3));
+    var raw=nx*0.76-ny*0.46+nz*0.42;
+    col=mix(mix([10,7,20],col,0.14),col,q(raw*1.02+0.28,6));
+    if(t>0.93) col=mix(col,[10,7,20],(t-0.93)/0.07*0.85);
+    blend(x,y,col[0],col[1],col[2],o.a);
+  });
+}
+
 function drawLMC(o){
-  var R=Math.max(12,72*o.s), cx=o.x, cy=o.y;
+  var R=Math.max(0.6, 72*o.s), cx=o.x, cy=o.y;
   var A=0.34, ca=Math.cos(A), sa=Math.sin(A);
   var x0=Math.max(0,Math.floor(cx-R*1.3)), x1=Math.min(W-1,Math.ceil(cx+R*1.3));
   var y0=Math.max(0,Math.floor(cy-R*1.0)), y1=Math.min(H-1,Math.ceil(cy+R*1.0));
@@ -1220,7 +1403,7 @@ function drawLMC(o){
 }
 
 function drawCMB(o){
-  var R=Math.max(26,170*o.s), cx=o.x, cy=o.y;
+  var R=Math.max(0.6, 170*o.s), cx=o.x, cy=o.y;
   disc(cx,cy,R,function(x,y,dx,dy,t){
     var raw=(noise(dx*0.085+1200,dy*0.085+640)-noise(dx*0.085+61,dy*0.085+17))*1.55
           + (noise(dx*0.24+40,dy*0.24+9)-noise(dx*0.24+305,dy*0.24+711))*0.95
@@ -1250,6 +1433,11 @@ var STATIONS=[
    note:"Close enough that a radio call takes a second and a quarter each way. It is drifting away from us at roughly the speed your fingernails grow, and the same face has pointed at Earth for billions of years.",
    scale:"Twelve people have stood on it. The furthest any human has ever been from Earth is 400,171 km — Apollo 13, swinging round the far side. On this map that is still the first tick." },
 
+ { name:"Rama", cls:"FICTION / RENDEZVOUS WITH RAMA", m:8.98e10, range:"no distance", fiction:true, flag:"NOT REAL / ARTHUR C. CLARKE", draw:drawRama,
+   specs:[["LENGTH","50 km"],["DIAMETER","20 km"],["SPIN","one turn every 4 minutes"],["SPIN GRAVITY","0.6 g at the hull"],["ARRIVED","2131, on a hyperbolic orbit"],["CREW","none aboard, none expected"]],
+   note:"Arthur C. Clarke's cylinder, from Rendezvous with Rama (1973). It entered the solar system, was catalogued as an asteroid, turned out to be machined, and left without explaining itself. Its inner surface is a landscape wrapped into a tube, lit by strip suns running the length of it.",
+   scale:"Rotate a 20 km tube once every four minutes and the inside floor pushes back at six tenths of a gravity. Clarke did the arithmetic before he wrote the scene." },
+
  { name:"The Sun", cls:"G2V MAIN-SEQUENCE STAR", m:1.0*AU, range:"1 AU", draw:drawSun,
    specs:[["RANGE","149.6 million km"],["LIGHT DELAY","8 min 20 s"],["RADIUS","696,340 km"],["SURFACE","5,772 K"],["CORE","15.7 million K"],["AGE","4.6 billion years"]],
    note:"Every second it converts about four million tonnes of itself into light. The photons landing on your visor began as gamma rays in the core and spent tens of thousands of years fighting their way to the surface.",
@@ -1269,6 +1457,11 @@ var STATIONS=[
    specs:[["RADIUS","69,911 km"],["MASS","317.8 Earths"],["DAY","9 h 56 m"],["MOONS","95 and counting"],["GREAT RED SPOT","about 16,000 km wide"]],
    note:"It spins so fast that it is visibly squashed at the poles. The Great Red Spot is a storm wider than Earth that astronomers have been watching for at least 190 years, and it is shrinking.",
    scale:"Jupiter outweighs every other planet in the solar system combined — two and a half times over." },
+
+ { name:"Discovery One", cls:"FICTION / 2001: A SPACE ODYSSEY", m:5.3*AU, range:"no distance", fiction:true, flag:"NOT REAL / KUBRICK + CLARKE", draw:drawDiscovery,
+   specs:[["LENGTH","about 140 m"],["CREW","5, three of them in hibernation"],["BOUND FOR","Jupiter"],["COMPUTER","HAL 9000"],["RELEASED","1968"]],
+   note:"The ship from 2001: A Space Odyssey, built as a command sphere on a long spine so the nuclear drive at the back would sit as far as possible from the people at the front. Kubrick left the exhaust invisible, because a real one would be.",
+   scale:"Filmed the year before Apollo 11, and still the reason most people picture spacecraft as thin and unaerodynamic rather than winged." },
 
  { name:"Saturn", cls:"GAS GIANT", m:9.58*AU, range:"9.58 AU", draw:drawSaturn,
    specs:[["RADIUS","58,232 km"],["DENSITY","0.69 — less than water"],["RINGS","282,000 km across"],["RING THICKNESS","tens of metres"],["DAY","10 h 33 m"],["MOONS","146 confirmed"]],
@@ -1295,6 +1488,11 @@ var STATIONS=[
    note:"The nearest star to the Sun, and you cannot see it — far too faint for the naked eye despite being next door. It is a flare star: in 2019 it threw a burst that brightened it thousands of times over in ultraviolet, for a few seconds.",
    scale:"Proxima b sits in the habitable zone and finishes a year every 11 days, close enough that those flares wash straight over it." },
 
+ { name:"Tau Ceti", cls:"G8V MAIN-SEQUENCE STAR", m:11.912*LY, range:"11.9 ly", draw:drawTauCeti,
+   specs:[["RADIUS","79% of the Sun"],["MASS","78% of the Sun"],["SURFACE","5,320 K"],["AGE","about 5.8 billion years"],["DEBRIS DISC","roughly 10× the Kuiper belt"],["PLANET CANDIDATES","4 disputed"]],
+   note:"The nearest single Sun-like star, and the one the Hail Mary was sent to in Andy Weir's novel. It is wrapped in a debris disc ten times heavier than our Kuiper belt, which means anything living there would be under steady bombardment.",
+   scale:"It has been the default answer to 'where would we go' since the 1960s, when Project Ozma pointed a dish at it and listened." },
+
  { name:"Erid", cls:"FICTION / PROJECT HAIL MARY", m:16.26*LY, range:"no distance", fiction:true, voice:true, flag:"NOT REAL / ERIDIAN SPEECH", draw:drawErid,
    specs:[["HOST STAR","40 Eridani A — real, 16.3 ly"],["GRAVITY","about 2 × Earth"],["AIR","ammonia at roughly 29 atmospheres"],["SURFACE","around 210 C"],["DAYLIGHT","none reaches the ground"],["THE HAIL MARY WENT TO","Tau Ceti, 11.9 ly"]],
    note:"Rocky's home, from Andy Weir's Project Hail Mary. The air is ammonia at twenty-nine atmospheres and it is completely opaque, so no Eridian has ever seen a star. They deduced that other suns had to exist from physics alone, built a ship, and went to one.",
@@ -1309,6 +1507,11 @@ var STATIONS=[
    specs:[["DISTANCE","disputed: 500 – 720 ly"],["RADIUS","about 760 × the Sun"],["MASS","16 – 19 × the Sun"],["SURFACE","3,600 K"],["LUMINOSITY","about 126,000 × the Sun"],["AGE","roughly 10 million years"]],
    note:"In 2019 the shoulder of Orion dimmed by two thirds and the world briefly wondered whether it was about to explode. It had coughed out a cloud of dust that cooled and blocked its own light. It will go supernova — probably not this century.",
    scale:"Put it where the Sun is and its surface would swallow Mercury, Venus, Earth and Mars, and reach into the asteroid belt." },
+
+ { name:"Solaris", cls:"FICTION / STANISŁAW LEM", m:700*LY, range:"no distance", fiction:true, flag:"NOT REAL / LEM, 1961", draw:drawSolaris,
+   specs:[["SUNS","two — one red, one blue"],["ORBIT","should be unstable; is not"],["SURFACE","a single ocean"],["THE OCEAN","appears to be the thinking thing"],["NOVEL","1961"],["DISTANCE","never given"]],
+   note:"Lem's planet, orbiting a binary it has no business orbiting stably, because the ocean covering it adjusts the orbit itself. Humans studied it for a century and produced a library of theories and no understanding. The book is about that failure, not the planet.",
+   scale:"Parked here arbitrarily; Lem never says how far away it is. That is the point of the dashed tick." },
 
  { name:"The Orion Nebula", cls:"H II REGION / STELLAR NURSERY / M42", m:1344*LY, range:"1,344 ly", draw:drawOrion,
    specs:[["WIDTH","24 light-years"],["MASS","about 2,000 × the Sun"],["AGE","roughly 3 million years"],["FORMING NOW","around 700 protostars"],["IONISED BY","the Trapezium, four hot stars"]],
@@ -1356,6 +1559,42 @@ var STATIONS=[
    scale:"The plasma that let this light go is now about 45.7 billion light-years away — further than the 13.8 billion the light actually travelled, because space kept stretching while it was in flight. There is no station after this one." }
 ];
 
+/* physical radius in metres, what is being measured, nominal drawn radius at s=1 */
+var PHYS={
+ 'Low Earth Orbit':[6.371e6,'Earth, the planet you just left',88],
+ 'The Moon':[1.7374e6,'',44],
+ 'Rama':[1.0e4,'radius of the cylinder',20],
+ 'The Sun':[6.9634e8,'',58],
+ 'Mars':[3.3895e6,'',42],
+ 'The Main Belt':[2.625e5,'Vesta, the largest body in it',9],
+ 'Jupiter':[6.9911e7,'',54],
+ 'Discovery One':[70,'half its 140 m length',18],
+ 'Saturn':[5.8232e7,'not counting the rings',38],
+ '1P / Halley':[5.5e3,'the nucleus',5],
+ 'Pluto':[1.188e6,'',34],
+ 'Voyager 1':[1.85,'the dish',15],
+ 'Proxima Centauri':[1.0737e8,'',16],
+ 'Tau Ceti':[5.503e8,'',30],
+ 'Erid':[0,'never given',46],
+ 'TRAPPIST-1':[8.30e7,'the star, not the planets',12],
+ 'Betelgeuse':[5.320e11,'',46],
+ 'Solaris':[0,'never given',50],
+ 'The Orion Nebula':[1.135e17,'half its 24 ly width',66],
+ 'The Crab Pulsar':[1.0e4,'',8],
+ 'Stephenson 2-18':[1.497e12,'',74],
+ 'Sagittarius A*':[1.27e10,'the event horizon',19],
+ 'Gargantua':[1.477e11,'the event horizon',36],
+ 'Large Magellanic Cloud':[1.514e20,'half its 32,000 ly width',72],
+ 'Andromeda':[7.190e20,'half its 152,000 ly width',78],
+ '3C 273':[2.615e12,'the event horizon of its engine',12],
+ 'The Microwave Background':[4.40e26,'the observable universe',170]
+};
+for(var _p=0;_p<STATIONS.length;_p++){
+  var _z=PHYS[STATIONS[_p].name];
+  if(_z){ STATIONS[_p].r=_z[0]; STATIONS[_p].rl=_z[1]; STATIONS[_p].nom=_z[2]; }
+  else { STATIONS[_p].r=0; STATIONS[_p].rl=''; STATIONS[_p].nom=40; }
+}
+
 /* ============================ readout formatting ============================ */
 function group(n){ return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 function fmtRange(m){
@@ -1377,7 +1616,7 @@ function rangeAt(p){
 
 /* ============================ world layout ============================ */
 var SPACING=340, NS=STATIONS.length;
-var YOFF=[0,74,-62,92,-104,58,-84,118,-52,96,-116,-46,64,-90,52,-108,78,-58,112,-70,88,-120,66];
+var YOFF=[0,74,-118,-62,92,-104,58,86,-84,118,-52,96,-116,44,-46,64,-90,110,52,-108,78,-58,112,-70,88,-120,66];
 for(var _i=0;_i<NS;_i++){ STATIONS[_i].wx=_i*SPACING; STATIONS[_i].wy=YOFF[_i]||0; STATIONS[_i].seen=(_i===0); }
 var XMIN=-300, XMAX=(NS-1)*SPACING+300, YLIM=340;
 
@@ -1465,6 +1704,31 @@ var PL=[
   {x:-40,y: 35,vx:0,vy:0,rot:0.2,crew:1,thr:false,teth:[],tinit:false}
 ];
 var P2=false, MAXSEP=330;
+var lightOn=false, scaleOn=false, tourOn=false, photoOn=false;
+var pinIdx=0, curIdx=0, tourIdx=0, tourT=0, hashT=0;
+var C_LIGHT=299792458;
+function fmtDelay(sec){
+  if(sec<1) return (sec*1000).toFixed(1)+' ms';
+  if(sec<90) return sec.toFixed(1)+' s';
+  if(sec<5400) return (sec/60).toFixed(1)+' min';
+  if(sec<172800) return (sec/3600).toFixed(1)+' h';
+  var yr=sec/31557600;
+  if(yr<2) return (sec/86400).toFixed(1)+' days';
+  if(yr<1e3) return yr.toFixed(0)+' years';
+  if(yr<1e6) return (yr/1e3).toFixed(1)+' thousand years';
+  if(yr<1e9) return (yr/1e6).toFixed(2)+' million years';
+  return (yr/1e9).toFixed(2)+' billion years';
+}
+function fmtLen(m){
+  if(m<1) return (m*100).toFixed(0)+' cm';
+  if(m<1e4) return group(Math.round(m))+' m';
+  if(m<1e10) return group(Math.round(m/1000))+' km';
+  if(m<0.05*LY) return (m/AU).toPrecision(3)+' AU';
+  var ly=m/LY;
+  if(ly<1e3) return ly.toPrecision(3)+' ly';
+  if(ly<1e6) return (ly/1e3).toPrecision(3)+' thousand ly';
+  return (ly/1e6).toPrecision(3)+' million ly';
+}
 var elZval=document.getElementById('zVal');
 function zoomBy(f){ zTarget=clamp(zTarget*f,ZMIN,ZMAX); }
 document.getElementById('zIn').addEventListener('click',function(){ zoomBy(1.22); });
@@ -1501,12 +1765,17 @@ document.addEventListener('keydown',function(e){
   if(k==='v'){ if(P2) cycleCrew(1); return; }
   if(k==='f'){ e.preventDefault(); toggleFull(); return; }
   if(k==='p'){ togglePlayers(); return; }
+  if(k==='l'){ toggleLight(); return; }
+  if(k==='x'){ toggleScale(); return; }
+  if(k==='t'){ toggleTour(); return; }
+  if(k==='h'){ togglePhoto(); return; }
+  if(k==='escape'){ if(!shotModal.hidden){ shotModal.hidden=true; shotImg.src=''; } if(scaleOn) toggleScale(); if(photoOn) togglePhoto(); return; }
   if(k==='['){ e.preventDefault(); autopilot(Math.max(0,nearestIndex()-1)); return; }
   if(k===']'){ e.preventDefault(); autopilot(Math.min(NS-1,nearestIndex()+1)); return; }
   if(k==='='||k==='+'){ e.preventDefault(); zoomBy(1.18); return; }
   if(k==='-'||k==='_'){ e.preventDefault(); zoomBy(1/1.18); return; }
   if(k==='0'){ zTarget=1; return; }
-  if(KMALL[k]){ keys[k]=1; auto=null; if(k.indexOf('arrow')===0) e.preventDefault(); }
+  if(KMALL[k]){ keys[k]=1; cancelTour(); auto=null; if(k.indexOf('arrow')===0) e.preventDefault(); }
 });
 document.addEventListener('keyup',function(e){ keys[e.key.toLowerCase()]=0; });
 window.addEventListener('blur',function(){ keys={}; });
@@ -1520,7 +1789,7 @@ function ptDist(){
 stage.addEventListener('pointerdown',function(e){
   if(e.target.tagName==='BUTTON') return;
   pts[e.pointerId]={x:e.clientX,y:e.clientY}; nPts=Object.keys(pts).length;
-  auto=null;
+  cancelTour(); auto=null;
   if(nPts>=2){ ptr=null; pinchD=ptDist(); stage.classList.remove('dragging'); }
   else { ptr={x:e.clientX,y:e.clientY}; stage.classList.add('dragging'); }
   try{ stage.setPointerCapture(e.pointerId); }catch(err){}
@@ -1550,7 +1819,8 @@ function thrustVector(idx){
   var pl=PL[idx], ax=0, ay=0, k;
   var km = P2 ? (idx===0?KM1:KM2) : KMALL;
   for(k in keys) if(keys[k] && km[k]){ ax+=km[k][0]; ay+=km[k][1]; }
-  if(idx===0 && ptr){
+  if(idx===0 && stickVec){ ax+=stickVec[0]; ay+=stickVec[1]; }
+  if(idx===0 && ptr && !stickVec){
     var r=stage.getBoundingClientRect();
     var tx=(ptr.x-r.left)/r.width*W, ty=(ptr.y-r.top)/r.height*H;
     var sx=(pl.x-camX)*zoom+W/2, sy=(pl.y-camY)*zoom+H/2;
@@ -1869,7 +2139,181 @@ document.addEventListener('fullscreenchange',paintFull);
 document.addEventListener('webkitfullscreenchange',paintFull);
 if(!(stage.requestFullscreen||stage.webkitRequestFullscreen)) btnFull.disabled=true;
 
+var elScalePanel=document.getElementById('scalePanel');
+var spA=document.getElementById('spA'), spB=document.getElementById('spB'), spNote=document.getElementById('spNote');
+var kLight=document.getElementById('kLight'), hLight=document.getElementById('hLight');
+var btnScale=document.getElementById('btnScale'), btnLight=document.getElementById('btnLight');
+var btnTour=document.getElementById('btnTour'), btnPhoto=document.getElementById('btnPhoto');
+var btnLink=document.getElementById('btnLink'), btnPin=document.getElementById('btnPin');
+var btnShoot=document.getElementById('btnShoot');
+var shotModal=document.getElementById('shotModal'), shotImg=document.getElementById('shotImg');
+var shotSave=document.getElementById('shotSave'), shotClose=document.getElementById('shotClose');
+
+function paintModes(){
+  btnScale.setAttribute('aria-pressed',scaleOn?'true':'false');
+  btnLight.setAttribute('aria-pressed',lightOn?'true':'false');
+  btnTour.setAttribute('aria-pressed',tourOn?'true':'false');
+  btnPhoto.setAttribute('aria-pressed',photoOn?'true':'false');
+  elScalePanel.hidden=!scaleOn;
+  stage.classList.toggle('scaling',scaleOn);
+  kLight.hidden=!lightOn; hLight.hidden=!lightOn;
+  btnShoot.hidden=!photoOn;
+  stage.classList.toggle('photo',photoOn);
+}
+function toggleScale(){ scaleOn=!scaleOn; if(scaleOn){ photoOn=false; } paintModes(); }
+function toggleLight(){ lightOn=!lightOn; paintModes(); }
+function togglePhoto(){ photoOn=!photoOn; if(photoOn){ scaleOn=false; } paintModes(); }
+function cancelTour(){ if(tourOn){ tourOn=false; auto=null; paintModes(); } }
+function toggleTour(){
+  tourOn=!tourOn;
+  if(tourOn){ tourIdx=nearestIndex(); tourT=0; autopilot(tourIdx); } else auto=null;
+  paintModes();
+}
+btnScale.addEventListener('click',toggleScale);
+btnLight.addEventListener('click',toggleLight);
+btnTour.addEventListener('click',toggleTour);
+btnPhoto.addEventListener('click',togglePhoto);
+btnPin.addEventListener('click',function(){ pinIdx=curIdx; spShown=''; });
+document.getElementById('btnScaleOut').addEventListener('click',toggleScale);
+
+/* Saving works two ways: a plain download link on a normal web host, and the
+   viewer-confirmed downloads capability inside the claude.ai artifact frame. */
+var shotCanvas=null, DL=null, inFrame=!!(window.claude && window.claude.use);
+if(inFrame){
+  try{
+    window.claude.use('downloads').then(function(d){ DL=d; if(!d) shotSave.hidden=true; },
+                                        function(){ shotSave.hidden=true; });
+  }catch(err){ shotSave.hidden=true; }
+}
+function shoot(){
+  var f=Math.max(2,Math.round(1920/W));
+  var c=document.createElement('canvas');
+  c.width=W*f; c.height=H*f;
+  var cc=c.getContext('2d');
+  cc.imageSmoothingEnabled=false;
+  cc.drawImage(cv,0,0,c.width,c.height);
+  var url;
+  try{ url=c.toDataURL('image/png'); }catch(err){ return; }
+  shotCanvas=c;
+  shotImg.src=url; shotSave.href=url;
+  shotSave.download='amaze-'+STATIONS[curIdx].name.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.png';
+  shotModal.hidden=false;
+}
+function shotFlash(txt,ms){
+  shotSave.textContent=txt;
+  setTimeout(function(){ shotSave.textContent='SAVE PNG'; },ms||1600);
+}
+shotSave.addEventListener('click',function(e){
+  if(!DL||!shotCanvas) return;
+  e.preventDefault();
+  var name=shotSave.download;
+  shotCanvas.toBlob(function(b){
+    if(!b) return;
+    DL.save({filename:name,data:b}).then(function(){ shotFlash('SAVED'); },
+      function(err){ if(err&&err.code==='declined') return; shotFlash('COULD NOT SAVE',2200); });
+  },'image/png');
+});
+btnShoot.addEventListener('click',shoot);
+shotClose.addEventListener('click',function(){ shotModal.hidden=true; shotImg.src=''; });
+shotModal.addEventListener('click',function(e){ if(e.target===shotModal){ shotModal.hidden=true; shotImg.src=''; } });
+
+/* ---- shareable coordinates ---- */
+function buildHash(){
+  var h='#x='+PL[0].x.toFixed(0)+'&y='+PL[0].y.toFixed(0)+'&z='+zoom.toFixed(2)+'&c='+PL[0].crew;
+  if(P2) h+='&p=1&c2='+PL[1].crew;
+  if(lightOn) h+='&l=1';
+  return h;
+}
+function readHash(){
+  var h=location.hash.replace(/^#/,'');
+  if(!h) return;
+  var q={}, parts=h.split('&'), i;
+  for(i=0;i<parts.length;i++){ var kv=parts[i].split('='); q[kv[0]]=kv[1]; }
+  if(q.x!==undefined && isFinite(+q.x)) PL[0].x=clamp(+q.x,XMIN,XMAX);
+  if(q.y!==undefined && isFinite(+q.y)) PL[0].y=clamp(+q.y,-YLIM,YLIM);
+  if(q.z!==undefined && isFinite(+q.z)){ zTarget=clamp(+q.z,ZMIN,ZMAX); zoom=zTarget; }
+  if(q.c!==undefined && CREWS[+q.c]) PL[0].crew=+q.c;
+  if(q.p==='1'){ P2=true; PL[1].x=PL[0].x+46; PL[1].y=PL[0].y+34; if(q.c2!==undefined && CREWS[+q.c2]) PL[1].crew=+q.c2; }
+  if(q.l==='1') lightOn=true;
+}
+btnLink.addEventListener('click',function(){
+  var url=location.href.split('#')[0]+buildHash();
+  var done=function(){ btnLink.textContent='LINK COPIED'; setTimeout(function(){ btnLink.textContent='COPY LINK'; },1600); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(done,function(){ btnLink.textContent='SEE ADDRESS BAR'; setTimeout(function(){ btnLink.textContent='COPY LINK'; },1600); });
+  } else { btnLink.textContent='SEE ADDRESS BAR'; setTimeout(function(){ btnLink.textContent='COPY LINK'; },1600); }
+});
+
+/* ---- virtual thumbstick ---- */
+var stickEl=document.getElementById('stick'), knobEl=document.getElementById('knob');
+var stickVec=null, stickId=null;
+if(window.matchMedia && window.matchMedia('(pointer: coarse)').matches) stickEl.hidden=false;
+stickEl.addEventListener('pointerdown',function(e){
+  e.preventDefault(); e.stopPropagation();
+  stickId=e.pointerId; cancelTour(); auto=null;
+  try{ stickEl.setPointerCapture(e.pointerId); }catch(err){}
+  stickMove(e);
+});
+stickEl.addEventListener('pointermove',function(e){ if(stickId===e.pointerId) stickMove(e); });
+function stickMove(e){
+  var r=stickEl.getBoundingClientRect();
+  var dx=(e.clientX-(r.left+r.width/2))/(r.width/2);
+  var dy=(e.clientY-(r.top+r.height/2))/(r.height/2);
+  var d=Math.sqrt(dx*dx+dy*dy);
+  if(d>1){ dx/=d; dy/=d; d=1; }
+  stickVec=[dx,dy];
+  knobEl.style.transform='translate('+(dx*r.width*0.30)+'px,'+(dy*r.height*0.30)+'px)';
+}
+function stickEnd(e){
+  if(stickId!==null && e && e.pointerId!==stickId) return;
+  stickId=null; stickVec=null; knobEl.style.transform='';
+}
+stickEl.addEventListener('pointerup',stickEnd);
+stickEl.addEventListener('pointercancel',stickEnd);
+stickEl.addEventListener('lostpointercapture',stickEnd);
+
 /* ============================ frame loop ============================ */
+var spShown='';
+function renderScale(){
+  buf.fill(VOID);
+  drawStars(camX*0.22,camY*0.22);
+  var A=STATIONS[pinIdx], B=STATIONS[curIdx];
+  var key=pinIdx+'/'+curIdx;
+  if(!A.r||!B.r){
+    var bad = !A.r ? A : B;
+    if(spShown!==key){
+      spShown=key;
+      spA.textContent=A.name.toUpperCase(); spB.textContent=B.name.toUpperCase();
+      spNote.textContent=bad.name+"'s size "+(bad.rl||'is not published')+", so it cannot be drawn to scale. Pin something else.";
+    }
+    return;
+  }
+  var bigger = A.r>=B.r ? A : B, smaller = A.r>=B.r ? B : A;
+  var ratio = bigger.r/smaller.r;
+  var bigPx = H*0.40;
+  var smlPx = bigPx/ratio;
+  var by=H*0.50, bx=W*0.70, sx=W*0.20, sy=H*0.50;
+  bigger.draw({x:bx,y:by,s:bigPx/bigger.nom,a:1,t:T});
+  if(smlPx>=0.75){
+    smaller.draw({x:sx,y:sy,s:smlPx/smaller.nom,a:1,t:T});
+  }else{
+    blend(sx,sy,255,255,255,1);
+    for(var i=0;i<46;i++){
+      var aa=i/46*6.283;
+      var rx=sx+Math.cos(aa)*9, ry=sy+Math.sin(aa)*9;
+      if(dith(rx,ry)>0.45) continue;
+      blend(rx,ry,58,214,192,0.6);
+    }
+  }
+  if(spShown!==key){
+    spShown=key;
+    spA.textContent=smaller.name.toUpperCase()+'  '+fmtLen(smaller.r)+(smaller.rl?'  ('+smaller.rl+')':'');
+    spB.textContent=bigger.name.toUpperCase()+'  '+fmtLen(bigger.r)+(bigger.rl?'  ('+bigger.rl+')':'');
+    var r2 = ratio>=1e6 ? (ratio/1e6).toPrecision(3)+' million' : (ratio>=1e3 ? group(Math.round(ratio)) : ratio.toFixed(ratio<10?1:0));
+    var tail = smlPx>=0.75 ? '' : '  At this size the smaller one would be '+(1/smlPx).toPrecision(2)+' times narrower than one pixel, so it is marked with a ring instead.';
+    spNote.textContent = bigger.name+' is '+r2+' times wider than '+smaller.name+'.'+tail;
+  }
+}
 function render(){
   buf.fill(VOID);
   drawStars(camX*zoom,camY*zoom);
@@ -1901,7 +2345,6 @@ function render(){
     drawCrew(PL[1],camX,camY,zoom,base);
   }
   drawCrew(PL[0],camX,camY,zoom,base);
-  ctx.putImageData(img,0,0);
 }
 
 function frame(ms){
@@ -1947,6 +2390,11 @@ function frame(ms){
   var pos=clamp(camX/SPACING,0,NS-1);
   space=clamp(camX/((NS-1)*SPACING),0,1); arr=0.15+space*0.85;
   var ni=nearestIndex(), near=STATIONS[ni];
+  curIdx=ni;
+  if(tourOn){
+    if(auto){ tourT=0; }
+    else { tourT+=dt; if(tourT>6.0){ tourT=0; tourIdx=(tourIdx+1)%NS; autopilot(tourIdx); } }
+  }
   var best=1e18;
   for(var pi=0;pi<(P2?2:1);pi++){
     var ddx=near.wx-PL[pi].x, ddy=near.wy-PL[pi].y;
@@ -1968,6 +2416,12 @@ function frame(ms){
 
   var m=rangeAt(pos);
   elRange.textContent = (near.fiction && best < 190*190) ? "—" : fmtRange(m);
+  if(lightOn){
+    var lt = near.fiction ? "—" : fmtDelay(near.m/C_LIGHT)+' ago';
+    if(hLight.textContent!==lt) hLight.textContent=lt;
+  }
+  hashT+=dt;
+  if(hashT>1.1){ hashT=0; try{ history.replaceState(null,'',buildHash()); }catch(err){} }
   elDv.textContent = dvSpent.toFixed(1)+' m/s';
   cursorEl.style.left=Math.max(0,Math.min(100,posPct(m)))+'%';
 
@@ -1989,16 +2443,19 @@ function frame(ms){
     }
   }
 
-  render();
+  if(scaleOn) renderScale(); else render();
+  ctx.putImageData(img,0,0);
   requestAnimationFrame(frame);
 }
 
 var ro=('ResizeObserver' in window)?new ResizeObserver(function(){ sizeBuffer(); }):null;
 if(ro) ro.observe(stage); else window.addEventListener('resize',sizeBuffer);
+readHash();
 camX=PL[0].x; camY=PL[0].y;
 sizeBuffer();
 paintCrew();
 paintFull();
+paintModes();
 showStation(0);
 requestAnimationFrame(frame);
 })();
