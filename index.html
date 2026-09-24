@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Fly an astronaut - or Rocky - past twenty-three real astronomical objects, from low Earth orbit to the oldest light in the universe, laid out on a true logarithmic distance scale.">
+<meta name="description" content="Fly an astronaut, Rocky, the Hail Mary or the Blip-A past twenty-three real astronomical objects, from low Earth orbit to the oldest light in the universe, on a true logarithmic distance scale.">
 <meta name="theme-color" content="#04060e">
 <meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Amaze">
-<meta property="og:description" content="Fly an astronaut - or Rocky - past twenty-three real astronomical objects, from low Earth orbit to the oldest light in the universe, laid out on a true logarithmic distance scale.">
+<meta property="og:description" content="Fly an astronaut, Rocky, the Hail Mary or the Blip-A past twenty-three real astronomical objects, from low Earth orbit to the oldest light in the universe, on a true logarithmic distance scale.">
 <meta property="og:image" content="docs/hero.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%AA%90%3C/text%3E%3C/svg%3E">
@@ -66,9 +66,13 @@ body{
 .snd{font-family:var(--bit); font-size:9px; letter-spacing:.13em; padding:6px 8px; background:rgba(4,6,14,.78); border:1px solid var(--line2); color:var(--mid); cursor:pointer; line-height:1;}
 .snd:hover{color:var(--teal); border-color:var(--teal)}
 .snd[aria-pressed="true"]{color:#08130f; background:var(--teal); border-color:var(--teal);}
-.snd.crew{color:#c9a274; border-color:#4a3b2c}
+.snd.crew.c0{color:#e6ebf7; border-color:#39415e}
+.snd.crew.c1{color:#d0a274; border-color:#4d3d2d}
+.snd.crew.c2{color:#ff8a92; border-color:#5c2c32}
+.snd.crew.c3{color:#7fdde4; border-color:#27515b}
 .snd.crew:hover{color:var(--gold); border-color:var(--gold)}
-.snd.crew.on{background:#c08a4a; border-color:#c08a4a; color:#17100a}
+.stage:fullscreen{height:100vh; width:100vw; max-height:none; border:0;}
+.stage:-webkit-full-screen{height:100vh; width:100vw; max-height:none; border:0;}
 .zoom{display:flex; gap:4px; align-items:center;}
 .znb{font-family:var(--bit); font-size:10px; width:20px; height:20px; padding:0; background:rgba(4,6,14,.78); border:1px solid var(--line2); color:var(--mid); cursor:pointer; line-height:1;}
 .znb:hover{color:var(--gold); border-color:var(--gold)}
@@ -160,6 +164,7 @@ body{
 
 /* ---- footer ---- */
 .foot{margin-top:clamp(34px,5vw,54px); padding-top:18px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:14px 34px; justify-content:space-between;}
+.foot p b{color:var(--gold); font-weight:500}
 .foot p{margin:0; max-width:52ch; font-size:12px; color:var(--dim); line-height:1.7;}
 .foot a{color:var(--mid); text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line2);}
 .foot a:hover{color:var(--gold); text-decoration-color:var(--gold)}
@@ -194,13 +199,16 @@ body{
         <div class="ctl">
           <button class="snd" id="btnSnd" type="button" aria-pressed="false">SOUND OFF</button>
           <span class="beat" id="beat" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          <button class="snd crew" id="btnCrew" type="button">PLAY AS ROCKY</button>
+          <button class="snd crew c0" id="btnCrew" type="button">ASTRONAUT</button>
+          <button class="snd crew c1" id="btnCrew2" type="button" hidden>ROCKY</button>
+          <button class="snd" id="btnP2" type="button" aria-pressed="false">1 PLAYER</button>
+          <button class="snd" id="btnFull" type="button" aria-pressed="false">FULLSCREEN</button>
           <span class="zoom">
             <button class="znb" id="zOut" type="button" aria-label="Zoom out">-</button>
             <span class="zval" id="zVal">1.0x</span>
             <button class="znb" id="zIn" type="button" aria-label="Zoom in">+</button>
           </span>
-          <span class="hint">WASD OR DRAG &middot; SCROLL TO ZOOM</span>
+          <span class="hint">WASD OR DRAG &middot; SCROLL ZOOMS</span>
         </div>
         <div class="read r">
           <span class="fic-flag" id="hFic" hidden>NOT REAL / FILM PHYSICS</span>
@@ -233,7 +241,7 @@ body{
 
   <footer class="foot">
     <p>Figures are the published values for each object; where astronomers disagree &mdash; Betelgeuse&rsquo;s distance, Stephenson&nbsp;2-18&rsquo;s radius &mdash; the disagreement is noted rather than hidden. Object list drawn from the <a href="https://en.wikipedia.org/wiki/Lists_of_astronomical_objects" target="_blank" rel="noopener">Wikipedia lists of astronomical objects</a>.</p>
-    <p>Two stations are fiction and both wear a dashed tick, because neither has a distance to put on this axis. Gargantua is the black hole built for <i>Interstellar</i> (2014) out of real Kerr-metric ray tracing. Erid is Rocky’s world from Andy Weir’s <i>Project Hail Mary</i>, parked at the real 40 Eridani A; fly close with the sound on and it speaks to you in chords, the way Eridians do.<br>Thrust with WASD or the arrow keys, drag inside the frame to steer, scroll or pinch to zoom, press C to swap crew and M to cut the sound. Rocky flies in a xenonite bubble, since twenty-nine atmospheres of ammonia do not travel well. The delta-v counter is vanity &mdash; a real SAFER jetpack carries about 3&nbsp;m/s in total, enough to get you back to the handrail and no further.<br>The music is generated live in the browser &mdash; no recording &mdash; and opens up the further out you get. Pixel look and free roam after <a href="https://hallucinate.site/" target="_blank" rel="noopener">hallucinate.site</a>.</p>
+    <p>Two stations are fiction and both wear a dashed tick, because neither has a distance to put on this axis. Gargantua is the black hole built for <i>Interstellar</i> (2014) out of real Kerr-metric ray tracing. Erid is Rocky’s world from Andy Weir’s <i>Project Hail Mary</i>, parked at the real 40 Eridani A; fly close with the sound on and it speaks to you in chords, the way Eridians do.<br>Thrust with WASD or the arrow keys, drag to steer, scroll or pinch to zoom. <b>C</b> cycles crew, <b>P</b> adds a second player on the arrow keys (you share one EVA, so you cannot drift out of each other&rsquo;s sight), <b>F</b> goes fullscreen, <b>[</b> and <b>]</b> jump between objects, <b>M</b> cuts the sound. Rocky flies in a xenonite bubble, since twenty-nine atmospheres of ammonia do not travel well. The delta-v counter is vanity &mdash; a real SAFER jetpack carries about 3&nbsp;m/s in total, enough to get you back to the handrail and no further.<br>The music is generated live in the browser &mdash; no recording &mdash; and opens up the further out you get. Pixel look and free roam after <a href="https://hallucinate.site/" target="_blank" rel="noopener">hallucinate.site</a>.</p>
   </footer>
 </div>
 
@@ -423,7 +431,28 @@ var SP=(function(){
   return {w:w,h:h,data:data,pal:pal};
 })();
 var RSP=buildSprite(ROCKY_ROWS,RPAL);
-var CREW=0;
+
+var HM_ROWS=[
+'.....KK.....','....KWWK....','....KWWK....','...KWWWWK...','...KWWWWK...',
+'..KWWWWWWK..','..KWWWWWWK..','..KWSWWSWK..','..KWWWWWWK..','.KKWWWWWWKK.',
+'KWWKWWWWKWWK','KWWKWWWWKWWK','KWWKWWWWKWWK','.KKKWWWWKKK.','..KWWWWWWK..',
+'..KWWWWWWK..','..KWGGGGWK..','..KKGGGGKK..','...KGGGGK...','...KRRRRK...',
+'....KRRK....','.....RR.....'];
+var HMPAL={ 'K':[22,26,40], 'W':[228,233,244], 'S':[126,138,166], 'G':[92,98,118], 'R':[255,62,74] };
+
+var BA_ROWS=[
+'......KK......','.....KBBK.....','....KBRRBK....','...KBRRRRBK...','..KBRRRRRRBK..',
+'..KRRRLLRRRK..','.KBRRLCCLRRBK.','.KBRRLCCLRRBK.','KBRRRRLLRRRRBK','KBRRRRRRRRRRBK',
+'KBRRRBBBBRRRBK','.KRRRBBBBRRRK.','.KRRRRRRRRRRK.','..KRRRRRRRRK..','..KKRRRRRRKK..',
+'...KBBKKBBK...','...KBK..KBK...','....K....K....'];
+var BAPAL={ 'K':[20,15,13], 'R':[146,108,78], 'B':[96,214,222], 'L':[190,154,118], 'C':[238,206,162] };
+
+var CREWS=[
+ {n:'ASTRONAUT', sp:SP,                          s:1.00, plume:[255,194,104], bub:0, teth:1, tc:[[255,106,68],[198,208,228]]},
+ {n:'ROCKY',     sp:RSP,                         s:0.92, plume:[150,232,238], bub:1, teth:1, tc:[[120,222,228],[206,240,250]]},
+ {n:'HAIL MARY', sp:buildSprite(HM_ROWS,HMPAL),  s:1.35, plume:[255,74,86],   bub:0, teth:0, tc:null},
+ {n:'BLIP-A',    sp:buildSprite(BA_ROWS,BAPAL),  s:1.30, plume:[112,226,234], bub:0, teth:0, tc:null}
+];
 
 function drawSprite(sp,cx,cy,scale,rot,alpha){
   var rad=Math.sqrt(sp.w*sp.w+sp.h*sp.h)*0.5*scale+1.5;
@@ -439,36 +468,36 @@ function drawSprite(sp,cx,cy,scale,rot,alpha){
   }
 }
 
-var teth=[], tethInit=false;
 var DUST=(function(){ var m=mulberry(77), a=[]; for(var i=0;i<9;i++) a.push({a:m()*6.28, r:6+m()*24, s:0.5+m()}); return a; })();
-function tetherStep(ax,ay){
+function tetherStep(pl,ax,ay){
   var i,j;
-  if(!tethInit){
-    teth.length=0;
-    for(i=0;i<20;i++) teth.push({x:ax-i*2.3, y:ay+i*0.4});
-    tethInit=true;
+  if(!pl.tinit){
+    pl.teth=[];
+    for(i=0;i<20;i++) pl.teth.push({x:ax-i*2.3, y:ay+i*0.4});
+    pl.tinit=true;
   }
-  teth[0].x=ax; teth[0].y=ay;
-  for(j=1;j<teth.length;j++){
-    var p=teth[j], pr=teth[j-1];
-    p.x+=Math.sin(T*0.8+j*0.55)*0.055;
-    p.y+=Math.cos(T*0.62+j*0.42)*0.050;
-    var dx=p.x-pr.x, dy=p.y-pr.y, d=Math.sqrt(dx*dx+dy*dy)||1, L=2.3;
-    p.x=pr.x+dx/d*L; p.y=pr.y+dy/d*L;
+  var t=pl.teth;
+  t[0].x=ax; t[0].y=ay;
+  for(j=1;j<t.length;j++){
+    var q0=t[j], pr=t[j-1];
+    q0.x+=Math.sin(T*0.8+j*0.55)*0.055;
+    q0.y+=Math.cos(T*0.62+j*0.42)*0.050;
+    var dx=q0.x-pr.x, dy=q0.y-pr.y, d=Math.sqrt(dx*dx+dy*dy)||1, L=2.3;
+    q0.x=pr.x+dx/d*L; q0.y=pr.y+dy/d*L;
   }
 }
-function drawAstronaut(wx,wy,camx,camy,z,scale,rot,thrusting){
-  tetherStep(wx, wy+1.6);
-  var ox=W/2-camx*z, oy=H/2-camy*z, i;
-  for(i=1;i<teth.length;i++){
-    var warm=(i%5)<2;
-    var tr= CREW ? (warm?120:206) : (warm?255:198);
-    var tg= CREW ? (warm?222:240) : (warm?106:208);
-    var tb= CREW ? (warm?228:250) : (warm?68:228);
-    blend(teth[i].x*z+ox, teth[i].y*z+oy, tr,tg,tb, 0.95-i*0.018);
+function drawCrew(pl,camx,camy,z,base){
+  var C=CREWS[pl.crew], scale=Math.max(0.8,base*C.s), i;
+  var ox=W/2-camx*z, oy=H/2-camy*z;
+  if(C.teth){
+    tetherStep(pl, pl.x, pl.y+1.6);
+    for(i=1;i<pl.teth.length;i++){
+      var c=C.tc[(i%5)<2?0:1];
+      blend(pl.teth[i].x*z+ox, pl.teth[i].y*z+oy, c[0],c[1],c[2], 0.95-i*0.018);
+    }
   }
-  var ax=wx*z+ox, ay=wy*z+oy;
-  if(CREW===1){
+  var ax=pl.x*z+ox, ay=pl.y*z+oy;
+  if(C.bub){
     var br=scale*10.5;
     for(i=0;i<Math.max(30,br*5);i++){
       var ba=i/Math.max(30,br*5)*6.283;
@@ -481,18 +510,19 @@ function drawAstronaut(wx,wy,camx,camy,z,scale,rot,thrusting){
       blend(ax+Math.cos(ha)*br*0.86, ay+Math.sin(ha)*br*0.86, 226,252,255, 0.78);
     }
   }
-  if(thrusting){
-    for(i=0;i<8;i++){
-      var pr=i/8;
-      blend(ax - Math.cos(rot-Math.PI/2)*(scale*6.5+pr*8*scale) + (Math.random()-0.5)*1.6*scale,
-            ay - Math.sin(rot-Math.PI/2)*(scale*6.5+pr*8*scale) + (Math.random()-0.5)*1.6*scale,
-            255, 194-pr*80, 104-pr*70, (1-pr)*0.52);
+  if(pl.thr){
+    var pc=C.plume, np=C.teth?8:14;
+    for(i=0;i<np;i++){
+      var pr2=i/np;
+      blend(ax - Math.cos(pl.rot-Math.PI/2)*(scale*6.5+pr2*9*scale) + (Math.random()-0.5)*1.8*scale,
+            ay - Math.sin(pl.rot-Math.PI/2)*(scale*6.5+pr2*9*scale) + (Math.random()-0.5)*1.8*scale,
+            pc[0], Math.max(0,pc[1]-pr2*70), Math.max(0,pc[2]-pr2*60), (1-pr2)*0.58);
     }
   }
-  drawSprite(CREW?RSP:SP,ax,ay,scale*(CREW?0.92:1),rot,1);
+  drawSprite(C.sp,ax,ay,scale,pl.rot,1);
   for(i=0;i<DUST.length;i++){
-    var d=DUST[i];
-    blend(ax+Math.cos(d.a+T*0.08*d.s)*d.r*z, ay+Math.sin(d.a+T*0.11*d.s)*d.r*0.7*z, 216,228,255, 0.20+0.20*Math.sin(T*1.3+i));
+    var d2=DUST[i];
+    blend(ax+Math.cos(d2.a+T*0.08*d2.s)*d2.r*z, ay+Math.sin(d2.a+T*0.11*d2.s)*d2.r*0.7*z, 216,228,255, 0.20+0.20*Math.sin(T*1.3+i));
   }
 }
 
@@ -1427,9 +1457,14 @@ function markSeen(i){
 
 /* ============================ flight ============================ */
 var T=3.0, lastMs=0, lastBeat=-1, lastAuto=0, reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var px_=0, py_=0, vx=0, vy=0, camX=0, camY=0, dvSpent=0, thrusting=false, rot=0.2;
+var camX=0, camY=0, dvSpent=0;
 var ACC=190, auto=null, keys={};
 var zoom=1, zTarget=1, ZMIN=0.34, ZMAX=2.4, zShown='';
+var PL=[
+  {x:-40,y:-25,vx:0,vy:0,rot:0.2,crew:0,thr:false,teth:[],tinit:false},
+  {x:-40,y: 35,vx:0,vy:0,rot:0.2,crew:1,thr:false,teth:[],tinit:false}
+];
+var P2=false, MAXSEP=330;
 var elZval=document.getElementById('zVal');
 function zoomBy(f){ zTarget=clamp(zTarget*f,ZMIN,ZMAX); }
 document.getElementById('zIn').addEventListener('click',function(){ zoomBy(1.22); });
@@ -1447,24 +1482,31 @@ document.getElementById('btnNext').addEventListener('click',function(){ autopilo
 function nearestIndex(){
   var best=0, bd=1e18;
   for(var i=0;i<NS;i++){
-    var dx=STATIONS[i].wx-px_, dy=STATIONS[i].wy-py_, d=dx*dx+dy*dy;
+    var dx=STATIONS[i].wx-camX, dy=STATIONS[i].wy-camY, d=dx*dx+dy*dy;
     if(d<bd){ bd=d; best=i; }
   }
   return best;
 }
 
-var KEYMAP={'w':[0,-1],'a':[-1,0],'s':[0,1],'d':[1,0],
+var KM1={'w':[0,-1],'a':[-1,0],'s':[0,1],'d':[1,0]};
+var KM2={'arrowup':[0,-1],'arrowleft':[-1,0],'arrowdown':[0,1],'arrowright':[1,0]};
+var KMALL={'w':[0,-1],'a':[-1,0],'s':[0,1],'d':[1,0],
   'arrowup':[0,-1],'arrowleft':[-1,0],'arrowdown':[0,1],'arrowright':[1,0]};
 document.addEventListener('keydown',function(e){
   var nn=e.target && e.target.nodeName;
   if(nn==='INPUT'||nn==='TEXTAREA') return;
   var k=e.key.toLowerCase();
   if(k==='m'){ toggleSound(); return; }
-  if(k==='c'){ toggleCrew(); return; }
+  if(k==='c'){ cycleCrew(0); return; }
+  if(k==='v'){ if(P2) cycleCrew(1); return; }
+  if(k==='f'){ e.preventDefault(); toggleFull(); return; }
+  if(k==='p'){ togglePlayers(); return; }
+  if(k==='['){ e.preventDefault(); autopilot(Math.max(0,nearestIndex()-1)); return; }
+  if(k===']'){ e.preventDefault(); autopilot(Math.min(NS-1,nearestIndex()+1)); return; }
   if(k==='='||k==='+'){ e.preventDefault(); zoomBy(1.18); return; }
   if(k==='-'||k==='_'){ e.preventDefault(); zoomBy(1/1.18); return; }
   if(k==='0'){ zTarget=1; return; }
-  if(KEYMAP[k]){ keys[k]=1; auto=null; if(k.indexOf('arrow')===0) e.preventDefault(); }
+  if(KMALL[k]){ keys[k]=1; auto=null; if(k.indexOf('arrow')===0) e.preventDefault(); }
 });
 document.addEventListener('keyup',function(e){ keys[e.key.toLowerCase()]=0; });
 window.addEventListener('blur',function(){ keys={}; });
@@ -1504,25 +1546,42 @@ stage.addEventListener('pointerup',endPtr);
 stage.addEventListener('pointercancel',endPtr);
 stage.addEventListener('lostpointercapture',endPtr);
 
-function thrustVector(){
-  var ax=0, ay=0, k;
-  for(k in keys) if(keys[k] && KEYMAP[k]){ ax+=KEYMAP[k][0]; ay+=KEYMAP[k][1]; }
-  if(ptr){
+function thrustVector(idx){
+  var pl=PL[idx], ax=0, ay=0, k;
+  var km = P2 ? (idx===0?KM1:KM2) : KMALL;
+  for(k in keys) if(keys[k] && km[k]){ ax+=km[k][0]; ay+=km[k][1]; }
+  if(idx===0 && ptr){
     var r=stage.getBoundingClientRect();
     var tx=(ptr.x-r.left)/r.width*W, ty=(ptr.y-r.top)/r.height*H;
-    var sx=(px_-camX)*zoom+W/2, sy=(py_-camY)*zoom+H/2;
+    var sx=(pl.x-camX)*zoom+W/2, sy=(pl.y-camY)*zoom+H/2;
     var dx=tx-sx, dy=ty-sy, d=Math.sqrt(dx*dx+dy*dy);
     if(d>3){ var f=Math.min(1,d/(W*0.22)); ax+=dx/d*f; ay+=dy/d*f; }
   }
-  if(auto){
+  if(idx===0 && auto){
     var ast=STATIONS[auto.i];
-    var adx=(ast.wx-95/zoom)-px_, ady=(ast.wy+48/zoom)-py_, ad=Math.sqrt(adx*adx+ady*ady);
-    if(ad<7 && Math.sqrt(vx*vx+vy*vy)<9){ auto=null; }
-    else{ ax+=clamp(adx*0.030-vx*0.045,-1,1); ay+=clamp(ady*0.030-vy*0.045,-1,1); }
+    var adx=(ast.wx-95/zoom)-pl.x, ady=(ast.wy+48/zoom)-pl.y, ad=Math.sqrt(adx*adx+ady*ady);
+    if(ad<7 && Math.sqrt(pl.vx*pl.vx+pl.vy*pl.vy)<9){ auto=null; }
+    else{ ax+=clamp(adx*0.030-pl.vx*0.045,-1,1); ay+=clamp(ady*0.030-pl.vy*0.045,-1,1); }
   }
   var m=Math.sqrt(ax*ax+ay*ay);
   if(m>1){ ax/=m; ay/=m; }
-  return [ax,ay,m];
+  return [ax,ay];
+}
+
+function stepPlayer(idx,dt){
+  var pl=PL[idx];
+  var tv=thrustVector(idx), ax=tv[0]*ACC, ay=tv[1]*ACC;
+  pl.thr=(tv[0]*tv[0]+tv[1]*tv[1])>0.02;
+  pl.vx+=ax*dt; pl.vy+=ay*dt;
+  var damp=Math.exp(-0.85*dt); pl.vx*=damp; pl.vy*=damp;
+  pl.x+=pl.vx*dt; pl.y+=pl.vy*dt;
+  if(pl.x<XMIN){ pl.x=XMIN; pl.vx*=-0.25; } if(pl.x>XMAX){ pl.x=XMAX; pl.vx*=-0.25; }
+  if(pl.y<-YLIM){ pl.y=-YLIM; pl.vy*=-0.25; } if(pl.y>YLIM){ pl.y=YLIM; pl.vy*=-0.25; }
+  if(pl.thr) dvSpent+=Math.sqrt(ax*ax+ay*ay)*dt*0.0075;
+  var sp=Math.sqrt(pl.vx*pl.vx+pl.vy*pl.vy);
+  var want = sp>12 ? Math.atan2(pl.vy,pl.vx)+Math.PI/2 : pl.rot+0.30*dt;
+  var da=want-pl.rot; while(da>Math.PI) da-=Math.PI*2; while(da<-Math.PI) da+=Math.PI*2;
+  pl.rot+=da*Math.min(1,3.2*dt);
 }
 
 /* ============================ sound: deep space set ============================ */
@@ -1760,13 +1819,55 @@ function toggleSound(){
 btnSnd.addEventListener('click',toggleSound);
 
 var btnCrew=document.getElementById('btnCrew');
-function toggleCrew(){
-  CREW = CREW ? 0 : 1;
-  btnCrew.textContent = CREW ? 'PLAY AS ASTRONAUT' : 'PLAY AS ROCKY';
-  btnCrew.className = CREW ? 'snd crew on' : 'snd crew';
-  cv.setAttribute('data-crew', CREW ? 'rocky' : 'astronaut');
+var btnCrew2=document.getElementById('btnCrew2');
+var btnP2=document.getElementById('btnP2');
+var btnFull=document.getElementById('btnFull');
+
+function crewLabel(i){ return (P2?('P'+(i+1)+' '):'')+CREWS[PL[i].crew].n; }
+function paintCrew(){
+  btnCrew.textContent=crewLabel(0);
+  btnCrew.className='snd crew c'+PL[0].crew;
+  btnCrew2.textContent=crewLabel(1);
+  btnCrew2.className='snd crew c'+PL[1].crew;
+  btnCrew2.hidden=!P2;
+  btnP2.textContent=P2?'2 PLAYERS':'1 PLAYER';
+  btnP2.setAttribute('aria-pressed',P2?'true':'false');
+  cv.setAttribute('aria-label','Pixel-art space view. Crew: '+CREWS[PL[0].crew].n.toLowerCase()+'.');
 }
-btnCrew.addEventListener('click',toggleCrew);
+function cycleCrew(i){ PL[i].crew=(PL[i].crew+1)%CREWS.length; PL[i].tinit=false; paintCrew(); }
+btnCrew.addEventListener('click',function(){ cycleCrew(0); });
+btnCrew2.addEventListener('click',function(){ cycleCrew(1); });
+
+function togglePlayers(){
+  P2=!P2;
+  if(P2){
+    PL[1].x=PL[0].x+46; PL[1].y=PL[0].y+34;
+    PL[1].vx=PL[0].vx; PL[1].vy=PL[0].vy; PL[1].tinit=false;
+  }
+  paintCrew();
+}
+btnP2.addEventListener('click',togglePlayers);
+
+function toggleFull(){
+  var d=document;
+  if(d.fullscreenElement||d.webkitFullscreenElement){
+    (d.exitFullscreen||d.webkitExitFullscreen).call(d);
+  }else{
+    var fn=stage.requestFullscreen||stage.webkitRequestFullscreen;
+    if(!fn){ btnFull.disabled=true; return; }
+    var r=fn.call(stage);
+    if(r&&r.catch) r.catch(function(){ btnFull.disabled=true; });
+  }
+}
+btnFull.addEventListener('click',toggleFull);
+function paintFull(){
+  var on=!!(document.fullscreenElement||document.webkitFullscreenElement);
+  btnFull.textContent=on?'EXIT FULLSCREEN':'FULLSCREEN';
+  btnFull.setAttribute('aria-pressed',on?'true':'false');
+}
+document.addEventListener('fullscreenchange',paintFull);
+document.addEventListener('webkitfullscreenchange',paintFull);
+if(!(stage.requestFullscreen||stage.webkitRequestFullscreen)) btnFull.disabled=true;
 
 /* ============================ frame loop ============================ */
 function render(){
@@ -1776,14 +1877,30 @@ function render(){
   for(i=0;i<NS;i++){
     var sx=(STATIONS[i].wx-camX)*zoom+W/2, sy=(STATIONS[i].wy-camY)*zoom+H/2;
     if(Math.abs(sx-W/2)>W*0.6+340*zoom||Math.abs(sy-H/2)>H*0.6+340*zoom) continue;
-    var dd=(STATIONS[i].wx-px_)*(STATIONS[i].wx-px_)+(STATIONS[i].wy-py_)*(STATIONS[i].wy-py_);
+    var dd=(STATIONS[i].wx-camX)*(STATIONS[i].wx-camX)+(STATIONS[i].wy-camY)*(STATIONS[i].wy-camY);
     order.push([dd,i,sx,sy]);
   }
   order.sort(function(a,b){ return b[0]-a[0]; });
   for(i=0;i<order.length;i++){
     STATIONS[order[i][1]].draw({x:order[i][2], y:order[i][3], s:zoom, a:1, t:T});
   }
-  drawAstronaut(px_,py_,camX,camY,zoom,Math.max(0.8,(H/94)*zoom),rot,thrusting);
+  var base=Math.max(0.8,(H/94)*zoom);
+  if(P2){
+    var ax0=(PL[0].x-camX)*zoom+W/2, ay0=(PL[0].y-camY)*zoom+H/2;
+    var ax1=(PL[1].x-camX)*zoom+W/2, ay1=(PL[1].y-camY)*zoom+H/2;
+    var gd=Math.sqrt((ax1-ax0)*(ax1-ax0)+(ay1-ay0)*(ay1-ay0));
+    if(gd>W*0.30){
+      var steps=Math.min(90,Math.round(gd/3));
+      for(i=1;i<steps;i++){
+        var u=i/steps;
+        var gx=ax0+(ax1-ax0)*u, gy=ay0+(ay1-ay0)*u;
+        if(dith(gx,gy)>0.46) continue;
+        blend(gx,gy,104,150,206,0.52);
+      }
+    }
+    drawCrew(PL[1],camX,camY,zoom,base);
+  }
+  drawCrew(PL[0],camX,camY,zoom,base);
   ctx.putImageData(img,0,0);
 }
 
@@ -1792,34 +1909,53 @@ function frame(ms){
   lastMs=ms;
   if(!reduced) T+=dt;
 
-  var tv=thrustVector(), ax=tv[0]*ACC, ay=tv[1]*ACC;
-  thrusting=(tv[0]*tv[0]+tv[1]*tv[1])>0.02;
-  vx+=ax*dt; vy+=ay*dt;
-  var damp=Math.exp(-0.85*dt); vx*=damp; vy*=damp;
-  px_+=vx*dt; py_+=vy*dt;
-  if(px_<XMIN){ px_=XMIN; vx*=-0.25; } if(px_>XMAX){ px_=XMAX; vx*=-0.25; }
-  if(py_<-YLIM){ py_=-YLIM; vy*=-0.25; } if(py_>YLIM){ py_=YLIM; vy*=-0.25; }
-  if(thrusting) dvSpent+=Math.sqrt(ax*ax+ay*ay)*dt*0.0075;
+  stepPlayer(0,dt);
+  if(P2){
+    stepPlayer(1,dt);
+    var lx=PL[1].x-PL[0].x, ly=PL[1].y-PL[0].y, ld=Math.sqrt(lx*lx+ly*ly);
+    if(ld>MAXSEP && ld>0.001){
+      var over=(ld-MAXSEP)/ld*0.5;
+      PL[0].x+=lx*over; PL[0].y+=ly*over;
+      PL[1].x-=lx*over; PL[1].y-=ly*over;
+      var nx=lx/ld, ny=ly/ld;
+      var rv=(PL[1].vx-PL[0].vx)*nx+(PL[1].vy-PL[0].vy)*ny;
+      if(rv>0){
+        PL[0].vx+=nx*rv*0.5; PL[0].vy+=ny*rv*0.5;
+        PL[1].vx-=nx*rv*0.5; PL[1].vy-=ny*rv*0.5;
+      }
+    }
+  }
 
-  var sp=Math.sqrt(vx*vx+vy*vy);
-  var want = sp>12 ? Math.atan2(vy,vx)+Math.PI/2 : rot+0.30*dt;
-  var da=want-rot; while(da>Math.PI) da-=Math.PI*2; while(da<-Math.PI) da+=Math.PI*2;
-  rot+=da*Math.min(1,3.2*dt);
-
-  zoom+=(zTarget-zoom)*Math.min(1,7*dt);
+  var zt=zTarget;
+  if(P2){
+    var sepx=Math.abs(PL[1].x-PL[0].x)/(W*0.58), sepy=Math.abs(PL[1].y-PL[0].y)/(H*0.52);
+    var sep=Math.max(sepx,sepy,0.0001);
+    zt=Math.min(zTarget, 1/sep);
+  }
+  zoom+=(clamp(zt,ZMIN,ZMAX)-zoom)*Math.min(1,7*dt);
   var zs=zoom.toFixed(1)+'x';
   if(zs!==zShown){ zShown=zs; elZval.textContent=zs; }
 
+  var tx, ty, tvx, tvy;
+  if(P2){
+    tx=(PL[0].x+PL[1].x)/2; ty=(PL[0].y+PL[1].y)/2;
+    tvx=(PL[0].vx+PL[1].vx)/2; tvy=(PL[0].vy+PL[1].vy)/2;
+  }else{ tx=PL[0].x; ty=PL[0].y; tvx=PL[0].vx; tvy=PL[0].vy; }
   var f=Math.min(1,4*dt);
-  camX+=(px_+vx*0.22-camX)*f; camY+=(py_+vy*0.22-camY)*f;
+  camX+=(tx+tvx*0.22-camX)*f; camY+=(ty+tvy*0.22-camY)*f;
 
   var pos=clamp(camX/SPACING,0,NS-1);
   space=clamp(camX/((NS-1)*SPACING),0,1); arr=0.15+space*0.85;
   var ni=nearestIndex(), near=STATIONS[ni];
-  var ndx=near.wx-px_, ndy=near.wy-py_;
-  if(ndx*ndx+ndy*ndy < 155*155) markSeen(ni);
-  eridNear = !!near.voice && (ndx*ndx+ndy*ndy < 300*300);
+  var best=1e18;
+  for(var pi=0;pi<(P2?2:1);pi++){
+    var ddx=near.wx-PL[pi].x, ddy=near.wy-PL[pi].y;
+    best=Math.min(best, ddx*ddx+ddy*ddy);
+  }
+  if(best < 155*155) markSeen(ni);
+  eridNear = !!near.voice && (best < 300*300);
   showStation(ni);
+
   var nsx=((near.wx-camX)*zoom+W/2)/W, nsy=((near.wy-camY)*zoom+H/2)/H;
   if(nsx<0.05||nsx>0.95||nsy<0.08||nsy>0.92){
     var cy2=clamp(nsy,0.14,0.86);
@@ -1829,8 +1965,9 @@ function frame(ms){
     pipEl.className = cy2>0.72 ? 'pip up' : 'pip';
     if(pipName!==near.name){ pipName=near.name; pipLab.textContent=near.name.toUpperCase(); }
   } else if(!pipEl.hidden){ pipEl.hidden=true; }
+
   var m=rangeAt(pos);
-  elRange.textContent = (near.fiction && ndx*ndx+ndy*ndy < 190*190) ? "—" : fmtRange(m);
+  elRange.textContent = (near.fiction && best < 190*190) ? "—" : fmtRange(m);
   elDv.textContent = dvSpent.toFixed(1)+' m/s';
   cursorEl.style.left=Math.max(0,Math.min(100,posPct(m)))+'%';
 
@@ -1858,8 +1995,10 @@ function frame(ms){
 
 var ro=('ResizeObserver' in window)?new ResizeObserver(function(){ sizeBuffer(); }):null;
 if(ro) ro.observe(stage); else window.addEventListener('resize',sizeBuffer);
-px_=-40; py_=-25; camX=px_; camY=py_;
+camX=PL[0].x; camY=PL[0].y;
 sizeBuffer();
+paintCrew();
+paintFull();
 showStation(0);
 requestAnimationFrame(frame);
 })();
