@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/logo.png" width="132" alt="Amaze"></p>
+
 <h1 align="center">AMAZE</h1>
 
 <p align="center"><em>&ldquo;Amaze.&rdquo; &mdash; Rocky, <strong>Project Hail Mary</strong></em></p>
@@ -18,6 +20,9 @@ Solo, or two players on one keyboard.
 </p>
 
 ![Amaze](docs/hero.png)
+
+> The mark is the astronaut’s helmet: a gold visor with a few stars
+> reflected in it, drawn on the same 32-pixel grid the game itself uses.
 
 ---
 
