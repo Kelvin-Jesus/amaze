@@ -9,9 +9,10 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Amaze">
 <meta property="og:description" content="Fly an astronaut, Rocky, the Hail Mary or the Blip-A past twenty-seven astronomical objects, from low Earth orbit to the oldest light in the universe, on a true logarithmic distance scale.">
-<meta property="og:image" content="docs/hero.png">
+<meta property="og:image" content="docs/social.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%AA%90%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="docs/logo.svg">
+<link rel="apple-touch-icon" href="docs/icon-180.png">
 <style>
   html{color-scheme:dark}
   body{margin:0}
@@ -1765,10 +1766,22 @@ var KM1={'w':[0,-1],'a':[-1,0],'s':[0,1],'d':[1,0]};
 var KM2={'arrowup':[0,-1],'arrowleft':[-1,0],'arrowdown':[0,1],'arrowright':[1,0]};
 var KMALL={'w':[0,-1],'a':[-1,0],'s':[0,1],'d':[1,0],
   'arrowup':[0,-1],'arrowleft':[-1,0],'arrowdown':[0,1],'arrowright':[1,0]};
+/* Movement resolves from e.code (physical key position), so the WASD cluster
+   works on any layout -- AZERTY's ZQSD and ABNT2 included -- and does not
+   depend on what letter the key happens to produce. Mode shortcuts stay on
+   e.key, because those are mnemonics, not positions. */
+var CODEMAP={'KeyW':'w','KeyA':'a','KeyS':'s','KeyD':'d',
+  'ArrowUp':'arrowup','ArrowLeft':'arrowleft','ArrowDown':'arrowdown','ArrowRight':'arrowright'};
+function moveToken(e){
+  if(e.code && CODEMAP[e.code]) return CODEMAP[e.code];
+  var k=(e.key||'').toLowerCase();
+  return KMALL[k] ? k : null;
+}
 document.addEventListener('keydown',function(e){
   var nn=e.target && e.target.nodeName;
   if(nn==='INPUT'||nn==='TEXTAREA') return;
-  var k=e.key.toLowerCase();
+  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  var k=(e.key||'').toLowerCase();
   if(k==='m'){ toggleSound(); return; }
   if(k==='c'){ cycleCrew(0); return; }
   if(k==='v'){ if(P2) cycleCrew(1); return; }
@@ -1784,9 +1797,14 @@ document.addEventListener('keydown',function(e){
   if(k==='='||k==='+'){ e.preventDefault(); zoomBy(1.18); return; }
   if(k==='-'||k==='_'){ e.preventDefault(); zoomBy(1/1.18); return; }
   if(k==='0'){ zTarget=1; return; }
-  if(KMALL[k]){ keys[k]=1; cancelTour(); auto=null; if(k.indexOf('arrow')===0) e.preventDefault(); }
+  var mt=moveToken(e);
+  if(mt){ keys[mt]=1; cancelTour(); auto=null; if(mt.indexOf('arrow')===0) e.preventDefault(); }
 });
-document.addEventListener('keyup',function(e){ keys[e.key.toLowerCase()]=0; });
+document.addEventListener('keyup',function(e){
+  var mt=moveToken(e);
+  if(mt) keys[mt]=0;
+  keys[(e.key||'').toLowerCase()]=0;
+});
 window.addEventListener('blur',function(){ keys={}; });
 
 var ptr=null, pts={}, nPts=0, pinchD=0;
